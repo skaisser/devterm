@@ -1,4 +1,4 @@
-# devterm
+# Devterm
 
 > **@skaisser style** — one command to set up the perfect developer terminal on macOS
 
