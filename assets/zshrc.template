@@ -1,6 +1,6 @@
 # ─────────────────────────────────────────────────────────────────────────────
-# devterminal — KAISSER style zshrc
-# https://github.com/skaisser/devterminal
+# devterm — @skaisser style zshrc
+# https://github.com/skaisser/devterm
 # ─────────────────────────────────────────────────────────────────────────────
 
 # ── History ───────────────────────────────────────────────────────────────────
@@ -22,10 +22,13 @@ zstyle ':completion:*' menu select
 zstyle ':completion:*' matcher-list 'm:{a-zA-Z}={A-Za-z}'
 
 # ── PATH ──────────────────────────────────────────────────────────────────────
+PATH=/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin
+
 path_additions=(
     "/opt/homebrew/bin"
     "/opt/homebrew/sbin"
     "$HOME/.local/bin"
+    "$HOME/.fzf/bin"
     "$HOME/Library/Application Support/Herd/bin"
 )
 for d in "${path_additions[@]}"; do [ -d "$d" ] && PATH="$d:$PATH"; done
@@ -46,6 +49,7 @@ alias ..="cd .."
 alias ..2="cd ../.."
 alias ..3="cd ../../.."
 alias ..4="cd ../../../.."
+alias ..5="cd ../../../../.."
 alias sites="cd ~/Sites"
 export CDPATH=".:$HOME/Sites"
 
@@ -53,6 +57,7 @@ export CDPATH=".:$HOME/Sites"
 alias gst="git status"
 alias gco="git checkout"
 alias gcb="git checkout -b"
+alias gadd="git add -p"           # interactive add — pick hunks to stage
 alias glog="git log --oneline --graph --decorate"
 alias gd="git diff"
 alias gds="git diff --staged"
@@ -64,9 +69,19 @@ alias art="php artisan"
 alias pt="./vendor/bin/pest"
 alias ptp="./vendor/bin/pest --parallel --processes=10"
 alias tc="herd coverage ./vendor/bin/pest --coverage"
+alias tcq="herd coverage ./vendor/bin/pest --coverage --parallel --processes=10"
 alias cda="composer dump-autoload"
 
-# ── Aliases — Directory listing (eza) ────────────────────────────────────────
+if [[ -d "/Applications/Herd.app" ]]; then
+    alias hfix="herd restart && echo 'Herd restarted'"
+fi
+
+# ── Aliases — Claude Code ─────────────────────────────────────────────────────
+if command -v claude &>/dev/null; then
+    alias claudd="claude --dangerously-skip-permissions"
+fi
+
+# ── Aliases — Directory listing (eza) ─────────────────────────────────────────
 if command -v eza &>/dev/null; then
     alias ls="eza --icons --git"
     alias l="eza -l --icons --git -a"
@@ -79,16 +94,65 @@ else
     alias ll="ls -laG"
 fi
 
+command -v tree &>/dev/null && alias la="tree"
+
 # ── Aliases — System ──────────────────────────────────────────────────────────
 alias mkdir="mkdir -p"
 alias df="df -h"
 alias du="du -h"
+alias dud="du -d 1 -h"           # disk usage one level deep
+alias duf="du -sh *"             # disk usage of each item in current dir
 alias grep="grep --color=auto"
+alias psa="ps aux"
 alias ports="lsof -i -P -n | grep LISTEN"
 
 # ── Functions ─────────────────────────────────────────────────────────────────
+
+# Create and enter directory in one step
 mkcd() { mkdir -p "$1" && cd "$1"; }
+
+# Extract any archive format — just: extract file.tar.gz
+extract() {
+    if [ -f "$1" ]; then
+        case "$1" in
+            *.tar.bz2) tar xjf "$1" ;;
+            *.tar.gz)  tar xzf "$1" ;;
+            *.tar.xz)  tar xJf "$1" ;;
+            *.bz2)     bunzip2 "$1" ;;
+            *.rar)     unrar e "$1" ;;
+            *.gz)      gunzip "$1" ;;
+            *.tar)     tar xf "$1" ;;
+            *.tbz2)    tar xjf "$1" ;;
+            *.tgz)     tar xzf "$1" ;;
+            *.zip)     unzip "$1" ;;
+            *.Z)       uncompress "$1" ;;
+            *.7z)      7z x "$1" ;;
+            *) echo "'$1' cannot be extracted via extract()" ;;
+        esac
+    else
+        echo "'$1' is not a valid file"
+    fi
+}
+
+# Kill process by name — killp nginx
+killp() {
+    if [[ -n "$1" ]]; then
+        ps aux | grep "$1" | grep -v grep | awk '{print $2}' | xargs kill -9
+    else
+        echo "Usage: killp <process_name>"
+    fi
+}
+
+# Quick weather — weather "London" or just: weather
+weather() {
+    local city="${1:-New York}"
+    curl -s "wttr.in/${city}?format=3"
+}
+
+# Top memory consumers
 memusage() { ps aux | sort -nk 4 | tail; }
+
+# Top CPU consumers
 cpuusage() { ps aux | sort -nk 3 | tail; }
 
 # ── iTerm2: Per-window background colors + SSH danger mode ───────────────────
@@ -99,6 +163,11 @@ if [[ "$TERM_PROGRAM" == "iTerm.app" ]]; then
         echo -ne "\033]6;1;bg;red;brightness;$1\a"
         echo -ne "\033]6;1;bg;green;brightness;$2\a"
         echo -ne "\033]6;1;bg;blue;brightness;$3\a"
+    }
+
+    # Reset tab strip to default
+    _iterm2_reset_tab_color() {
+        echo -ne "\033]6;1;bg;*;default\a"
     }
 
     # Set window background via AppleScript (cached — runs once per session)
@@ -112,7 +181,7 @@ if [[ "$TERM_PROGRAM" == "iTerm.app" ]]; then
         osascript -e "tell application \"iTerm2\" to tell current session of current window to set background color to {$r, $g, $b}" 2>/dev/null
     }
 
-    # Assign unique dark Dracula-compatible background per window (TTY-based)
+    # Assign unique dark background per window based on TTY number
     _iterm2_auto_colors() {
         local bg_colors=(
             "1e2040"    # deep navy
@@ -120,7 +189,7 @@ if [[ "$TERM_PROGRAM" == "iTerm.app" ]]; then
             "2a1818"    # deep burgundy
             "1a1a38"    # deep indigo
             "0f2828"    # deep teal
-            "2a1e0e"    # deep amber
+            "1a0e2a"    # dark plum
             "261426"    # deep violet
             "0e2a1a"    # deep emerald
         )
@@ -133,7 +202,7 @@ if [[ "$TERM_PROGRAM" == "iTerm.app" ]]; then
         _iterm2_set_tab_color $(( 16#${hex:0:2} )) $(( 16#${hex:2:2} )) $(( 16#${hex:4:2} ))
     }
 
-    # Shorten path for title bar
+    # Shorten path for title bar: ~/Sites/myapp/src → myapp/src
     _iterm2_short_cwd() {
         if   [[ "$PWD" == "$HOME/Sites/"* ]];       then echo "${PWD#$HOME/Sites/}"
         elif [[ "$PWD" == "$HOME/ActiveSites/"* ]]; then echo "${PWD#$HOME/ActiveSites/}"
@@ -141,7 +210,7 @@ if [[ "$TERM_PROGRAM" == "iTerm.app" ]]; then
         else echo "$PWD"; fi
     }
 
-    # Rich tab title: 📂 folder  branch ~modified +staged
+    # Rich tab title: 📂 folder  branch ~modified +staged ↑ahead ↓behind
     _iterm2_build_title() {
         local title="📂 $(_iterm2_short_cwd)"
         if git rev-parse --git-dir &>/dev/null 2>&1; then
@@ -180,7 +249,7 @@ if [[ "$TERM_PROGRAM" == "iTerm.app" ]]; then
     ssh() {
         local host="" skip=false arg
         for arg in "$@"; do
-            $skip && { skip=false; continue; }
+            if $skip; then skip=false; continue; fi
             case "$arg" in
                 -[bcDEeFIiJLlmOopQRSWw]) skip=true ;;
                 -*) ;;
@@ -202,36 +271,43 @@ fi
 # ── Oh My Posh ────────────────────────────────────────────────────────────────
 if command -v oh-my-posh &>/dev/null && [[ "$TERM_PROGRAM" != "Apple_Terminal" ]]; then
     [[ ! -d ~/.zsh/themes ]] && mkdir -p ~/.zsh/themes
-    if [[ -f ~/.zsh/themes/kaisser.omp.json ]]; then
-        eval "$(oh-my-posh init zsh --config ~/.zsh/themes/kaisser.omp.json)"
+    if [[ -f ~/.zsh/themes/skaisser.omp.json ]]; then
+        eval "$(oh-my-posh init zsh --config ~/.zsh/themes/skaisser.omp.json)"
     else
         eval "$(oh-my-posh init zsh)"
     fi
 fi
 
 # ── Plugins ───────────────────────────────────────────────────────────────────
+# fpath additions must come before compinit
 [[ -d ~/.zsh/plugins/zsh-completions/src ]] && fpath=(~/.zsh/plugins/zsh-completions/src $fpath)
 autoload -Uz compinit && compinit
 
+# fzf — fuzzy finder (Ctrl+R history · Ctrl+T files · Alt+C cd into dir)
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
 
+# History substring search — type partial command then press Up/Down
 [[ -f ~/.zsh/plugins/zsh-history-substring-search/zsh-history-substring-search.zsh ]] && {
     source ~/.zsh/plugins/zsh-history-substring-search/zsh-history-substring-search.zsh
     bindkey '^[[A' history-substring-search-up
     bindkey '^[[B' history-substring-search-down
 }
 
+# Auto-suggestions — grey hint as you type, press Right arrow to accept
 [[ -f ~/.zsh/plugins/zsh-autosuggestions/zsh-autosuggestions.zsh ]] && {
     source ~/.zsh/plugins/zsh-autosuggestions/zsh-autosuggestions.zsh
     ZSH_AUTOSUGGEST_STRATEGY=(history completion)
     ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE='fg=244'
 }
 
-[[ -f ~/.zsh/plugins/fast-syntax-highlighting/fast-syntax-highlighting.plugin.zsh ]] && \
-    source ~/.zsh/plugins/fast-syntax-highlighting/fast-syntax-highlighting.plugin.zsh
+# Syntax highlighting — red for invalid commands, green for valid (load last)
+[[ -f ~/.zsh/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh ]] && \
+    source ~/.zsh/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
 
+# z — frecency directory jumper: type "z myapp" to jump to ~/Sites/myapp
 [ -f ~/.zsh/plugins/z/z.sh ] && source ~/.zsh/plugins/z/z.sh
 
 # ── Local overrides ───────────────────────────────────────────────────────────
-# Machine-specific config — not tracked in version control
+# Machine-specific config — never tracked in version control
+# Great place for: 1Password, API keys, work-specific aliases
 [[ -f ~/.zshrc.local ]] && source ~/.zshrc.local
