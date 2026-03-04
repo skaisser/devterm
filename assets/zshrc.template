@@ -171,6 +171,7 @@ if [[ "$TERM_PROGRAM" == "iTerm.app" ]]; then
     }
 
     # Set window background via AppleScript (cached — runs once per session)
+    # Targets by TTY to prevent cross-window color contamination.
     _iterm2_set_bg_color() {
         local hex="$1"
         [[ "$hex" == "$_ITERM2_LAST_BG" ]] && return
@@ -178,7 +179,22 @@ if [[ "$TERM_PROGRAM" == "iTerm.app" ]]; then
         local r=$(( 16#${hex:0:2} * 257 ))
         local g=$(( 16#${hex:2:2} * 257 ))
         local b=$(( 16#${hex:4:2} * 257 ))
-        osascript -e "tell application \"iTerm2\" to tell current session of current window to set background color to {$r, $g, $b}" 2>/dev/null
+        local my_tty
+        my_tty=$(tty 2>/dev/null)
+        osascript -e "
+            tell application \"iTerm2\"
+                set myTty to \"$my_tty\"
+                repeat with aWindow in windows
+                    repeat with aTab in tabs of aWindow
+                        repeat with aSession in sessions of aTab
+                            if tty of aSession is myTty then
+                                set background color of aSession to {$r, $g, $b}
+                            end if
+                        end repeat
+                    end repeat
+                end repeat
+            end tell
+        " 2>/dev/null
     }
 
     # Assign unique dark background per window based on TTY number
