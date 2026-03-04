@@ -97,4 +97,14 @@ show_done() {
         "$(gum style --foreground='#bd93f9' '  github.com/skaisser/devterm')"
 
     echo ""
+
+    if gum confirm \
+        --prompt.foreground="#ffb86c" \
+        --selected.background="#ffb86c" \
+        --selected.foreground="#000000" \
+        "  ⭐  Enjoying devterm? Star us on GitHub!"; then
+        open "https://github.com/skaisser/devterm"
+    fi
+
+    echo ""
 }
