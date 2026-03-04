@@ -1,0 +1,237 @@
+# ─────────────────────────────────────────────────────────────────────────────
+# devterminal — KAISSER style zshrc
+# https://github.com/skaisser/devterminal
+# ─────────────────────────────────────────────────────────────────────────────
+
+# ── History ───────────────────────────────────────────────────────────────────
+[[ ! -d ~/.zsh ]] && mkdir -p ~/.zsh
+HISTFILE=~/.zsh/.zsh_history
+HISTSIZE=100000
+SAVEHIST=100000
+setopt APPEND_HISTORY SHARE_HISTORY HIST_IGNORE_DUPS HIST_IGNORE_SPACE
+setopt HIST_REDUCE_BLANKS HIST_VERIFY EXTENDED_HISTORY
+
+# ── Terminal ──────────────────────────────────────────────────────────────────
+export LANG="en_US.UTF-8"
+export EDITOR='code'
+unsetopt BEEP
+setopt AUTO_CD AUTO_PUSHD PUSHD_IGNORE_DUPS PROMPT_SUBST
+
+# ── Completion ────────────────────────────────────────────────────────────────
+zstyle ':completion:*' menu select
+zstyle ':completion:*' matcher-list 'm:{a-zA-Z}={A-Za-z}'
+
+# ── PATH ──────────────────────────────────────────────────────────────────────
+path_additions=(
+    "/opt/homebrew/bin"
+    "/opt/homebrew/sbin"
+    "$HOME/.local/bin"
+    "$HOME/Library/Application Support/Herd/bin"
+)
+for d in "${path_additions[@]}"; do [ -d "$d" ] && PATH="$d:$PATH"; done
+typeset -U PATH
+
+# ── Laravel Herd (PHP + NVM) ──────────────────────────────────────────────────
+if [[ -d "/Applications/Herd.app" ]]; then
+    export NVM_DIR="$HOME/Library/Application Support/Herd/config/nvm"
+    [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
+    [[ -f "/Applications/Herd.app/Contents/Resources/config/shell/zshrc.zsh" ]] && \
+        builtin source "/Applications/Herd.app/Contents/Resources/config/shell/zshrc.zsh"
+fi
+
+# ── Aliases — Navigation ──────────────────────────────────────────────────────
+alias cl="clear"
+alias -- -="cd -"
+alias ..="cd .."
+alias ..2="cd ../.."
+alias ..3="cd ../../.."
+alias ..4="cd ../../../.."
+alias sites="cd ~/Sites"
+export CDPATH=".:$HOME/Sites"
+
+# ── Aliases — Git ─────────────────────────────────────────────────────────────
+alias gst="git status"
+alias gco="git checkout"
+alias gcb="git checkout -b"
+alias glog="git log --oneline --graph --decorate"
+alias gd="git diff"
+alias gds="git diff --staged"
+alias gp="git pull"
+alias gpush="git push origin"
+
+# ── Aliases — PHP / Laravel ───────────────────────────────────────────────────
+alias art="php artisan"
+alias pt="./vendor/bin/pest"
+alias ptp="./vendor/bin/pest --parallel --processes=10"
+alias tc="herd coverage ./vendor/bin/pest --coverage"
+alias cda="composer dump-autoload"
+
+# ── Aliases — Directory listing (eza) ────────────────────────────────────────
+if command -v eza &>/dev/null; then
+    alias ls="eza --icons --git"
+    alias l="eza -l --icons --git -a"
+    alias ll="eza -la --icons --git"
+    alias lt="eza --tree --level=2 --long --icons --git"
+    alias ltree="eza --tree --level=2 --icons --git"
+else
+    alias ls="ls -G"
+    alias l="ls -lG"
+    alias ll="ls -laG"
+fi
+
+# ── Aliases — System ──────────────────────────────────────────────────────────
+alias mkdir="mkdir -p"
+alias df="df -h"
+alias du="du -h"
+alias grep="grep --color=auto"
+alias ports="lsof -i -P -n | grep LISTEN"
+
+# ── Functions ─────────────────────────────────────────────────────────────────
+mkcd() { mkdir -p "$1" && cd "$1"; }
+memusage() { ps aux | sort -nk 4 | tail; }
+cpuusage() { ps aux | sort -nk 3 | tail; }
+
+# ── iTerm2: Per-window background colors + SSH danger mode ───────────────────
+if [[ "$TERM_PROGRAM" == "iTerm.app" ]]; then
+
+    # Set tab strip color (r g b as 0-255 integers)
+    _iterm2_set_tab_color() {
+        echo -ne "\033]6;1;bg;red;brightness;$1\a"
+        echo -ne "\033]6;1;bg;green;brightness;$2\a"
+        echo -ne "\033]6;1;bg;blue;brightness;$3\a"
+    }
+
+    # Set window background via AppleScript (cached — runs once per session)
+    _iterm2_set_bg_color() {
+        local hex="$1"
+        [[ "$hex" == "$_ITERM2_LAST_BG" ]] && return
+        _ITERM2_LAST_BG="$hex"
+        local r=$(( 16#${hex:0:2} * 257 ))
+        local g=$(( 16#${hex:2:2} * 257 ))
+        local b=$(( 16#${hex:4:2} * 257 ))
+        osascript -e "tell application \"iTerm2\" to tell current session of current window to set background color to {$r, $g, $b}" 2>/dev/null
+    }
+
+    # Assign unique dark Dracula-compatible background per window (TTY-based)
+    _iterm2_auto_colors() {
+        local bg_colors=(
+            "1e2040"    # deep navy
+            "1a2a1a"    # deep forest green
+            "2a1818"    # deep burgundy
+            "1a1a38"    # deep indigo
+            "0f2828"    # deep teal
+            "2a1e0e"    # deep amber
+            "261426"    # deep violet
+            "0e2a1a"    # deep emerald
+        )
+        local tty_num
+        tty_num=$(tty | tr -dc '0-9' | tail -c 3)
+        tty_num=${tty_num:-0}
+        local idx=$(( (tty_num % ${#bg_colors[@]}) + 1 ))
+        local hex="${bg_colors[$idx]}"
+        _iterm2_set_bg_color "$hex"
+        _iterm2_set_tab_color $(( 16#${hex:0:2} )) $(( 16#${hex:2:2} )) $(( 16#${hex:4:2} ))
+    }
+
+    # Shorten path for title bar
+    _iterm2_short_cwd() {
+        if   [[ "$PWD" == "$HOME/Sites/"* ]];       then echo "${PWD#$HOME/Sites/}"
+        elif [[ "$PWD" == "$HOME/ActiveSites/"* ]]; then echo "${PWD#$HOME/ActiveSites/}"
+        elif [[ "$PWD" == "$HOME"* ]];              then echo "~${PWD#$HOME}"
+        else echo "$PWD"; fi
+    }
+
+    # Rich tab title: 📂 folder  branch ~modified +staged
+    _iterm2_build_title() {
+        local title="📂 $(_iterm2_short_cwd)"
+        if git rev-parse --git-dir &>/dev/null 2>&1; then
+            local branch
+            branch=$(git --no-optional-locks branch --show-current 2>/dev/null)
+            [[ -z "$branch" ]] && branch=$(git --no-optional-locks rev-parse --short HEAD 2>/dev/null)
+            if [[ -n "$branch" ]]; then
+                title+="  $branch"
+                local working staged ahead behind
+                working=$(git --no-optional-locks diff --numstat 2>/dev/null | wc -l | tr -d ' ')
+                staged=$(git --no-optional-locks diff --cached --numstat 2>/dev/null | wc -l | tr -d ' ')
+                ahead=$(git --no-optional-locks rev-list --count @{upstream}..HEAD 2>/dev/null)
+                behind=$(git --no-optional-locks rev-list --count HEAD..@{upstream} 2>/dev/null)
+                [[ "$working" -gt 0 ]] && title+=" ~$working"
+                [[ "$staged"  -gt 0 ]] && title+=" +$staged"
+                [[ "$ahead"   -gt 0 ]] && title+=" ↑$ahead"
+                [[ "$behind"  -gt 0 ]] && title+=" ↓$behind"
+            fi
+        fi
+        echo "$title"
+    }
+
+    # precmd hook — update title + reapply colors (SSH guard)
+    _iterm2_precmd() {
+        if [[ -z "$_ITERM2_IN_SSH" ]]; then
+            echo -ne "\033]0;$(_iterm2_build_title)\033\\"
+            _iterm2_auto_colors
+        fi
+    }
+
+    autoload -Uz add-zsh-hook
+    add-zsh-hook precmd _iterm2_precmd
+    _iterm2_auto_colors
+
+    # SSH wrapper — full red background for production/danger awareness
+    ssh() {
+        local host="" skip=false arg
+        for arg in "$@"; do
+            $skip && { skip=false; continue; }
+            case "$arg" in
+                -[bcDEeFIiJLlmOopQRSWw]) skip=true ;;
+                -*) ;;
+                *@*) host="${arg#*@}"; break ;;
+                *)   [[ -z "$host" ]] && host="$arg"; break ;;
+            esac
+        done
+        _iterm2_set_bg_color "3a0808"
+        _iterm2_set_tab_color 220 40 40
+        _ITERM2_IN_SSH=1
+        echo -ne "\033]0;🔴 SSH → ${host%%.*}\033\\"
+        command ssh "$@"
+        unset _ITERM2_IN_SSH
+        _iterm2_auto_colors
+        echo -ne "\033]0;$(_iterm2_build_title)\033\\"
+    }
+fi
+
+# ── Oh My Posh ────────────────────────────────────────────────────────────────
+if command -v oh-my-posh &>/dev/null && [[ "$TERM_PROGRAM" != "Apple_Terminal" ]]; then
+    [[ ! -d ~/.zsh/themes ]] && mkdir -p ~/.zsh/themes
+    if [[ -f ~/.zsh/themes/kaisser.omp.json ]]; then
+        eval "$(oh-my-posh init zsh --config ~/.zsh/themes/kaisser.omp.json)"
+    else
+        eval "$(oh-my-posh init zsh)"
+    fi
+fi
+
+# ── Plugins ───────────────────────────────────────────────────────────────────
+[[ -d ~/.zsh/plugins/zsh-completions/src ]] && fpath=(~/.zsh/plugins/zsh-completions/src $fpath)
+autoload -Uz compinit && compinit
+
+[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
+
+[[ -f ~/.zsh/plugins/zsh-history-substring-search/zsh-history-substring-search.zsh ]] && {
+    source ~/.zsh/plugins/zsh-history-substring-search/zsh-history-substring-search.zsh
+    bindkey '^[[A' history-substring-search-up
+    bindkey '^[[B' history-substring-search-down
+}
+
+[[ -f ~/.zsh/plugins/zsh-autosuggestions/zsh-autosuggestions.zsh ]] && {
+    source ~/.zsh/plugins/zsh-autosuggestions/zsh-autosuggestions.zsh
+    ZSH_AUTOSUGGEST_STRATEGY=(history completion)
+    ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE='fg=244'
+}
+
+[[ -f ~/.zsh/plugins/fast-syntax-highlighting/fast-syntax-highlighting.plugin.zsh ]] && \
+    source ~/.zsh/plugins/fast-syntax-highlighting/fast-syntax-highlighting.plugin.zsh
+
+[ -f ~/.zsh/plugins/z/z.sh ] && source ~/.zsh/plugins/z/z.sh
+
+# ── Local overrides ───────────────────────────────────────────────────────────
+# Machine-specific config — not tracked in version control
+[[ -f ~/.zshrc.local ]] && source ~/.zshrc.local
