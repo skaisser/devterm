@@ -19,14 +19,14 @@ install_claude_code() {
     fi
 
     gum spin --spinner dot --title "Installing Claude Code via $pkg_manager..." -- \
-        $pkg_manager install -g @anthropic-ai/claude-code
+        "$pkg_manager" install -g @anthropic-ai/claude-code
 
     ok "Claude Code installed"
     info "Run 'claude' to start · 'claude --help' for all commands"
 }
 
 install_claude_statusline() {
-    local src="$DEVTERMINAL_DIR/assets/statusline.sh"
+    local src="$DEVTERM_DIR/assets/statusline.sh"
     local claude_dir="$HOME/.claude"
     local dst="$claude_dir/statusline.sh"
     local settings="$claude_dir/settings.json"
@@ -42,6 +42,23 @@ install_claude_statusline() {
     cp "$src" "$dst"
     chmod +x "$dst"
     ok "statusline.sh installed → $dst"
+
+    # Ensure python3 is available for JSON manipulation
+    if ! command -v python3 &>/dev/null; then
+        warn "python3 not found — required to wire settings.json"
+        if gum confirm \
+            --prompt.foreground="#ffb86c" \
+            --selected.background="#ffb86c" \
+            --selected.foreground="#000000" \
+            "  Install python3 via Homebrew?"; then
+            gum spin --spinner dot --title "Installing python3..." -- \
+                brew install python3
+            ok "python3 installed"
+        else
+            info "Skipping settings.json wiring — add statusLine manually later"
+            return
+        fi
+    fi
 
     # Wire it into Claude Code settings.json
     if [[ ! -f "$settings" ]]; then

@@ -4,9 +4,14 @@
 run_checks() {
     step "Pre-flight checks"
 
-    # macOS version
-    local macos_version
+    # macOS version (require 12.0+)
+    local macos_version macos_major
     macos_version=$(sw_vers -productVersion)
+    macos_major=$(echo "$macos_version" | cut -d. -f1)
+    if [[ "$macos_major" -lt 12 ]]; then
+        err "macOS 12 Monterey or later required (you have $macos_version)"
+        exit 1
+    fi
     ok "macOS $macos_version"
 
     # Architecture
