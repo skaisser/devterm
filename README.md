@@ -98,7 +98,7 @@ Open 4 terminals and they'll each have a distinct color so you always know which
 | 3 | Burgundy `#2a1818` | Red |
 | 4 | Indigo `#1a1a38` | Violet |
 | 5 | Teal `#0f2828` | Teal |
-| 6 | Amber `#2a1e0e` | Orange |
+| 6 | Dark plum `#1a0e2a` | Purple |
 | 7 | Deep violet `#261426` | Purple |
 | 8 | Emerald `#0e2a1a` | Green |
 
