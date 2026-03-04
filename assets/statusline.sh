@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # Claude Code Status Line Script
-# Converted from Oh My Posh theme: kaisser.omp.json
+# Converted from Oh My Posh theme: skaisser.omp.json
 
 input=$(cat)
 model_name=$(echo "$input" | jq -r '.model.display_name // "Claude"')

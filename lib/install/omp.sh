@@ -14,17 +14,21 @@ install_omp() {
     # Install skaisser theme
     mkdir -p "$HOME/.zsh/themes"
 
-    local src="$DEVTERMINAL_DIR/assets/kaisser.omp.json"
-    local dst="$HOME/.zsh/themes/kaisser.omp.json"
+    local src="$DEVTERM_DIR/assets/skaisser.omp.json"
+    local dst="$HOME/.zsh/themes/skaisser.omp.json"
 
     if [[ -f "$dst" ]]; then
-        if gum confirm "  kaisser.omp.json already exists — overwrite?"; then
+        if gum confirm "  skaisser.omp.json already exists — overwrite?"; then
             cp "$src" "$dst"
             ok "skaisser theme updated → $dst"
         else
             info "Skipped theme overwrite"
         fi
     else
+        if [[ ! -f "$src" ]]; then
+            err "Theme file not found: $src"
+            return
+        fi
         cp "$src" "$dst"
         ok "skaisser theme installed → $dst"
     fi

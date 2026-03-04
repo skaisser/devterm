@@ -14,8 +14,21 @@ install_iterm2() {
     info "Launch iTerm2 and re-run the installer, or continue and configure manually"
 }
 
+install_vscode() {
+    if [[ -d "/Applications/Visual Studio Code.app" ]]; then
+        ok "VS Code already installed"
+        return
+    fi
+
+    gum spin --spinner dot --title "Installing VS Code..." -- \
+        brew install --cask visual-studio-code
+
+    ok "VS Code installed"
+    info "The 'code' CLI command is available after restarting your terminal"
+}
+
 install_iterm2_colors() {
-    local preset="$DEVTERMINAL_DIR/assets/kaisser.itermcolors"
+    local preset="$DEVTERM_DIR/assets/skaisser.itermcolors"
 
     if [[ ! -f "$preset" ]]; then
         err "Color preset not found: $preset"

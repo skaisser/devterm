@@ -1,4 +1,4 @@
-# Devterm
+# DEVTERM - ONE LINE DEV MACHINE SETUP
 
 > **@skaisser style** — one command to set up the perfect developer terminal on macOS
 
@@ -13,19 +13,19 @@ Includes Claude Code with a custom statusline that shows context, git status, an
 
 ## What you get
 
-| Component | Description |
-|---|---|
-| **[iTerm2](https://iterm2.com)** | Best macOS terminal — reliable, fast, scriptable |
-| **[VS Code](https://code.visualstudio.com)** | Best code editor — with `code` CLI command wired in |
-| **@skaisser Custom Smart Theme** | A fully custom dark color palette built from scratch. Smart theme that detects your terminal window and changes its colors based on what you are working on — especially powerful when running multiple terminals at the same time |
-| **Per-window background colors** | Each window gets its own dark accent — navy, green, teal, amber, violet... |
-| **SSH danger mode** | Full red background when you SSH — no more accidental production commands |
-| **[Oh My Posh](https://ohmyposh.dev) + skaisser prompt** | Custom prompt: path → git branch → PHP → Node → Go → Python → time |
-| **[Claude Code](https://github.com/anthropics/claude-code)** | AI coding assistant in your terminal — by Anthropic |
-| **Claude Code statusline** | Context bar · token count · git branch · model name — live in your prompt |
-| **[Nerd Fonts](https://www.nerdfonts.com)** | MesloLGS NF + Fira Code NF — required for icons in the prompt |
-| **zsh plugins** | autosuggestions, syntax highlighting, history search, fzf, eza, z |
-| **[Laravel Herd](https://herd.laravel.com)** | PHP dev environment — serves `project.test` with HTTPS, zero config |
+| Component                                                    | Description                                                                                          |
+| ------------------------------------------------------------ | ---------------------------------------------------------------------------------------------------- |
+| **[iTerm2](https://iterm2.com)**                             | Best macOS terminal — reliable, fast, scriptable                                                     |
+| **[VS Code](https://code.visualstudio.com)**                 | Best code editor — with `code` CLI command wired in                                                  |
+| **@skaisser Custom Smart Theme**                             | A fully custom dark color palette built from scratch. Smart theme that detects your terminal window and changes its colors based on what you are working on — especially powerful when running multiple terminals at the same time |
+| **Per-window background colors**                             | Each window gets its own dark accent — navy, green, teal, amber, violet...                           |
+| **SSH danger mode**                                          | Full red background when you SSH — no more accidental production commands                            |
+| **[Oh My Posh](https://ohmyposh.dev) + skaisser prompt**     | Custom prompt: path → git branch → PHP → Node → Go → Python → time                                   |
+| **[Claude Code](https://github.com/anthropics/claude-code)** | AI coding assistant in your terminal — by Anthropic                                                  |
+| **Claude Code statusline**                                   | Context bar · token count · git branch · model name — live in your prompt                            |
+| **[Nerd Fonts](https://www.nerdfonts.com)**                  | MesloLGS NF + Fira Code NF — required for icons in the prompt                                        |
+| **zsh plugins**                                              | autosuggestions, syntax highlighting, history search, fzf, eza, z                                    |
+| **[Laravel Herd](https://herd.laravel.com)**                 | PHP dev environment — serves `project.test` with HTTPS, zero config                                  |
 
 ## Claude Code statusline
 
@@ -91,16 +91,16 @@ Open 4 terminals and they'll each have a distinct color so you always know which
   </tr>
 </table>
 
-| Window | Background | Accent |
-|---|---|---|
-| 1 | Deep navy `#1e2040` | Blue |
-| 2 | Forest green `#1a2a1a` | Green |
-| 3 | Burgundy `#2a1818` | Red |
-| 4 | Indigo `#1a1a38` | Violet |
-| 5 | Teal `#0f2828` | Teal |
-| 6 | Dark plum `#1a0e2a` | Purple |
-| 7 | Deep violet `#261426` | Purple |
-| 8 | Emerald `#0e2a1a` | Green |
+| Window | Background             | Accent |
+| ------ | ---------------------- | ------ |
+| 1      | Deep navy `#1e2040`    | Blue   |
+| 2      | Forest green `#1a2a1a` | Green  |
+| 3      | Burgundy `#2a1818`     | Red    |
+| 4      | Indigo `#1a1a38`       | Violet |
+| 5      | Teal `#0f2828`         | Teal   |
+| 6      | Dark plum `#1a0e2a`    | Purple |
+| 7      | Deep violet `#261426`  | Purple |
+| 8      | Emerald `#0e2a1a`      | Green  |
 
 ### SSH danger mode
 
@@ -162,90 +162,90 @@ Everything the installed `.zshrc` gives you — no need to memorize, just look i
 
 ### Navigation
 
-| Command | What it does |
-|---|---|
-| `..` | Go up one directory |
-| `..2` `..3` `..4` `..5` | Go up 2–5 levels |
-| `-` | Go back to previous directory |
-| `sites` | Jump to `~/Sites` |
-| `z myapp` | Jump to `myapp` from anywhere *(frecency-based)* |
-| `mkcd mydir` | Create a directory and enter it |
-| `cl` | Clear the terminal |
+| Command                 | What it does                                     |
+| ----------------------- | ------------------------------------------------ |
+| `..`                    | Go up one directory                              |
+| `..2` `..3` `..4` `..5` | Go up 2–5 levels                                 |
+| `-`                     | Go back to previous directory                    |
+| `sites`                 | Jump to `~/Sites`                                |
+| `z myapp`               | Jump to `myapp` from anywhere *(frecency-based)* |
+| `mkcd mydir`            | Create a directory and enter it                  |
+| `cl`                    | Clear the terminal                               |
 
 ### Git
 
-| Command | What it does |
-|---|---|
-| `gst` | `git status` |
-| `gd` | `git diff` |
-| `gds` | `git diff --staged` |
-| `gco branch` | `git checkout branch` |
-| `gcb feature/name` | Create and switch to new branch |
-| `gadd` | `git add -p` — interactively pick which hunks to stage |
-| `gp` | `git pull` |
-| `gpush` | `git push origin` |
-| `glog` | Pretty graph log |
-| `lazygit` | Full interactive git TUI — stage hunks, view diffs, resolve conflicts |
+| Command            | What it does                                                          |
+| ------------------ | --------------------------------------------------------------------- |
+| `gst`              | `git status`                                                          |
+| `gd`               | `git diff`                                                            |
+| `gds`              | `git diff --staged`                                                   |
+| `gco branch`       | `git checkout branch`                                                 |
+| `gcb feature/name` | Create and switch to new branch                                       |
+| `gadd`             | `git add -p` — interactively pick which hunks to stage                |
+| `gp`               | `git pull`                                                            |
+| `gpush`            | `git push origin`                                                     |
+| `glog`             | Pretty graph log                                                      |
+| `lazygit`          | Full interactive git TUI — stage hunks, view diffs, resolve conflicts |
 
 ### File listing
 
-| Command | What it does |
-|---|---|
-| `ls` | Icons + git status in listing |
-| `l` | Long list, all files |
-| `ll` | Long list, all files + permissions |
-| `lt` | Tree view 2 levels deep |
-| `ltree` | Tree view without details |
-| `la` | Full tree view |
-| `dud` | Disk usage, one level deep |
-| `duf` | Disk usage of each item in current directory |
+| Command | What it does                                 |
+| ------- | -------------------------------------------- |
+| `ls`    | Icons + git status in listing                |
+| `l`     | Long list, all files                         |
+| `ll`    | Long list, all files + permissions           |
+| `lt`    | Tree view 2 levels deep                      |
+| `ltree` | Tree view without details                    |
+| `la`    | Full tree view                               |
+| `dud`   | Disk usage, one level deep                   |
+| `duf`   | Disk usage of each item in current directory |
 
 ### PHP / Laravel
 
-| Command | What it does |
-|---|---|
-| `art` | `php artisan` |
-| `pt` | Run Pest tests |
-| `ptp` | Run Pest tests in parallel (10 processes) |
-| `tc` | Run Pest with coverage report |
-| `tcq` | Run Pest with coverage, parallel |
-| `cda` | `composer dump-autoload` |
-| `hfix` | Restart Laravel Herd |
+| Command | What it does                              |
+| ------- | ----------------------------------------- |
+| `art`   | `php artisan`                             |
+| `pt`    | Run Pest tests                            |
+| `ptp`   | Run Pest tests in parallel (10 processes) |
+| `tc`    | Run Pest with coverage report             |
+| `tcq`   | Run Pest with coverage, parallel          |
+| `cda`   | `composer dump-autoload`                  |
+| `hfix`  | Restart Laravel Herd                      |
 
 ### Claude Code
 
-| Command | What it does |
-|---|---|
-| `claude` | Start Claude Code |
+| Command  | What it does                                  |
+| -------- | --------------------------------------------- |
+| `claude` | Start Claude Code                             |
 | `claudd` | Start Claude Code skipping permissions prompt |
 
 ### System
 
-| Command | What it does |
-|---|---|
-| `ports` | Show all listening ports |
-| `psa` | `ps aux` — all running processes |
-| `memusage` | Top memory consumers |
-| `cpuusage` | Top CPU consumers |
-| `killp nginx` | Kill a process by name |
-| `df` | Disk space (human-readable) |
-| `du` | Directory sizes (human-readable) |
+| Command       | What it does                     |
+| ------------- | -------------------------------- |
+| `ports`       | Show all listening ports         |
+| `psa`         | `ps aux` — all running processes |
+| `memusage`    | Top memory consumers             |
+| `cpuusage`    | Top CPU consumers                |
+| `killp nginx` | Kill a process by name           |
+| `df`          | Disk space (human-readable)      |
+| `du`          | Directory sizes (human-readable) |
 
 ### Utilities
 
-| Command | What it does |
-|---|---|
+| Command               | What it does                                        |
+| --------------------- | --------------------------------------------------- |
 | `extract file.tar.gz` | Extract any archive — zip, tar, gz, bz2, rar, 7z... |
-| `weather` | Current weather (default city) |
-| `weather "Paris"` | Weather for a specific city |
+| `weather`             | Current weather (default city)                      |
+| `weather "Paris"`     | Weather for a specific city                         |
 
 ### Fuzzy finder (fzf)
 
-| Shortcut | What it does |
-|---|---|
-| `Ctrl+R` | Search command history interactively |
+| Shortcut | What it does                                |
+| -------- | ------------------------------------------- |
+| `Ctrl+R` | Search command history interactively        |
 | `Ctrl+T` | Fuzzy-search files and paste path at cursor |
-| `Alt+C` | Fuzzy-search directories and cd into one |
+| `Alt+C`  | Fuzzy-search directories and cd into one    |
 
 ### zsh-autosuggestions
 
