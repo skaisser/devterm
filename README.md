@@ -27,6 +27,19 @@ Includes Claude Code with a custom statusline that shows context, git status, an
 | **zsh plugins** | autosuggestions, syntax highlighting, history search, fzf, eza, z |
 | **[Laravel Herd](https://herd.laravel.com)** | PHP dev environment — serves `project.test` with HTTPS, zero config |
 
+## Claude Code statusline
+
+The statusline shows live Claude Code context directly in your terminal:
+
+![Claude Code statusline showing model, context bar, tokens and folder](imgs/claude-code-status-line.png)
+
+- **Model** — which Claude model is active (`Sonnet 4.6`, `Opus`, etc.)
+- **Context bar** — visual progress bar (green → yellow → red as context fills)
+- **Token count** — `154K/200K` — current vs total
+- **Folder** — current project name
+
+Installed to `~/.claude/statusline.sh` and wired into `~/.claude/settings.json` automatically.
+
 ---
 
 ## Install
@@ -113,21 +126,6 @@ Restores to its original color automatically when the session ends.
 - **Node version** — only shown when `package.json` is present
 - **Go / Python** — shown when relevant
 - **Time** — right-aligned
-
----
-
-## Claude Code statusline
-
-The statusline shows live Claude Code context directly in your terminal:
-
-![Claude Code statusline showing model, context bar, tokens and folder](imgs/claude-code-status-line.png)
-
-- **Model** — which Claude model is active (`Sonnet 4.6`, `Opus`, etc.)
-- **Context bar** — visual progress bar (green → yellow → red as context fills)
-- **Token count** — `154K/200K` — current vs total
-- **Folder** — current project name
-
-Installed to `~/.claude/statusline.sh` and wired into `~/.claude/settings.json` automatically.
 
 ---
 
