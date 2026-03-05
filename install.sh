@@ -8,8 +8,6 @@
 #   — or —
 #   git clone https://github.com/skaisser/devterm && cd devterm && ./install.sh
 
-set -euo pipefail
-
 DEVTERM_REPO="https://github.com/skaisser/devterm"
 DEVTERM_INSTALL_DIR="${DEVTERM_INSTALL_DIR:-$HOME/.local/share/devterm}"
 
