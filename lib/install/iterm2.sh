@@ -35,12 +35,14 @@ install_iterm2_colors() {
         return
     fi
 
-    # Copy to iTerm2's color presets directory so it appears in the dropdown
-    local iterm_presets="$HOME/Library/Application Support/iTerm2/DynamicProfiles"
-    mkdir -p "$iterm_presets"
+    if [[ ! -d "/Applications/iTerm.app" ]]; then
+        err "iTerm2 not installed — install iTerm2 first, then re-run this step"
+        return
+    fi
 
-    # Open the .itermcolors file — iTerm2 will import it automatically
-    open "$preset"
+    # Open with iTerm2 explicitly — it registers .itermcolors as its file handler
+    # and imports the color preset automatically on open
+    open -a "iTerm" "$preset"
 
     ok "iTerm2 color preset imported"
     info "In iTerm2: Preferences → Profiles → Colors → Color Presets → skaisser"
