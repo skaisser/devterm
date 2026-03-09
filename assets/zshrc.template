@@ -181,6 +181,7 @@ if [[ "$TERM_PROGRAM" == "iTerm.app" ]]; then
         local b=$(( 16#${hex:4:2} * 257 ))
         local my_tty
         my_tty=$(tty 2>/dev/null)
+        [[ "$my_tty" =~ ^/dev/ttys?[0-9]+$ ]] || return
         osascript -e "
             tell application \"iTerm2\"
                 set myTty to \"$my_tty\"
