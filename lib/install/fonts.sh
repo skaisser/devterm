@@ -17,7 +17,14 @@ install_fonts() {
         fi
     done
 
-    echo ""
-    info "Set font in iTerm2: Preferences → Profiles → Text → Font → MesloLGS NF"
-    info "Set font size to 13 or 14 for best results with Oh My Posh"
+    # Install devterm iTerm2 profile (font + size + settings — auto-loads via DynamicProfiles)
+    if [[ -d "/Applications/iTerm.app" ]]; then
+        local profiles_dir="$HOME/Library/Application Support/iTerm2/DynamicProfiles"
+        mkdir -p "$profiles_dir"
+        cp "$DEVTERM_DIR/assets/devterm.iterm2profile" "$profiles_dir/devterm.iterm2profile"
+        ok "iTerm2 profile installed (MesloLGM Nerd Font Mono 18 + devterm settings)"
+        info "In iTerm2: Profiles → devterm → Set as Default"
+    else
+        info "Font installed — set manually: iTerm2 → Profiles → Text → MesloLGM Nerd Font Mono, size 18"
+    fi
 }
