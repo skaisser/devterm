@@ -60,11 +60,11 @@ _step_terminal() {
         --cursor.foreground="#ff79c6" \
         --selected.foreground="#50fa7b" \
         --height=12 \
-        --selected="💻  VS Code,🔡  Nerd Fonts,✨  Oh My Posh + skaisser theme,⚙️   zshrc config,🎨  iTerm2 skaisser color preset" \
+        --selected="💻  VS Code,🔡  Nerd Fonts,✨  Oh My Posh + skaisser theme,🔧  zshrc config,🎨  iTerm2 skaisser color preset" \
         "💻  VS Code                      best code editor — includes 'code' CLI command" \
         "🔡  Nerd Fonts (MesloLGS NF + Fira Code NF)  required for icons in the prompt" \
         "✨  Oh My Posh + skaisser theme  smart prompt with git · PHP · Node · Go · Python" \
-        "⚙️   zshrc config                per-window colors · SSH danger mode · git title" \
+        "🔧  zshrc config                 per-window colors · SSH danger mode · git title" \
         "🎨  iTerm2 skaisser color preset the @skaisser Custom Smart Theme color palette" \
     )
     WIZARD_SELECTIONS+=("$picks")
@@ -170,7 +170,7 @@ _step_javascript() {
 }
 
 _step_devops() {
-    _wizard_header 6 "DevOps / Cloud" "☁️"
+    _wizard_header 6 "DevOps / Cloud" "🌥"
 
     local picks
     picks=$(gum choose --no-limit \
@@ -182,10 +182,10 @@ _step_devops() {
         --cursor.foreground="#ff79c6" \
         --selected.foreground="#50fa7b" \
         --height=8 \
-        "☁️   rclone      sync files to Google Drive · S3 · Dropbox and more" \
+        "🌥  rclone      sync files to Google Drive · S3 · Dropbox and more" \
         "🔶  awscli      AWS command-line interface" \
         "🤝  ansible     automate server configuration and deployments" \
-        "🏗️   terraform   infrastructure as code (HashiCorp)" \
+        "🏗  terraform   infrastructure as code (HashiCorp)" \
     )
     WIZARD_SELECTIONS+=("$picks")
     _wizard_progress 6
@@ -207,7 +207,7 @@ _step_extras() {
         "🪟  tmux      terminal multiplexer — multiple sessions · survives disconnects" \
         "🧹  bfg       clean large files or secrets accidentally committed to git history" \
         "🔤  woff2     convert fonts to WOFF2 format for web projects" \
-        "🌧️   cmatrix   matrix screensaver (because why not)" \
+        "🌧  cmatrix   matrix screensaver (because why not)" \
     )
     WIZARD_SELECTIONS+=("$picks")
     _wizard_progress 7
