@@ -103,6 +103,11 @@ main() {
     echo ""
 
     install_selected "$selections"
+
+    # Always install zshrc — it is the foundation of devterm
+    step "zshrc config"
+    install_zshrc
+
     show_done
 }
 
