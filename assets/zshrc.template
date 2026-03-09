@@ -40,6 +40,11 @@ if [[ -d "/Applications/Herd.app" ]]; then
     [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
     [[ -f "/Applications/Herd.app/Contents/Resources/config/shell/zshrc.zsh" ]] && \
         builtin source "/Applications/Herd.app/Contents/Resources/config/shell/zshrc.zsh"
+else
+    # ── nvm (standalone — installed via Homebrew, no Herd) ─────────────────────
+    export NVM_DIR="$HOME/.nvm"
+    [[ -s "/opt/homebrew/opt/nvm/nvm.sh" ]] && \. "/opt/homebrew/opt/nvm/nvm.sh"
+    [[ -s "/usr/local/opt/nvm/nvm.sh" ]]    && \. "/usr/local/opt/nvm/nvm.sh"
 fi
 
 # ── Aliases — Navigation ──────────────────────────────────────────────────────
