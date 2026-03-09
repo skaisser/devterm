@@ -60,11 +60,10 @@ _step_terminal() {
         --cursor.foreground="#ff79c6" \
         --selected.foreground="#50fa7b" \
         --height=12 \
-        --selected="💻  VS Code,🔡  Nerd Fonts,✨  Oh My Posh + skaisser theme,🔧  zshrc config,🎨  iTerm2 skaisser color preset" \
+        --selected="💻  VS Code,🔡  Nerd Fonts,✨  Oh My Posh + skaisser theme,🎨  iTerm2 skaisser color preset" \
         "💻  VS Code                      best code editor — includes 'code' CLI command" \
         "🔡  Nerd Fonts (MesloLGS NF + Fira Code NF)  required for icons in the prompt" \
         "✨  Oh My Posh + skaisser theme  smart prompt with git · PHP · Node · Go · Python" \
-        "🔧  zshrc config                 per-window colors · SSH danger mode · git title" \
         "🎨  iTerm2 skaisser color preset the @skaisser Custom Smart Theme color palette" \
     )
     WIZARD_SELECTIONS+=("$picks")
