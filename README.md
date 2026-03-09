@@ -1,85 +1,69 @@
-# DEVTERM - ONE LINE DEV MACHINE SETUP
+# DevTerm
 
-> **@skaisser style** — one command to set up the perfect developer terminal on macOS
+> One command. Perfect developer terminal on macOS.
 
-Opinionated. Dark. Smart. Built for people who live in the terminal.
-Includes Claude Code with a custom statusline that shows context, git status, and model — live in your prompt.
+**Opinionated. Dark. Smart.** Built for people who live in the terminal.
+Installs everything you need — iTerm2 theme, prompt, Claude Code, PHP, Node, DevOps tools — configured and ready to go.
 
-> **macOS only** — Apple Silicon and Intel. Requires macOS 12+.
+> macOS only · Apple Silicon + Intel · Requires macOS 12+
 
 ![devterm installer with gradient color banner](imgs/dev-terminal-installer.png)
 
 ---
 
-## What you get
-
-| Component                                                    | Description                                                                                          |
-| ------------------------------------------------------------ | ---------------------------------------------------------------------------------------------------- |
-| **[iTerm2](https://iterm2.com)**                             | Best macOS terminal — reliable, fast, scriptable                                                     |
-| **[VS Code](https://code.visualstudio.com)**                 | Best code editor — with `code` CLI command wired in                                                  |
-| **@skaisser Custom Smart Theme**                             | A fully custom dark color palette built from scratch. Smart theme that detects your terminal window and changes its colors based on what you are working on — especially powerful when running multiple terminals at the same time |
-| **Per-window background colors**                             | Each window gets its own dark accent — navy, green, teal, amber, violet...                           |
-| **SSH danger mode**                                          | Full red background when you SSH — no more accidental production commands                            |
-| **[Oh My Posh](https://ohmyposh.dev) + skaisser prompt**     | Custom prompt: path → git branch → PHP → Node → Go → Python → time                                   |
-| **[Claude Code](https://github.com/anthropics/claude-code)** | AI coding assistant in your terminal — by Anthropic                                                  |
-| **Claude Code statusline**                                   | Context bar · token count · git branch · model name — live in your prompt                            |
-| **[Nerd Fonts](https://www.nerdfonts.com)**                  | MesloLGS NF + Fira Code NF — required for icons in the prompt                                        |
-| **zsh plugins**                                              | autosuggestions, syntax highlighting, history search, fzf, eza, z                                    |
-| **[Laravel Herd](https://herd.laravel.com)**                 | PHP dev environment — serves `project.test` with HTTPS, zero config                                  |
-
-## Claude Code statusline
-
-The statusline shows live Claude Code context directly in your terminal:
-
-![Claude Code statusline showing model, context bar, tokens and folder](imgs/claude-code-status-line.png)
-
-- **Model** — which Claude model is active (`Sonnet 4.6`, `Opus`, etc.)
-- **Context bar** — visual progress bar (green → yellow → red as context fills)
-- **Token count** — `154K/200K` — current vs total
-- **Folder** — current project name
-
-Installed to `~/.claude/statusline.sh` and wired into `~/.claude/settings.json` automatically.
-
----
-
 ## Install
 
-### Step 1 — Download iTerm2
+### 1 — Download iTerm2
 
-Download and install iTerm2 directly from the official site:
+**[iterm2.com](https://iterm2.com)** — download and install it first.
 
-**[https://iterm2.com](https://iterm2.com)**
+> devterm must run inside iTerm2. It configures your terminal live as it installs.
 
-> devterm must run from inside iTerm2 — it configures your terminal as it installs.
-
-### Step 2 — Run inside iTerm2
-
-Open iTerm2 and paste this command:
+### 2 — Run inside iTerm2
 
 ```bash
-/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/skaisser/devterm/main/install.sh)"
+curl -fsSL https://raw.githubusercontent.com/skaisser/devterm/main/install.sh | bash
 ```
 
-[Homebrew](https://brew.sh), gum, and figlet are installed automatically if missing. On a fresh Mac this includes Xcode Command Line Tools — allow it and wait (~15 min first time only).
+Homebrew, gum, and figlet install automatically if missing.
+On a fresh Mac this includes Xcode Command Line Tools — allow it and wait (~15 min first time only).
 
----
+### 3 — After install
 
-## After installing
+A Finder window opens automatically with the assets folder.
 
-1. **Import color preset** — a Finder window opens automatically with the assets folder.
-   Double-click `skaisser.itermcolors`, then:
-   `Settings → Profiles → Colors → Color Presets → skaisser`
-
-2. **Set font:** `Settings → Profiles → Text → Font → MesloLGM Nerd Font Mono, size 18`
-
+1. **Double-click `skaisser.itermcolors`** → then: `Settings → Profiles → Colors → Color Presets → skaisser`
+2. **Set font:** `Settings → Profiles → Text → Font → MesloLGM Nerd Font Mono · size 18`
 3. **Open a new iTerm2 tab** — everything activates automatically
 
 ---
 
-## @skaisser Custom Smart Theme
+## What you get
 
-Each iTerm2 window automatically gets a unique dark background based on its TTY number — no config needed.
-Open 4 terminals and they'll each have a distinct color so you always know which project you're in.
+| | |
+|---|---|
+| **@skaisser Smart Theme** | Dark per-window backgrounds — each terminal gets its own color. Open 4 terminals, always know which is which. |
+| **SSH danger mode** | Full red background the moment you `ssh` into a server. Restores automatically on exit. |
+| **Oh My Posh prompt** | Path · git branch · PHP · Node · Go · Python · time — only shown when relevant. |
+| **Claude Code** | AI coding assistant by Anthropic, wired directly into your terminal. |
+| **Claude statusline** | Model · context bar · token count · folder — live in your prompt. |
+| **Laravel Herd** | PHP dev environment. `project.test` with HTTPS, zero config. |
+| **Nerd Fonts** | MesloLGS NF + Fira Code NF — required for prompt icons. |
+| **zsh plugins** | autosuggestions · syntax highlighting · history search · fzf · eza · z |
+
+---
+
+## Claude Code statusline
+
+![Claude Code statusline showing model, context bar, tokens and folder](imgs/claude-code-status-line.png)
+
+Live context directly in your prompt — model, visual progress bar (green → yellow → red), token count, current project.
+
+---
+
+## The Smart Theme
+
+Each window gets a unique dark background based on its TTY — no config needed.
 
 <table>
   <tr>
@@ -94,23 +78,26 @@ Open 4 terminals and they'll each have a distinct color so you always know which
   </tr>
 </table>
 
-| Window | Background             | Accent |
-| ------ | ---------------------- | ------ |
-| 1      | Deep navy `#1e2040`    | Blue   |
-| 2      | Forest green `#1a2a1a` | Green  |
-| 3      | Burgundy `#2a1818`     | Red    |
-| 4      | Indigo `#1a1a38`       | Violet |
-| 5      | Teal `#0f2828`         | Teal   |
-| 6      | Dark plum `#1a0e2a`    | Purple |
-| 7      | Deep violet `#261426`  | Purple |
-| 8      | Emerald `#0e2a1a`      | Green  |
+| Window | Color |
+|--------|-------|
+| 1 | Deep navy `#1e2040` |
+| 2 | Forest green `#1a2a1a` |
+| 3 | Burgundy `#2a1818` |
+| 4 | Indigo `#1a1a38` |
+| 5 | Teal `#0f2828` |
+| 6 | Dark plum `#1a0e2a` |
+| 7 | Deep violet `#261426` |
+| 8 | Emerald `#0e2a1a` |
 
 ### SSH danger mode
 
-`ssh user@server` — the entire window goes red the moment you connect.
-Restores to its original color automatically when the session ends.
+```bash
+ssh user@server  # → entire window goes red instantly
+```
 
 ![SSH terminal with full red background](imgs/ssh-terminal-red.png)
+
+Restores to its original color automatically when the session ends.
 
 ---
 
@@ -123,148 +110,109 @@ Restores to its original color automatically when the session ends.
 >>
 ```
 
-- **Path** — shortened: `~/Sites/myapp` → `myapp`
-- **Git branch** — with working (`~`), staged (`+`), ahead (`↑`), behind (`↓`) counts
-- **PHP version** — only shown inside PHP projects
-- **Node version** — only shown when `package.json` is present
-- **Go / Python** — shown when relevant
-- **Time** — right-aligned
+| Segment | Description |
+|---------|-------------|
+| **Path** | Shortened: `~/Sites/myapp` → `myapp` |
+| **Git** | Branch · working (`~`) · staged (`+`) · ahead (`↑`) · behind (`↓`) |
+| **PHP** | Only shown inside PHP projects |
+| **Node** | Only shown when `package.json` is present |
+| **Go / Python** | Shown when relevant |
+| **Time** | Right-aligned |
 
 ---
 
-## What the wizard installs
+## Wizard — choose what you need
 
-The installer walks you through 7 steps — you choose exactly what you want:
+The installer walks you through 7 steps. Everything is pre-selected — deselect what you don't want.
 
-> **Always installed:** `~/.zshrc` — the core of devterm. Backed up automatically if one already exists.
+| Step | Tools |
+|------|-------|
+| **Terminal & Editor** | VS Code · Nerd Fonts · Oh My Posh + skaisser theme · iTerm2 color preset |
+| **Core CLI** | eza · fzf · gh · htop · lazygit · wget · zsh-autosuggestions · zsh-syntax-highlighting · zsh-history-substring-search |
+| **Claude Code** | Claude Code · statusline |
+| **PHP / Laravel** | composer · Laravel Herd |
+| **JavaScript** | bun · yarn |
+| **DevOps / Cloud** | rclone · awscli · ansible · terraform |
+| **Extras** | tmux · bfg · woff2 · cmatrix |
 
-**Step 1 — Terminal & Editor**
-[VS Code](https://code.visualstudio.com) · [Nerd Fonts](https://www.nerdfonts.com) · [Oh My Posh](https://ohmyposh.dev) + skaisser theme · skaisser color preset
-
-**Step 2 — Core CLI tools**
-[eza](https://github.com/eza-community/eza) · [fzf](https://github.com/junegunn/fzf) · [gh](https://cli.github.com) · [htop](https://htop.dev) · [lazygit](https://github.com/jesseduffield/lazygit) · [wget](https://www.gnu.org/software/wget/) · [zsh-autosuggestions](https://github.com/zsh-users/zsh-autosuggestions) · [zsh-syntax-highlighting](https://github.com/zsh-users/zsh-syntax-highlighting) · [zsh-history-substring-search](https://github.com/zsh-users/zsh-history-substring-search)
-
-**Step 3 — Claude Code**
-[Claude Code](https://github.com/anthropics/claude-code) · statusline
-
-**Step 4 — PHP / Laravel**
-[composer](https://getcomposer.org) · [Laravel Herd](https://herd.laravel.com)
-
-**Step 5 — JavaScript**
-[bun](https://bun.sh) · [yarn](https://yarnpkg.com)
-
-**Step 6 — DevOps / Cloud**
-[rclone](https://rclone.org) · [awscli](https://aws.amazon.com/cli/) · [ansible](https://www.ansible.com) · [terraform](https://www.terraform.io)
-
-**Step 7 — Extras**
-[tmux](https://github.com/tmux/tmux) · [bfg](https://rtyley.github.io/bfg-repo-cleaner/) · [woff2](https://github.com/google/woff2) · [cmatrix](https://github.com/abishekvashok/cmatrix)
+> `.zshrc` is always installed — it's the foundation of devterm. Your existing one is backed up automatically.
 
 ---
 
-## Quick Reference
-
-Everything the installed `.zshrc` gives you — no need to memorize, just look it up here.
+## Quick reference
 
 ### Navigation
 
-| Command                 | What it does                                     |
-| ----------------------- | ------------------------------------------------ |
-| `..`                    | Go up one directory                              |
-| `..2` `..3` `..4` `..5` | Go up 2–5 levels                                 |
-| `-`                     | Go back to previous directory                    |
-| `sites`                 | Jump to `~/Sites`                                |
-| `z myapp`               | Jump to `myapp` from anywhere *(frecency-based)* |
-| `mkcd mydir`            | Create a directory and enter it                  |
-| `cl`                    | Clear the terminal                               |
+| Command | |
+|---------|---|
+| `..` `..2` `..3` | Go up 1–3 levels |
+| `-` | Previous directory |
+| `sites` | Jump to `~/Sites` |
+| `z myapp` | Jump anywhere (frecency) |
+| `mkcd mydir` | Create + enter directory |
+| `cl` | Clear |
 
 ### Git
 
-| Command            | What it does                                                          |
-| ------------------ | --------------------------------------------------------------------- |
-| `gst`              | `git status`                                                          |
-| `gd`               | `git diff`                                                            |
-| `gds`              | `git diff --staged`                                                   |
-| `gco branch`       | `git checkout branch`                                                 |
-| `gcb feature/name` | Create and switch to new branch                                       |
-| `gadd`             | `git add -p` — interactively pick which hunks to stage                |
-| `gp`               | `git pull`                                                            |
-| `gpush`            | `git push origin`                                                     |
-| `glog`             | Pretty graph log                                                      |
-| `lazygit`          | Full interactive git TUI — stage hunks, view diffs, resolve conflicts |
+| Command | |
+|---------|---|
+| `gst` | `git status` |
+| `gd` / `gds` | diff / staged diff |
+| `gco` / `gcb` | checkout / new branch |
+| `gadd` | Interactive hunk staging |
+| `gp` / `gpush` | pull / push |
+| `glog` | Pretty graph log |
+| `lazygit` | Full TUI — stage hunks, resolve conflicts |
 
 ### File listing
 
-| Command | What it does                                 |
-| ------- | -------------------------------------------- |
-| `ls`    | Icons + git status in listing                |
-| `l`     | Long list, all files                         |
-| `ll`    | Long list, all files + permissions           |
-| `lt`    | Tree view 2 levels deep                      |
-| `ltree` | Tree view without details                    |
-| `la`    | Full tree view                               |
-| `dud`   | Disk usage, one level deep                   |
-| `duf`   | Disk usage of each item in current directory |
+| Command | |
+|---------|---|
+| `ls` | Icons + git status |
+| `l` / `ll` | Long list / with permissions |
+| `lt` / `la` | Tree 2 levels / full tree |
+| `dud` / `duf` | Disk usage |
 
 ### PHP / Laravel
 
-| Command | What it does                              |
-| ------- | ----------------------------------------- |
-| `art`   | `php artisan`                             |
-| `pt`    | Run Pest tests                            |
-| `ptp`   | Run Pest tests in parallel (10 processes) |
-| `tc`    | Run Pest with coverage report             |
-| `tcq`   | Run Pest with coverage, parallel          |
-| `cda`   | `composer dump-autoload`                  |
-| `hfix`  | Restart Laravel Herd                      |
+| Command | |
+|---------|---|
+| `art` | `php artisan` |
+| `pt` / `ptp` | Pest / Pest parallel |
+| `tc` / `tcq` | Coverage / coverage parallel |
+| `cda` | `composer dump-autoload` |
+| `hfix` | Restart Laravel Herd |
 
 ### Claude Code
 
-| Command  | What it does                                  |
-| -------- | --------------------------------------------- |
-| `claude` | Start Claude Code                             |
-| `claudd` | Start Claude Code skipping permissions prompt |
+| Command | |
+|---------|---|
+| `claude` | Start Claude Code |
+| `claudd` | Skip permissions prompt |
 
 ### System
 
-| Command       | What it does                     |
-| ------------- | -------------------------------- |
-| `ports`       | Show all listening ports         |
-| `psa`         | `ps aux` — all running processes |
-| `memusage`    | Top memory consumers             |
-| `cpuusage`    | Top CPU consumers                |
-| `killp nginx` | Kill a process by name           |
-| `df`          | Disk space (human-readable)      |
-| `du`          | Directory sizes (human-readable) |
-
-### Utilities
-
-| Command               | What it does                                        |
-| --------------------- | --------------------------------------------------- |
-| `extract file.tar.gz` | Extract any archive — zip, tar, gz, bz2, rar, 7z... |
-| `weather`             | Current weather (default city)                      |
-| `weather "Paris"`     | Weather for a specific city                         |
+| Command | |
+|---------|---|
+| `ports` | All listening ports |
+| `memusage` / `cpuusage` | Top consumers |
+| `killp nginx` | Kill by name |
+| `extract file.tar.gz` | Extract any archive |
+| `weather "Paris"` | Current weather |
 
 ### Fuzzy finder (fzf)
 
-| Shortcut | What it does                                |
-| -------- | ------------------------------------------- |
-| `Ctrl+R` | Search command history interactively        |
-| `Ctrl+T` | Fuzzy-search files and paste path at cursor |
-| `Alt+C`  | Fuzzy-search directories and cd into one    |
-
-### zsh-autosuggestions
-
-As you type, a grey suggestion appears based on your history. Press `→` (Right arrow) or `End` to accept it. Keep typing to ignore it.
-
-### zsh-history-substring-search
-
-Type part of a command (e.g. `git push`) then press `↑` / `↓` to cycle through matching history entries.
+| Shortcut | |
+|----------|---|
+| `Ctrl+R` | Search command history |
+| `Ctrl+T` | Fuzzy-search files |
+| `Alt+C` | cd into any directory |
 
 ---
 
 ## Customization
 
-### Change window background colors
+### Change window colors
 
 Edit `bg_colors` in `~/.zshrc`:
 
@@ -276,23 +224,20 @@ local bg_colors=(
 )
 ```
 
-### Machine-specific overrides
+### Machine-specific config
 
-Create `~/.zshrc.local` — sourced at the end of `.zshrc`, never tracked in version control.
-Perfect for: API keys, 1Password CLI, work-specific aliases, SSH agent config.
-
-### Add packages to the installer
-
-Edit `lib/menu.sh` to add new items, then add the install function to `lib/install/`.
+Create `~/.zshrc.local` — sourced at the end of `.zshrc`, never tracked.
+Use it for: API keys, work aliases, SSH agent, 1Password CLI.
 
 ---
 
 ## Requirements
 
-- **macOS 12+** — Apple Silicon or Intel
+- macOS 12+ — Apple Silicon or Intel
 - Internet connection
+- iTerm2 (download from [iterm2.com](https://iterm2.com))
 
-[Homebrew](https://brew.sh), gum, and figlet are installed automatically if missing.
+Homebrew, gum, and figlet install automatically.
 
 ---
 
