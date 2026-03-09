@@ -275,35 +275,34 @@ install_selected() {
         [[ -z "$item" ]] && continue
 
         case "$item" in
-            "💻"*"VS Code"*)                             step "VS Code";                   install_vscode ;;
-            "🔡"*"Nerd Fonts"*)                          step "Nerd Fonts";                install_fonts ;;
-            "✨"*"Oh My Posh"*)                          step "Oh My Posh";                install_omp ;;
-            "⚙️"*"zshrc"*)                               step "zshrc config";              install_zshrc ;;
-            "🎨"*"iTerm2 skaisser"*)                     step "iTerm2 color preset";       install_iterm2_colors ;;
-            "📂"*"eza"*)                                 step "eza";                       brew_install_formula "eza" ;;
-            "🔍"*"fzf"*)                                 step "fzf";                       install_fzf ;;
-            "🐙"*"gh"*)                                  step "gh";                        brew_install_formula "gh" ;;
-            "📊"*"htop"*)                                step "htop";                      brew_install_formula "htop" ;;
-            "🌿"*"lazygit"*)                             step "lazygit";                   brew_install_formula "lazygit" ;;
-            "📥"*"wget"*)                                step "wget";                      brew_install_formula "wget" ;;
-            "💡"*"zsh-autosuggestions"*)                 step "zsh-autosuggestions";       install_zsh_plugin "zsh-users/zsh-autosuggestions" ;;
-            "🌈"*"zsh-syntax-highlighting"*)             step "zsh-syntax-highlighting";   install_zsh_plugin "zsh-users/zsh-syntax-highlighting" ;;
-            "🔎"*"zsh-history-substring-search"*)        step "zsh-history-substring-search"; install_zsh_plugin "zsh-users/zsh-history-substring-search" ;;
-            "🧠"*"Claude Code statusline"*)              step "Claude Code statusline";    install_claude_statusline ;;
-            "🧠"*"Claude Code"*)                         step "Claude Code";               install_claude_code ;;
-            "📈"*"Claude Code statusline"*)              step "Claude Code statusline";    install_claude_statusline ;;
-            "🎼"*"composer"*)                            step "composer";                  brew_install_formula "composer" ;;
-            "🐘"*"Laravel Herd"*)                        step "Laravel Herd";              install_herd ;;
-            "🍞"*"bun"*)                                 step "bun";                       brew_install_formula "oven-sh/bun/bun" ;;
-            "🧶"*"yarn"*)                                step "yarn";                      brew_install_formula "yarn" ;;
-            "☁️"*"rclone"*)                              step "rclone";                    brew_install_formula "rclone" ;;
-            "🔶"*"awscli"*)                              step "awscli";                    brew_install_formula "awscli" ;;
-            "🤝"*"ansible"*)                             step "ansible";                   brew_install_formula "ansible" ;;
-            "🏗️"*"terraform"*)                           step "terraform";                 brew_install_formula "hashicorp/tap/terraform" ;;
-            "🪟"*"tmux"*)                                step "tmux";                      brew_install_formula "tmux" ;;
-            "🧹"*"bfg"*)                                 step "bfg";                       brew_install_formula "bfg" ;;
-            "🔤"*"woff2"*)                               step "woff2";                     brew_install_formula "woff2" ;;
-            "🌧️"*"cmatrix"*)                             step "cmatrix";                   brew_install_formula "cmatrix" ;;
+            *"VS Code"*)                             step "VS Code";                   install_vscode ;;
+            *"Nerd Fonts"*)                          step "Nerd Fonts";                install_fonts ;;
+            *"Oh My Posh"*)                          step "Oh My Posh";                install_omp ;;
+            *"zshrc"*)                               step "zshrc config";              install_zshrc ;;
+            *"iTerm2 skaisser"*)                     step "iTerm2 color preset";       install_iterm2_colors ;;
+            *"eza"*)                                 step "eza";                       brew_install_formula "eza" ;;
+            *"fzf"*)                                 step "fzf";                       install_fzf ;;
+            *" gh"*)                                 step "gh";                        brew_install_formula "gh" ;;
+            *"htop"*)                                step "htop";                      brew_install_formula "htop" ;;
+            *"lazygit"*)                             step "lazygit";                   brew_install_formula "lazygit" ;;
+            *"wget"*)                                step "wget";                      brew_install_formula "wget" ;;
+            *"zsh-autosuggestions"*)                 step "zsh-autosuggestions";       install_zsh_plugin "zsh-users/zsh-autosuggestions" ;;
+            *"zsh-syntax-highlighting"*)             step "zsh-syntax-highlighting";   install_zsh_plugin "zsh-users/zsh-syntax-highlighting" ;;
+            *"zsh-history-substring-search"*)        step "zsh-history-substring-search"; install_zsh_plugin "zsh-users/zsh-history-substring-search" ;;
+            *"Claude Code statusline"*)              step "Claude Code statusline";    install_claude_statusline ;;
+            *"Claude Code"*)                         step "Claude Code";               install_claude_code ;;
+            *"composer"*)                            step "composer";                  brew_install_formula "composer" ;;
+            *"Laravel Herd"*)                        step "Laravel Herd";              install_herd ;;
+            *"bun"*)                                 step "bun";                       brew_install_formula "oven-sh/bun/bun" ;;
+            *"yarn"*)                                step "yarn";                      brew_install_formula "yarn" ;;
+            *"rclone"*)                              step "rclone";                    brew_install_formula "rclone" ;;
+            *"awscli"*)                              step "awscli";                    brew_install_formula "awscli" ;;
+            *"ansible"*)                             step "ansible";                   brew_install_formula "ansible" ;;
+            *"terraform"*)                           step "terraform";                 brew_install_formula "hashicorp/tap/terraform" ;;
+            *"tmux"*)                                step "tmux";                      brew_install_formula "tmux" ;;
+            *"bfg"*)                                 step "bfg";                       brew_install_formula "bfg" ;;
+            *"woff2"*)                               step "woff2";                     brew_install_formula "woff2" ;;
+            *"cmatrix"*)                             step "cmatrix";                   brew_install_formula "cmatrix" ;;
         esac
     done <<< "$selections"
 }
