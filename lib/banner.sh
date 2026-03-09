@@ -94,7 +94,7 @@ show_done() {
         "$(gum style --foreground='#8be9fd' '  2.  Settings → Profiles → Text → Font')" \
         "$(gum style --foreground='#8be9fd' '         MesloLGM Nerd Font Mono  ·  size 18')" \
         "" \
-        "$(gum style --foreground='#8be9fd' '  3.  source ~/.zshrc')" \
+        "$(gum style --foreground='#8be9fd' '  3.  Open a new iTerm2 tab — everything activates automatically')" \
         "" \
         "$(gum style --foreground='#bd93f9' '  github.com/skaisser/devterm')"
 
