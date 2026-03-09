@@ -72,7 +72,7 @@ Open iTerm2 and paste this command:
 
 2. **Set font:** `Settings → Profiles → Text → Font → MesloLGM Nerd Font Mono, size 18`
 
-3. **Reload shell:** `source ~/.zshrc`
+3. **Open a new iTerm2 tab** — everything activates automatically
 
 ---
 
