@@ -50,6 +50,14 @@ _wizard_progress() {
 _step_terminal() {
     _wizard_header 1 "Terminal & Editor" "🖥"
 
+    gum style \
+        --border rounded \
+        --border-foreground="#6272a4" \
+        --padding "0 2" \
+        --margin "0 2" \
+        "$(gum style --foreground='#50fa7b' '✓ Always installed:') $(gum style --foreground='#f8f8f2' 'Nerd Fonts · Oh My Posh + skaisser theme · iTerm2 color preset')"
+    echo ""
+
     local picks
     picks=$(gum choose --no-limit \
         --no-show-help \
@@ -59,12 +67,9 @@ _step_terminal() {
         --unselected-prefix="○ " \
         --cursor.foreground="#ff79c6" \
         --selected.foreground="#50fa7b" \
-        --height=12 \
-        --selected="💻  VS Code,🔡  Nerd Fonts,✨  Oh My Posh + skaisser theme,🎨  iTerm2 skaisser color preset" \
-        "💻  VS Code                      best code editor — includes 'code' CLI command" \
-        "🔡  Nerd Fonts (MesloLGS NF + Fira Code NF)  required for icons in the prompt" \
-        "✨  Oh My Posh + skaisser theme  smart prompt with git · PHP · Node · Go · Python" \
-        "🎨  iTerm2 skaisser color preset the @skaisser Custom Smart Theme color palette" \
+        --height=6 \
+        --selected="💻  VS Code" \
+        "💻  VS Code   best code editor — includes 'code' CLI command" \
     )
     WIZARD_SELECTIONS+=("$picks")
     _wizard_progress 1
@@ -279,10 +284,6 @@ install_selected() {
 
         case "$item" in
             *"VS Code"*)                             step "VS Code";                   install_vscode ;;
-            *"Nerd Fonts"*)                          step "Nerd Fonts";                install_fonts ;;
-            *"Oh My Posh"*)                          step "Oh My Posh";                install_omp ;;
-            *"zshrc"*)                               step "zshrc config";              install_zshrc ;;
-            *"iTerm2 skaisser"*)                     step "iTerm2 color preset";       install_iterm2_colors ;;
             *"eza"*)                                 step "eza";                       brew_install_formula "eza" ;;
             *"fzf"*)                                 step "fzf";                       install_fzf ;;
             *" gh"*)                                 step "gh";                        brew_install_formula "gh" ;;
