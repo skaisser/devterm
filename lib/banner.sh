@@ -108,12 +108,4 @@ show_done() {
     fi
 
     echo ""
-
-    # Auto-launch iTerm2 if installed — user lands directly in their new setup
-    if [[ -d "/Applications/iTerm.app" ]]; then
-        gum style --foreground="#bd93f9" --bold "  Launching iTerm2..."
-        open -a "iTerm"
-    fi
-
-    echo ""
 }
