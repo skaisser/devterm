@@ -13,6 +13,16 @@ DEVTERM_INSTALL_DIR="${DEVTERM_INSTALL_DIR:-$HOME/.local/share/devterm}"
 
 # ── Self-clone if piped via curl ─────────────────────────────────────────────
 if [[ "${BASH_SOURCE[0]:-}" == "" ]]; then
+    # On a fresh Mac, git requires Xcode CLT which isn't installed yet.
+    # Install Homebrew first — its installer handles Xcode CLT and waits for it.
+    if ! command -v git &>/dev/null; then
+        echo "→ Fresh Mac detected: installing Homebrew + Xcode Command Line Tools"
+        echo "  (this takes 15-20 minutes on first run — please wait)"
+        /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+        eval "$(/opt/homebrew/bin/brew shellenv)" 2>/dev/null \
+            || eval "$(/usr/local/bin/brew shellenv)" 2>/dev/null
+    fi
+
     echo "→ Cloning devterm..."
     if [[ -d "$DEVTERM_INSTALL_DIR/.git" ]]; then
         git -C "$DEVTERM_INSTALL_DIR" pull --ff-only --quiet
