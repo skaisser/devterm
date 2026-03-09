@@ -86,13 +86,14 @@ show_done() {
         --margin "0 2" \
         "$(gum style --foreground='#50fa7b' --bold '  Installation complete!')" \
         "" \
-        "$(gum style --foreground='#ffffff' --bold 'Next steps:')" \
+        "$(gum style --foreground='#ffffff' --bold 'Everything is ready:')" \
         "" \
-        "$(gum style --foreground='#8be9fd' '  1.  Open iTerm2')" \
-        "$(gum style --foreground='#8be9fd' '  2.  Preferences → Appearance → General → Theme → Minimal')" \
-        "$(gum style --foreground='#8be9fd' '  3.  Preferences → Profiles → Text → Font → MesloLGS NF')" \
-        "$(gum style --foreground='#8be9fd' '  4.  Profiles → Colors → Color Presets → skaisser')" \
-        "$(gum style --foreground='#8be9fd' '  5.  Run:  source ~/.zshrc')" \
+        "$(gum style --foreground='#50fa7b' '  ✓  Font: MesloLGM Nerd Font Mono 18')" \
+        "$(gum style --foreground='#50fa7b' '  ✓  Color preset: skaisser')" \
+        "$(gum style --foreground='#50fa7b' '  ✓  Per-window background colors')" \
+        "$(gum style --foreground='#50fa7b' '  ✓  iTerm2 devterm profile set as default')" \
+        "" \
+        "$(gum style --foreground='#8be9fd' '  →  Run  source ~/.zshrc  in your new iTerm2 window')" \
         "" \
         "$(gum style --foreground='#bd93f9' '  github.com/skaisser/devterm')"
 
@@ -104,6 +105,14 @@ show_done() {
         --selected.foreground="#000000" \
         "  ⭐  Enjoying devterm? Star us on GitHub!"; then
         open "https://github.com/skaisser/devterm"
+    fi
+
+    echo ""
+
+    # Auto-launch iTerm2 if installed — user lands directly in their new setup
+    if [[ -d "/Applications/iTerm.app" ]]; then
+        gum style --foreground="#bd93f9" --bold "  Launching iTerm2..."
+        open -a "iTerm"
     fi
 
     echo ""
