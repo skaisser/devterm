@@ -11,7 +11,6 @@ install_iterm2() {
         brew install --cask iterm2
 
     ok "iTerm2 installed"
-    info "Launch iTerm2 and re-run the installer, or continue and configure manually"
 }
 
 install_vscode() {
