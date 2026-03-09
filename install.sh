@@ -41,6 +41,18 @@ if [[ "$(uname)" != "Darwin" ]]; then
     exit 1
 fi
 
+# ── Must run inside iTerm2 ────────────────────────────────────────────────────
+if [[ "$TERM_PROGRAM" != "iTerm.app" ]]; then
+    echo ""
+    echo "  devterm must be run from inside iTerm2."
+    echo ""
+    echo "  1. Download iTerm2 at: https://iterm2.com"
+    echo "  2. Open iTerm2"
+    echo "  3. Run this command again inside iTerm2"
+    echo ""
+    exit 1
+fi
+
 # ── Bootstrap: Homebrew ──────────────────────────────────────────────────────
 if ! command -v brew &>/dev/null; then
     echo "→ Installing Homebrew (required)..."

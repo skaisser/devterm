@@ -59,9 +59,8 @@ _step_terminal() {
         --unselected-prefix="○ " \
         --cursor.foreground="#ff79c6" \
         --selected.foreground="#50fa7b" \
-        --height=14 \
-        --selected="🖥  iTerm2,💻  VS Code,🔡  Nerd Fonts,✨  Oh My Posh + skaisser theme,⚙️   zshrc config,🎨  iTerm2 skaisser color preset" \
-        "🖥  iTerm2                       best macOS terminal — fast, reliable, scriptable" \
+        --height=12 \
+        --selected="💻  VS Code,🔡  Nerd Fonts,✨  Oh My Posh + skaisser theme,⚙️   zshrc config,🎨  iTerm2 skaisser color preset" \
         "💻  VS Code                      best code editor — includes 'code' CLI command" \
         "🔡  Nerd Fonts (MesloLGS NF + Fira Code NF)  required for icons in the prompt" \
         "✨  Oh My Posh + skaisser theme  smart prompt with git · PHP · Node · Go · Python" \
@@ -276,7 +275,6 @@ install_selected() {
         [[ -z "$item" ]] && continue
 
         case "$item" in
-            "🖥"*"iTerm2"*)                              step "iTerm2";                    install_iterm2 ;;
             "💻"*"VS Code"*)                             step "VS Code";                   install_vscode ;;
             "🔡"*"Nerd Fonts"*)                          step "Nerd Fonts";                install_fonts ;;
             "✨"*"Oh My Posh"*)                          step "Oh My Posh";                install_omp ;;

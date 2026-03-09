@@ -34,11 +34,6 @@ install_iterm2_colors() {
         return
     fi
 
-    if [[ ! -d "/Applications/iTerm.app" ]]; then
-        err "iTerm2 not installed — install iTerm2 first, then re-run this step"
-        return
-    fi
-
     # Copy preset into iTerm2's color presets directory — shows up automatically in the picker
     local presets_dir="$HOME/Library/Application Support/iTerm2/ColorPresets"
     mkdir -p "$presets_dir"
