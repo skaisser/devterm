@@ -104,6 +104,14 @@ main() {
 
     install_selected "$selections"
 
+    # Always install core visual components — these are not optional
+    step "Nerd Fonts"
+    install_fonts
+    step "Oh My Posh + skaisser theme"
+    install_omp
+    step "iTerm2 color preset"
+    install_iterm2_colors
+
     # Always install zshrc — it is the foundation of devterm
     step "zshrc config"
     install_zshrc
