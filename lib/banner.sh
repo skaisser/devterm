@@ -88,8 +88,7 @@ show_done() {
         "" \
         "$(gum style --foreground='#ffffff' --bold 'Next steps in iTerm2:')" \
         "" \
-        "$(gum style --foreground='#8be9fd' '  1.  Import color preset — run this command:')" \
-        "$(gum style --foreground='#f8f8f2' --bold '         open ~/.devterm/assets/skaisser.itermcolors')" \
+        "$(gum style --foreground='#8be9fd' '  1.  A Finder window is opening — double-click skaisser.itermcolors')" \
         "$(gum style --foreground='#8be9fd' '         then: Settings → Profiles → Colors → Color Presets → skaisser')" \
         "" \
         "$(gum style --foreground='#8be9fd' '  2.  Settings → Profiles → Text → Font')" \
@@ -98,6 +97,11 @@ show_done() {
         "$(gum style --foreground='#8be9fd' '  3.  source ~/.zshrc')" \
         "" \
         "$(gum style --foreground='#bd93f9' '  github.com/skaisser/devterm')"
+
+    echo ""
+
+    # Open the assets folder in Finder so user can double-click skaisser.itermcolors
+    open "$HOME/.devterm/assets/"
 
     echo ""
 
