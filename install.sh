@@ -9,7 +9,7 @@
 #   git clone https://github.com/skaisser/devterm && cd devterm && ./install.sh
 
 DEVTERM_REPO="https://github.com/skaisser/devterm"
-DEVTERM_INSTALL_DIR="${DEVTERM_INSTALL_DIR:-$HOME/.local/share/devterm}"
+DEVTERM_INSTALL_DIR="${DEVTERM_INSTALL_DIR:-$HOME/.devterm}"
 
 # ── Self-clone if piped via curl ─────────────────────────────────────────────
 if [[ "${BASH_SOURCE[0]:-}" == "" ]]; then
