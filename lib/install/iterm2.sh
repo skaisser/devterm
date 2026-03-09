@@ -40,10 +40,14 @@ install_iterm2_colors() {
         return
     fi
 
-    # Open with iTerm2 explicitly — it registers .itermcolors as its file handler
-    # and imports the color preset automatically on open
-    open -a "iTerm" "$preset"
+    # Copy preset directly into iTerm2's color presets directory (reliable, no dialog needed)
+    local presets_dir="$HOME/Library/Application Support/iTerm2/ColorPresets"
+    mkdir -p "$presets_dir"
+    cp "$preset" "$presets_dir/skaisser.itermcolors"
 
-    ok "iTerm2 color preset imported"
-    info "In iTerm2: Preferences → Profiles → Colors → Color Presets → skaisser"
+    # Also open via bundle ID so iTerm2 registers and activates it
+    open -b "com.googlecode.iterm2" "$preset" 2>/dev/null || true
+
+    ok "iTerm2 color preset installed"
+    info "In iTerm2: Settings → Profiles → Colors → Color Presets → skaisser"
 }
