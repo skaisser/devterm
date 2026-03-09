@@ -141,6 +141,7 @@ _step_php() {
         --cursor.foreground="#ff79c6" \
         --selected.foreground="#50fa7b" \
         --height=6 \
+        --selected="🎼  composer,🐘  Laravel Herd" \
         "🎼  composer       PHP package manager — required for Laravel projects" \
         "🐘  Laravel Herd   PHP dev environment · serves project.test with HTTPS · zero config" \
     )
@@ -161,6 +162,7 @@ _step_javascript() {
         --cursor.foreground="#ff79c6" \
         --selected.foreground="#50fa7b" \
         --height=6 \
+        --selected="🍞  bun,🧶  yarn" \
         "🍞  bun    fast JS runtime and package manager — modern Node alternative" \
         "🧶  yarn   classic JS package manager" \
     )
@@ -181,6 +183,7 @@ _step_devops() {
         --cursor.foreground="#ff79c6" \
         --selected.foreground="#50fa7b" \
         --height=8 \
+        --selected="🌥  rclone,🔶  awscli,🤝  ansible,🏗  terraform" \
         "🌥  rclone      sync files to Google Drive · S3 · Dropbox and more" \
         "🔶  awscli      AWS command-line interface" \
         "🤝  ansible     automate server configuration and deployments" \
@@ -203,6 +206,7 @@ _step_extras() {
         --cursor.foreground="#ff79c6" \
         --selected.foreground="#50fa7b" \
         --height=8 \
+        --selected="🪟  tmux,🧹  bfg,🔤  woff2,🌧  cmatrix" \
         "🪟  tmux      terminal multiplexer — multiple sessions · survives disconnects" \
         "🧹  bfg       clean large files or secrets accidentally committed to git history" \
         "🔤  woff2     convert fonts to WOFF2 format for web projects" \
