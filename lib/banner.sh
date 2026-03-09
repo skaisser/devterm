@@ -86,14 +86,14 @@ show_done() {
         --margin "0 2" \
         "$(gum style --foreground='#50fa7b' --bold '  Installation complete!')" \
         "" \
-        "$(gum style --foreground='#ffffff' --bold 'Everything is ready:')" \
+        "$(gum style --foreground='#ffffff' --bold 'Next steps in iTerm2:')" \
         "" \
-        "$(gum style --foreground='#50fa7b' '  ✓  Font: MesloLGM Nerd Font Mono 18')" \
-        "$(gum style --foreground='#50fa7b' '  ✓  Color preset: skaisser')" \
-        "$(gum style --foreground='#50fa7b' '  ✓  Per-window background colors')" \
-        "$(gum style --foreground='#50fa7b' '  ✓  iTerm2 devterm profile set as default')" \
+        "$(gum style --foreground='#8be9fd' '  1.  Settings → Profiles → Text → Font')" \
+        "$(gum style --foreground='#8be9fd' '         MesloLGM Nerd Font Mono  ·  size 18')" \
         "" \
-        "$(gum style --foreground='#8be9fd' '  →  Run  source ~/.zshrc  in your new iTerm2 window')" \
+        "$(gum style --foreground='#8be9fd' '  2.  Settings → Profiles → Colors → Color Presets → skaisser')" \
+        "" \
+        "$(gum style --foreground='#8be9fd' '  3.  source ~/.zshrc')" \
         "" \
         "$(gum style --foreground='#bd93f9' '  github.com/skaisser/devterm')"
 
