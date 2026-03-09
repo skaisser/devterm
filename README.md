@@ -44,32 +44,35 @@ Installed to `~/.claude/statusline.sh` and wired into `~/.claude/settings.json` 
 
 ## Install
 
-Open **Terminal.app** or any terminal on macOS and run:
+### Step 1 — Download iTerm2
+
+Download and install iTerm2 directly from the official site:
+
+**[https://iterm2.com](https://iterm2.com)**
+
+> devterm must run from inside iTerm2 — it configures your terminal as it installs.
+
+### Step 2 — Run inside iTerm2
+
+Open iTerm2 and paste this command:
 
 ```bash
 /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/skaisser/devterm/main/install.sh)"
 ```
 
-Or clone and run manually:
-
-```bash
-git clone https://github.com/skaisser/devterm
-cd devterm
-./install.sh
-```
-
-[Homebrew](https://brew.sh), gum, and figlet are installed automatically if missing — no manual steps needed.
+[Homebrew](https://brew.sh), gum, and figlet are installed automatically if missing. On a fresh Mac this includes Xcode Command Line Tools — allow it and wait (~15 min first time only).
 
 ---
 
 ## After installing
 
-1. **Open iTerm2**
-2. **Set theme:** `Preferences → Appearance → General → Theme → Minimal`
-   *(tab bar blends with the terminal background)*
-3. **Set font:** `Preferences → Profiles → Text → Font → MesloLGS NF, size 13`
-4. **Set colors:** `Preferences → Profiles → Colors → Color Presets → skaisser`
-5. **Reload shell:** `source ~/.zshrc`
+1. **Import color preset** — a Finder window opens automatically with the assets folder.
+   Double-click `skaisser.itermcolors`, then:
+   `Settings → Profiles → Colors → Color Presets → skaisser`
+
+2. **Set font:** `Settings → Profiles → Text → Font → MesloLGM Nerd Font Mono, size 18`
+
+3. **Reload shell:** `source ~/.zshrc`
 
 ---
 
@@ -133,8 +136,10 @@ Restores to its original color automatically when the session ends.
 
 The installer walks you through 7 steps — you choose exactly what you want:
 
+> **Always installed:** `~/.zshrc` — the core of devterm. Backed up automatically if one already exists.
+
 **Step 1 — Terminal & Editor**
-[iTerm2](https://iterm2.com) · [VS Code](https://code.visualstudio.com) · [Nerd Fonts](https://www.nerdfonts.com) · [Oh My Posh](https://ohmyposh.dev) + skaisser theme · zshrc config · color preset
+[VS Code](https://code.visualstudio.com) · [Nerd Fonts](https://www.nerdfonts.com) · [Oh My Posh](https://ohmyposh.dev) + skaisser theme · skaisser color preset
 
 **Step 2 — Core CLI tools**
 [eza](https://github.com/eza-community/eza) · [fzf](https://github.com/junegunn/fzf) · [gh](https://cli.github.com) · [htop](https://htop.dev) · [lazygit](https://github.com/jesseduffield/lazygit) · [wget](https://www.gnu.org/software/wget/) · [zsh-autosuggestions](https://github.com/zsh-users/zsh-autosuggestions) · [zsh-syntax-highlighting](https://github.com/zsh-users/zsh-syntax-highlighting) · [zsh-history-substring-search](https://github.com/zsh-users/zsh-history-substring-search)
