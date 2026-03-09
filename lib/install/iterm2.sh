@@ -34,11 +34,9 @@ install_iterm2_colors() {
         return
     fi
 
-    # Copy preset into iTerm2's color presets directory — shows up automatically in the picker
-    local presets_dir="$HOME/Library/Application Support/iTerm2/ColorPresets"
-    mkdir -p "$presets_dir"
-    cp "$preset" "$presets_dir/skaisser.itermcolors"
+    # Open with iTerm2 — it handles .itermcolors natively and registers the preset
+    open "$preset"
 
-    ok "iTerm2 color preset installed"
+    ok "iTerm2 color preset imported"
     info "In iTerm2: Settings → Profiles → Colors → Color Presets → skaisser"
 }

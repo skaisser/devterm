@@ -10,19 +10,14 @@ install_zshrc() {
         return
     fi
 
-    # Backup existing .zshrc
+    # Backup existing .zshrc then replace — no prompt, installer is opinionated
     if [[ -f "$target" ]]; then
         local backup="${target}.backup.$(date +%Y%m%d_%H%M%S)"
         cp "$target" "$backup"
         info "Backed up existing .zshrc → $backup"
-
-        if ! gum confirm "  Replace ~/.zshrc with devterm config?"; then
-            info "Skipped .zshrc replacement — backup kept at $backup"
-            return
-        fi
     fi
 
     cp "$template" "$target"
     ok ".zshrc installed → $target"
-    info "Run 'source ~/.zshrc' or open a new terminal to apply"
+    info "Run 'source ~/.zshrc' to apply"
 }
