@@ -13,7 +13,11 @@ brew_install_formula() {
 
     gum spin --spinner dot --title "Installing $display_name..." -- \
         brew install "$formula"
-    ok "$display_name installed"
+    if formula_installed "$display_name" 2>/dev/null || brew list "$formula" &>/dev/null; then
+        ok "$display_name installed"
+    else
+        err "$display_name failed to install — try manually: brew install $formula"
+    fi
 }
 
 # fzf needs extra setup after brew install
