@@ -1,49 +1,62 @@
 #!/usr/bin/env bash
-# lib/install/plugins.sh — zsh plugins + CLI tools
+# lib/install/plugins.sh — zsh plugins
 
-install_plugins() {
+install_zsh_autosuggestions() {
+    local dest="$HOME/.zsh/plugins/zsh-autosuggestions"
     mkdir -p "$HOME/.zsh/plugins"
 
-    # ── zsh plugins (git submodules) ─────────────────────────────────────────
-    local -A plugins=(
-        ["zsh-autosuggestions"]="https://github.com/zsh-users/zsh-autosuggestions"
-        ["zsh-history-substring-search"]="https://github.com/zsh-users/zsh-history-substring-search"
-        ["zsh-completions"]="https://github.com/zsh-users/zsh-completions"
-        ["fast-syntax-highlighting"]="https://github.com/zdharma-continuum/fast-syntax-highlighting"
-        ["z"]="https://github.com/rupa/z"
-    )
-
-    for name in "${!plugins[@]}"; do
-        local url="${plugins[$name]}"
-        local dest="$HOME/.zsh/plugins/$name"
-
-        if [[ -d "$dest/.git" ]]; then
-            gum spin --spinner dot --title "Updating $name..." -- \
-                git -C "$dest" pull --ff-only --quiet
-            ok "$name (updated)"
-        else
-            gum spin --spinner dot --title "Installing $name..." -- \
-                git clone --depth=1 "$url" "$dest"
-            ok "$name installed"
-        fi
-    done
-
-    # ── fzf ──────────────────────────────────────────────────────────────────
-    if command -v fzf &>/dev/null; then
-        ok "fzf already installed"
+    if [[ -d "$dest/.git" ]]; then
+        gum spin --spinner dot --title "Updating zsh-autosuggestions..." -- \
+            git -C "$dest" pull --ff-only --quiet
+        ok "zsh-autosuggestions (updated)"
     else
-        gum spin --spinner dot --title "Installing fzf..." -- \
-            brew install fzf
-        "$(brew --prefix)/opt/fzf/install" --all --no-bash --no-fish --no-update-rc &>/dev/null || true
-        ok "fzf installed"
+        gum spin --spinner dot --title "Installing zsh-autosuggestions..." -- \
+            git clone --depth=1 "https://github.com/zsh-users/zsh-autosuggestions" "$dest"
+        ok "zsh-autosuggestions installed"
     fi
+}
 
-    # ── eza (modern ls) ───────────────────────────────────────────────────────
-    if command -v eza &>/dev/null; then
-        ok "eza already installed"
+install_zsh_history_search() {
+    local dest="$HOME/.zsh/plugins/zsh-history-substring-search"
+    mkdir -p "$HOME/.zsh/plugins"
+
+    if [[ -d "$dest/.git" ]]; then
+        gum spin --spinner dot --title "Updating zsh-history-substring-search..." -- \
+            git -C "$dest" pull --ff-only --quiet
+        ok "zsh-history-substring-search (updated)"
     else
-        gum spin --spinner dot --title "Installing eza (modern ls)..." -- \
-            brew install eza
-        ok "eza installed"
+        gum spin --spinner dot --title "Installing zsh-history-substring-search..." -- \
+            git clone --depth=1 "https://github.com/zsh-users/zsh-history-substring-search" "$dest"
+        ok "zsh-history-substring-search installed"
+    fi
+}
+
+install_zsh_completions() {
+    local dest="$HOME/.zsh/plugins/zsh-completions"
+    mkdir -p "$HOME/.zsh/plugins"
+
+    if [[ -d "$dest/.git" ]]; then
+        gum spin --spinner dot --title "Updating zsh-completions..." -- \
+            git -C "$dest" pull --ff-only --quiet
+        ok "zsh-completions (updated)"
+    else
+        gum spin --spinner dot --title "Installing zsh-completions..." -- \
+            git clone --depth=1 "https://github.com/zsh-users/zsh-completions" "$dest"
+        ok "zsh-completions installed"
+    fi
+}
+
+install_fast_syntax_highlighting() {
+    local dest="$HOME/.zsh/plugins/fast-syntax-highlighting"
+    mkdir -p "$HOME/.zsh/plugins"
+
+    if [[ -d "$dest/.git" ]]; then
+        gum spin --spinner dot --title "Updating fast-syntax-highlighting..." -- \
+            git -C "$dest" pull --ff-only --quiet
+        ok "fast-syntax-highlighting (updated)"
+    else
+        gum spin --spinner dot --title "Installing fast-syntax-highlighting..." -- \
+            git clone --depth=1 "https://github.com/zdharma-continuum/fast-syntax-highlighting" "$dest"
+        ok "fast-syntax-highlighting installed"
     fi
 }

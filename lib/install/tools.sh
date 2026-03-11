@@ -29,6 +29,10 @@ install_fzf() {
     fi
 }
 
+install_zoxide() {
+    brew_install_formula "zoxide"
+}
+
 # Install zsh plugin from GitHub to ~/.zsh/plugins/
 install_zsh_plugin() {
     local repo="$1"
