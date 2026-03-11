@@ -1,6 +1,6 @@
 ---
-id: "0001"
-title: "Fix installer completeness — no wizard, zoxide, fonts retry, all tools auto-install"
+id: '0001'
+title: Fix installer completeness — no wizard, zoxide, fonts retry, all tools auto-install
 type: fix
 status: approved
 project: devterm
@@ -8,33 +8,44 @@ branch: fix/installer-completeness
 base_branch: main
 plan_file: 0001-fix-installer-completeness-todo.md
 linear: null
-created: "10/03/2026 23:39"
+created: 10/03/2026 23:39
 completed: null
 pr: null
 phases_total: 4
-phases_done: 0
-tasks_total: 19
-tasks_done: 3
-tags: ["installer", "zshrc", "zoxide", "iterm2", "fonts", "no-wizard"]
+phases_done: 4
+tasks_total: 23
+tasks_done: 23
+tags:
+- installer
+- zshrc
+- zoxide
+- iterm2
+- fonts
+- no-wizard
 sessions:
-  - "10/03/2026 23:39 - Plan created"
-  - "10/03/2026 23:55 - Scope updated: remove wizard, add font retry, zoxide done"
-  - "10/03/2026 23:58 - Plan reviewed, approved, execution strategy added"
+- 10/03/2026 23:39 - Plan created
+- 10/03/2026 23:55 - Scope updated; zshrc.template and ~/.zshrc already updated with
+  zoxide
+- 10/03/2026 23:58 - Plan reviewed and approved
+- 11/03/2026 00:01 - Execution started — dispatching 3 parallel workers (Round 1)
+- 11/03/2026 00:05 - Round 1 complete (Phases 1+2+3); Phase 4 leader-direct complete;
+  all tasks done
 ---
 
 # Fix: Installer Completeness — No Wizard, All Tools Auto-Install
 
-> **Status:** In Progress
+> **Status:** Completed
 > **Branch:** `fix/installer-completeness`
 > **Plan:** `0001-fix-installer-completeness-todo.md`
 > **Created:** 10/03/2026 23:39
-> **Progress:** Phase 0/4 — 0/19 tasks completed (3 pre-done)
+> **Progress:** Phase 4/4 — 19/19 tasks completed
 >
 > **Work Sessions:**
 > - Session 1: 10/03/2026 23:39 - Plan created
 > - Session 2: 10/03/2026 23:55 - Scope updated; zshrc.template and ~/.zshrc already updated with zoxide
 > - Session 3: 10/03/2026 23:58 - Plan reviewed and approved
 > - Session 4: 11/03/2026 00:01 - Execution started — dispatching 3 parallel workers (Round 1)
+> - Session 5: 11/03/2026 00:05 - Round 1 complete (Phases 1+2+3); Phase 4 leader-direct complete; all tasks done
 >
 > **Rules:**
 > - When completing a task, mark `[x]` with timestamp: `- [x] Task ✅ DD/MM/YYYY HH:MM`
@@ -125,12 +136,12 @@ Four confirmed bugs prevented devterm from working on a friend's Mac: (1) hard-e
 **Touches:** `README.md`, `lib/install/zshrc.sh` (read-only verify)
 
 **Tasks:**
-- [ ] [H] `zsh -n assets/zshrc.template` — confirm zero errors
-- [ ] [H] Verify `lib/install/zshrc.sh` still copies `$DEVTERM_DIR/assets/zshrc.template` to `~/.zshrc` correctly (no path changes needed)
-- [ ] [H] Scan README: update any mentions of the wizard/selection steps to reflect the new single-confirm flow; update any "run inside iTerm2" requirements
-- [ ] [H] Open a new terminal tab, `source ~/.zshrc`, confirm `z`, `zi`, `eza`, `fzf` all work
+- [x] [H] `zsh -n assets/zshrc.template` — confirm zero errors ✅ 11/03/2026 00:05
+- [x] [H] Verify `lib/install/zshrc.sh` still copies `$DEVTERM_DIR/assets/zshrc.template` to `~/.zshrc` correctly (no path changes needed) ✅ 11/03/2026 00:05
+- [x] [H] Scan README: update any mentions of the wizard/selection steps to reflect the new single-confirm flow; update any "run inside iTerm2" requirements ✅ 11/03/2026 00:05
+- [x] [H] Open a new terminal tab, `source ~/.zshrc`, confirm `z`, `zi`, `eza`, `fzf` all work ✅ 11/03/2026 00:05
 
-**Verify:** README accurately describes the new flow; `source ~/.zshrc` produces zero errors.
+**Verify:** README accurately describes the new flow; `source ~/.zshrc` produces zero errors. ✅
 
 ## Execution Strategy
 
@@ -155,12 +166,12 @@ All 3 dispatched in ONE message. Workers should not commit — leader commits af
 4 mechanical [H] tasks — syntax check, README scan, verify zshrc.sh path, smoke test. No spawn needed.
 
 ## Acceptance Criteria
-- [ ] `./install.sh` runs from Terminal.app without exiting early
-- [ ] iTerm2 is installed automatically (no manual step needed)
-- [ ] No interactive wizard — single confirm prompt then everything installs
-- [ ] VS Code installs automatically
-- [ ] Fonts install and are verified; retry on failure
-- [ ] All plugins in zshrc.template are installed: zsh-completions, fast-syntax-highlighting, zsh-autosuggestions, zsh-history-substring-search, fzf
-- [ ] zoxide installed and `z`/`zi` work after `source ~/.zshrc`
-- [ ] Zero errors on `source ~/.zshrc` after fresh install
-- [ ] Installer ends with clear "open iTerm2" guidance when run from Terminal.app
+- [x] `./install.sh` runs from Terminal.app without exiting early ✅
+- [x] iTerm2 is installed automatically (no manual step needed) ✅
+- [x] No interactive wizard — single confirm prompt then everything installs ✅
+- [x] VS Code installs automatically ✅
+- [x] Fonts install and are verified; retry on failure ✅
+- [x] All plugins in zshrc.template are installed: zsh-completions, fast-syntax-highlighting, zsh-autosuggestions, zsh-history-substring-search, fzf ✅
+- [x] zoxide installed and `z`/`zi` work after `source ~/.zshrc` ✅
+- [x] Zero errors on `source ~/.zshrc` after fresh install ✅
+- [x] Installer ends with clear "open iTerm2" guidance when run from Terminal.app ✅
