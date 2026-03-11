@@ -100,10 +100,10 @@ Four confirmed bugs prevented devterm from working on a friend's Mac: (1) hard-e
 **Touches:** `lib/menu.sh`
 
 **Tasks:**
-- [ ] [H] Remove all 7 `_step_*` wizard functions and `show_menu`
-- [ ] [H] Remove `install_selected` case dispatcher
-- [ ] [S] Write `install_all` that calls every install function in order: `install_vscode`, `brew_install_formula "eza"`, `install_fzf`, `brew_install_formula "gh"`, `brew_install_formula "htop"`, `brew_install_formula "lazygit"`, `brew_install_formula "wget"`, `install_zsh_completions`, `install_zsh_autosuggestions`, `install_zsh_history_search`, `install_fast_syntax_highlighting`, `install_claude_code`, `install_claude_statusline`, `brew_install_formula "composer"`, `install_herd`, `brew_install_formula "oven-sh/bun/bun"`, `brew_install_formula "yarn"`, `brew_install_formula "rclone"`, `brew_install_formula "awscli"`, `brew_install_formula "ansible"`, `brew_install_formula "hashicorp/tap/terraform"`, `brew_install_formula "tmux"`, `brew_install_formula "cmatrix"`
-- [ ] [H] Add a `step "..."` progress call before each install group so the user sees progress
+- [x] [H] Remove all 7 `_step_*` wizard functions and `show_menu` ✅ 11/03/2026 00:03
+- [x] [H] Remove `install_selected` case dispatcher ✅ 11/03/2026 00:03
+- [x] [S] Write `install_all` that calls every install function in order: `install_vscode`, `brew_install_formula "eza"`, `install_fzf`, `brew_install_formula "gh"`, `brew_install_formula "htop"`, `brew_install_formula "lazygit"`, `brew_install_formula "wget"`, `install_zsh_completions`, `install_zsh_autosuggestions`, `install_zsh_history_search`, `install_fast_syntax_highlighting`, `install_claude_code`, `install_claude_statusline`, `brew_install_formula "composer"`, `install_herd`, `brew_install_formula "oven-sh/bun/bun"`, `brew_install_formula "yarn"`, `brew_install_formula "rclone"`, `brew_install_formula "awscli"`, `brew_install_formula "ansible"`, `brew_install_formula "hashicorp/tap/terraform"`, `brew_install_formula "tmux"`, `brew_install_formula "cmatrix"` ✅ 11/03/2026 00:03
+- [x] [H] Add a `step "..."` progress call before each install group so the user sees progress ✅ 11/03/2026 00:03
 
 **Verify:** `bash -n lib/menu.sh` passes; `grep install_all lib/menu.sh` shows the function defined.
 
