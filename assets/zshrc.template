@@ -139,6 +139,9 @@ extract() {
     fi
 }
 
+# Search processes by name — psg nginx
+psg() { ps aux | grep -v grep | grep -i "$1"; }
+
 # Kill process by name — killp nginx
 killp() {
     if [[ -n "$1" ]]; then
@@ -285,8 +288,8 @@ if [[ "$TERM_PROGRAM" == "iTerm.app" ]]; then
         echo -ne "\033]0;🔴 SSH → ${host%%.*}\033\\"
         command ssh "$@"
         unset _ITERM2_IN_SSH
-        _iterm2_auto_colors
-        echo -ne "\033]0;$(_iterm2_build_title)\033\\"
+        (( ${+functions[_iterm2_auto_colors]} )) && _iterm2_auto_colors
+        (( ${+functions[_iterm2_build_title]} )) && echo -ne "\033]0;$(_iterm2_build_title)\033\\"
     }
 fi
 
@@ -323,13 +326,13 @@ autoload -Uz compinit && compinit
 }
 
 # Syntax highlighting — red for invalid commands, green for valid (load last)
-[[ -f ~/.zsh/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh ]] && \
-    source ~/.zsh/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
+[[ -f ~/.zsh/plugins/fast-syntax-highlighting/fast-syntax-highlighting.plugin.zsh ]] && \
+    source ~/.zsh/plugins/fast-syntax-highlighting/fast-syntax-highlighting.plugin.zsh
 
-# z — frecency directory jumper: type "z myapp" to jump to ~/Sites/myapp
-[ -f ~/.zsh/plugins/z/z.sh ] && source ~/.zsh/plugins/z/z.sh
+# zoxide — smart directory jumper: z <partial> to jump, zi for interactive (fzf)
+command -v zoxide &>/dev/null && eval "$(zoxide init zsh)"
 
 # ── Local overrides ───────────────────────────────────────────────────────────
 # Machine-specific config — never tracked in version control
-# Great place for: 1Password, API keys, work-specific aliases
+# Great place for: 1Password, API keys, work-specific aliases, Java paths
 [[ -f ~/.zshrc.local ]] && source ~/.zshrc.local
