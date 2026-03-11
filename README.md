@@ -13,13 +13,7 @@ Installs everything you need — iTerm2 theme, prompt, Claude Code, PHP, Node, D
 
 ## Install
 
-### 1 — Download iTerm2
-
-**[iterm2.com](https://iterm2.com)** — download and install it first.
-
-> devterm must run inside iTerm2. It configures your terminal live as it installs.
-
-### 2 — Run inside iTerm2
+### Run in any terminal
 
 ```bash
 curl -fsSL https://raw.githubusercontent.com/skaisser/devterm/main/install.sh | bash
@@ -28,13 +22,15 @@ curl -fsSL https://raw.githubusercontent.com/skaisser/devterm/main/install.sh | 
 Homebrew, gum, and figlet install automatically if missing.
 On a fresh Mac this includes Xcode Command Line Tools — allow it and wait (~15 min first time only).
 
-### 3 — After install
+You'll see a summary of everything that will be installed and a single confirmation prompt. Then everything installs automatically — including iTerm2.
+
+### After install
 
 A Finder window opens automatically with the assets folder.
 
 1. **Double-click `skaisser.itermcolors`** → then: `Settings → Profiles → Colors → Color Presets → skaisser`
 2. **Set font:** `Settings → Profiles → Text → Font → MesloLGM Nerd Font Mono · size 18`
-3. **Open a new iTerm2 tab** — everything activates automatically
+3. **Open iTerm2** — everything activates automatically
 
 ---
 
@@ -49,7 +45,7 @@ A Finder window opens automatically with the assets folder.
 | **Claude statusline** | Model · context bar · token count · folder — live in your prompt. |
 | **Laravel Herd** | PHP dev environment. `project.test` with HTTPS, zero config. |
 | **Nerd Fonts** | MesloLGS NF + Fira Code NF — required for prompt icons. |
-| **zsh plugins** | autosuggestions · syntax highlighting · history search · fzf · eza · z |
+| **zsh plugins** | autosuggestions · fast-syntax-highlighting · history search · fzf · eza · zoxide |
 
 ---
 
@@ -121,19 +117,21 @@ Restores to its original color automatically when the session ends.
 
 ---
 
-## Wizard — choose what you need
+## What gets installed
 
-The installer walks you through 7 steps. Everything is pre-selected — deselect what you don't want.
+Everything. One confirm, then the installer runs automatically.
 
-| Step | Tools |
-|------|-------|
-| **Terminal & Editor** | VS Code · Nerd Fonts · Oh My Posh + skaisser theme · iTerm2 color preset |
-| **Core CLI** | eza · fzf · gh · htop · lazygit · wget · zsh-autosuggestions · zsh-syntax-highlighting · zsh-history-substring-search |
+| Group | Tools |
+|-------|-------|
+| **Terminal** | iTerm2 · Nerd Fonts (MesloLGS + Fira Code) · Oh My Posh + skaisser theme · iTerm2 color preset |
+| **Editor** | VS Code |
+| **Core CLI** | eza · fzf · gh · htop · lazygit · wget · zoxide |
+| **Zsh plugins** | zsh-autosuggestions · fast-syntax-highlighting · zsh-history-substring-search · zsh-completions |
 | **Claude Code** | Claude Code · statusline |
 | **PHP / Laravel** | composer · Laravel Herd |
 | **JavaScript** | bun · yarn |
 | **DevOps / Cloud** | rclone · awscli · ansible · terraform |
-| **Extras** | tmux · bfg · woff2 · cmatrix |
+| **Extras** | tmux · cmatrix |
 
 > `.zshrc` is always installed — it's the foundation of devterm. Your existing one is backed up automatically.
 
@@ -235,7 +233,7 @@ Use it for: API keys, work aliases, SSH agent, 1Password CLI.
 
 - macOS 12+ — Apple Silicon or Intel
 - Internet connection
-- iTerm2 (download from [iterm2.com](https://iterm2.com))
+- Any terminal (Terminal.app works fine — iTerm2 installs automatically)
 
 Homebrew, gum, and figlet install automatically.
 
