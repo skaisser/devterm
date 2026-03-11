@@ -30,6 +30,7 @@ sessions:
 - 11/03/2026 00:01 - Execution started — dispatching 3 parallel workers (Round 1)
 - 11/03/2026 00:05 - Round 1 complete (Phases 1+2+3); Phase 4 leader-direct complete;
   all tasks done
+- '11/03/2026 00:07 - Plan check: 23/23 tasks verified, 0 deleted, 9/9 AC passed'
 ---
 
 # Fix: Installer Completeness — No Wizard, All Tools Auto-Install
@@ -46,6 +47,7 @@ sessions:
 > - Session 3: 10/03/2026 23:58 - Plan reviewed and approved
 > - Session 4: 11/03/2026 00:01 - Execution started — dispatching 3 parallel workers (Round 1)
 > - Session 5: 11/03/2026 00:05 - Round 1 complete (Phases 1+2+3); Phase 4 leader-direct complete; all tasks done
+> - Session 6: 11/03/2026 00:07 - Plan check: 23/23 tasks verified, 0 deleted, 9/9 AC passed
 >
 > **Rules:**
 > - When completing a task, mark `[x]` with timestamp: `- [x] Task ✅ DD/MM/YYYY HH:MM`
@@ -164,6 +166,28 @@ All 3 dispatched in ONE message. Workers should not commit — leader commits af
 ### Round 2: Phase 4 → Leader Direct
 
 4 mechanical [H] tasks — syntax check, README scan, verify zshrc.sh path, smoke test. No spawn needed.
+
+## Plan vs Implementation
+
+| Item | Planned | Implemented | Notes |
+|------|---------|-------------|-------|
+| `install.sh` — remove iTerm2 gate | ✅ | ✅ | Hard-exit block removed |
+| `install.sh` — install_iterm2 call | ✅ | ✅ | Added to always-install |
+| `install.sh` — gum confirm + summary | ✅ | ✅ | Styled info box + confirm |
+| `install.sh` — zoxide in always-install | ✅ | ✅ | `brew_install_formula "zoxide"` |
+| `install.sh` — post-install iTerm2 message | ✅ | ✅ | Shown when not in iTerm2 |
+| `lib/menu.sh` — wizard removed | ✅ | ✅ | All `_step_*` + `show_menu` gone |
+| `lib/menu.sh` — `install_all` written | ✅ | ✅ | 23 install calls, grouped with `step` |
+| `lib/install/fonts.sh` — retry/verify | ✅ | ✅ | Both MesloLGS + Fira Code |
+| `lib/install/plugins.sh` — named functions | ✅ | ✅ | 4 named functions, git clone/pull |
+| `lib/install/tools.sh` — `install_zoxide` | ✅ | ✅ | `brew_install_formula "zoxide"` |
+| `assets/zshrc.template` — already done | ✅ | ✅ | Pre-done, syntax OK |
+| `README.md` — wizard → auto-install | ✅ | ✅ | All wizard references removed |
+| Unplanned: `lib/install/zshrc.sh` (read-only verify) | — | ✅ | Path confirmed correct, no changes |
+
+**Deleted tasks:** 0 — no tasks removed during execution
+**Additional files modified beyond plan:** none (assets/zshrc.template was pre-done)
+**All 19 planned tasks implemented + 4 pre-done = 23/23 total**
 
 ## Acceptance Criteria
 - [x] `./install.sh` runs from Terminal.app without exiting early ✅
