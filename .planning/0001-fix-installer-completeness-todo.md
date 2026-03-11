@@ -86,14 +86,14 @@ Four confirmed bugs prevented devterm from working on a friend's Mac: (1) hard-e
 **Touches:** `install.sh`
 
 **Tasks:**
-- [ ] [H] Remove the hard-exit `if [[ "$TERM_PROGRAM" != "iTerm.app" ]]` block
-- [ ] [H] Add `install_iterm2` call to always-install block (first thing, before fonts/OMP)
-- [ ] [H] Replace `show_menu` + `install_selected` call with `install_all` (from menu.sh)
-- [ ] [H] Add a `gum style` info box listing everything that will be installed, then `gum confirm` before proceeding
-- [ ] [H] Add `brew_install_formula "zoxide"` to always-install block (after fonts)
-- [ ] [H] Add post-install message: if `$TERM_PROGRAM != "iTerm.app"`, show styled "Now open iTerm2 for the full experience!"
+- [x] [H] Remove the hard-exit `if [[ "$TERM_PROGRAM" != "iTerm.app" ]]` block ✅ 11/03/2026 00:03
+- [x] [H] Add `install_iterm2` call to always-install block (first thing, before fonts/OMP) ✅ 11/03/2026 00:03
+- [x] [H] Replace `show_menu` + `install_selected` call with `install_all` (from menu.sh) ✅ 11/03/2026 00:03
+- [x] [H] Add a `gum style` info box listing everything that will be installed, then `gum confirm` before proceeding ✅ 11/03/2026 00:03
+- [x] [H] Add `brew_install_formula "zoxide"` to always-install block (after fonts) ✅ 11/03/2026 00:03
+- [x] [H] Add post-install message: if `$TERM_PROGRAM != "iTerm.app"`, show styled "Now open iTerm2 for the full experience!" ✅ 11/03/2026 00:03
 
-**Verify:** `bash -n install.sh` passes; grep confirms no `iTerm.app` exit guard remains.
+**Verify:** `bash -n install.sh` passes ✅; grep confirms no `iTerm.app` exit guard remains ✅.
 
 ### Phase 2: Replace lib/menu.sh — wizard out, install_all in [S]
 
