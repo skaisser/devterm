@@ -155,7 +155,7 @@ main() {
             "$(gum style --foreground='#50fa7b' --bold '✨  Setup Complete!')" \
             "" \
             "$(gum style --foreground='#f8f8f2' 'Next step: Open iTerm2 for the full experience.')" \
-            "$(gum style --foreground='#f8f8f2' 'You can download it from https://iterm2.com')"
+            "$(gum style --foreground='#f8f8f2' 'iTerm2 was installed — find it in your Applications folder.')"
         echo ""
     fi
 }
