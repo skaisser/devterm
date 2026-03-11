@@ -92,7 +92,7 @@ show_done() {
         "$(gum style --foreground='#8be9fd' '         then: Settings → Profiles → Colors → Color Presets → skaisser')" \
         "" \
         "$(gum style --foreground='#8be9fd' '  2.  Settings → Profiles → Text → Font')" \
-        "$(gum style --foreground='#8be9fd' '         MesloLGM Nerd Font Mono  ·  size 18')" \
+        "$(gum style --foreground='#8be9fd' '         MesloLGS Nerd Font  ·  size 18')" \
         "" \
         "$(gum style --foreground='#8be9fd' '  3.  Open a new iTerm2 tab — everything activates automatically')" \
         "" \
@@ -101,7 +101,7 @@ show_done() {
     echo ""
 
     # Open the assets folder in Finder so user can double-click skaisser.itermcolors
-    open "$HOME/.devterm/assets/"
+    open "${DEVTERM_DIR:-$HOME/.devterm}/assets/"
 
     echo ""
 
