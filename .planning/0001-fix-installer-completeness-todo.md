@@ -112,11 +112,11 @@ Four confirmed bugs prevented devterm from working on a friend's Mac: (1) hard-e
 **Touches:** `lib/install/fonts.sh`, `lib/install/plugins.sh`, `lib/install/tools.sh`
 
 **Tasks:**
-- [ ] [S] In `fonts.sh`: after `brew install --cask`, verify `~/Library/Fonts/MesloLGSNerdFont-Regular.ttf` exists; if not, retry `brew install --cask` once; print clear error if still missing
-- [ ] [H] In `fonts.sh`: add similar verify + retry for the second font cask (Fira Code Nerd Font if present)
-- [ ] [H] In `plugins.sh`: replace the dead `install_plugins()` batch with individual named functions: `install_zsh_autosuggestions`, `install_zsh_history_search`, `install_zsh_completions`, `install_fast_syntax_highlighting` — each clones/updates its plugin to `~/.zsh/plugins/`
-- [ ] [H] In `tools.sh`: add `install_zoxide` function: `brew_install_formula "zoxide"`
-- [ ] [H] Remove the dead `install_plugins()` function entirely
+- [x] [S] In `fonts.sh`: after `brew install --cask`, verify `~/Library/Fonts/MesloLGSNerdFont-Regular.ttf` exists; if not, retry `brew install --cask` once; print clear error if still missing ✅ 11/03/2026 00:03
+- [x] [H] In `fonts.sh`: add similar verify + retry for the second font cask (Fira Code Nerd Font if present) ✅ 11/03/2026 00:03
+- [x] [H] In `plugins.sh`: replace the dead `install_plugins()` batch with individual named functions: `install_zsh_autosuggestions`, `install_zsh_history_search`, `install_zsh_completions`, `install_fast_syntax_highlighting` — each clones/updates its plugin to `~/.zsh/plugins/` ✅ 11/03/2026 00:03
+- [x] [H] In `tools.sh`: add `install_zoxide` function: `brew_install_formula "zoxide"` ✅ 11/03/2026 00:03
+- [x] [H] Remove the dead `install_plugins()` function entirely ✅ 11/03/2026 00:03
 
 **Verify:** `bash -n lib/install/fonts.sh lib/install/plugins.sh lib/install/tools.sh` all pass; `grep "install_zoxide\|install_zsh_completions\|install_fast_syntax_highlighting" lib/install/tools.sh lib/install/plugins.sh` shows all functions defined.
 
