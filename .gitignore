@@ -1,2 +1,6 @@
 .DS_Store
 **/.DS_Store
+
+# Internal planning & AI config (not for public repo)
+.planning/
+CLAUDE.md
