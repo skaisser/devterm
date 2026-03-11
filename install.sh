@@ -41,17 +41,6 @@ if [[ "$(uname)" != "Darwin" ]]; then
     exit 1
 fi
 
-# ── Must run inside iTerm2 ────────────────────────────────────────────────────
-if [[ "$TERM_PROGRAM" != "iTerm.app" ]]; then
-    echo ""
-    echo "  devterm must be run from inside iTerm2."
-    echo ""
-    echo "  1. Download iTerm2 at: https://iterm2.com"
-    echo "  2. Open iTerm2"
-    echo "  3. Run this command again inside iTerm2"
-    echo ""
-    exit 1
-fi
 
 # ── Bootstrap: Homebrew ──────────────────────────────────────────────────────
 if ! command -v brew &>/dev/null; then
@@ -91,32 +80,84 @@ main() {
     show_banner
     run_checks
 
-    # show_menu runs the full wizard and prints selections to stdout
-    local selections
-    selections=$(show_menu)
+    # Show info box with everything that will be installed
+    clear
+    echo ""
+    gum style \
+        --border rounded \
+        --border-foreground="#bd93f9" \
+        --padding "1 2" \
+        --margin "0 2" \
+        "$(gum style --foreground='#bd93f9' --bold '📦  Installation Summary')" \
+        "" \
+        "$(gum style --foreground='#50fa7b' 'Core (always installed):')" \
+        "  • iTerm2 terminal emulator" \
+        "  • Nerd Fonts (Meslo LG S)" \
+        "  • Oh My Posh theme engine + skaisser theme" \
+        "  • zoxide (z command)" \
+        "  • zshrc configuration" \
+        "" \
+        "$(gum style --foreground='#50fa7b' 'Tools & Utilities:')" \
+        "  • VS Code editor" \
+        "  • CLI tools (eza, fzf, gh, htop, lazygit, wget)" \
+        "  • Zsh plugins (completions, autosuggestions, syntax highlight, history search)" \
+        "  • Claude Code AI assistant" \
+        "  • PHP/Laravel (composer, Laravel Herd)" \
+        "  • JavaScript (bun, yarn)" \
+        "  • DevOps (rclone, awscli, ansible, terraform)" \
+        "  • Extras (tmux, cmatrix)"
 
-    [[ -z "$selections" ]] && { warn "Nothing selected. Exiting."; exit 0; }
+    echo ""
+    if ! gum confirm \
+        --prompt.foreground="#bd93f9" \
+        --selected.background="#bd93f9" \
+        --selected.foreground="#000000" \
+        "  Proceed with full installation?"; then
+        echo ""
+        warn "Installation cancelled."
+        exit 0
+    fi
 
     clear
     echo ""
     gum style --foreground="#bd93f9" --bold --margin "0 2" "Installing your setup..."
     echo ""
 
-    install_selected "$selections"
-
-    # Always install core visual components — these are not optional
+    # Always install core visual components first
+    step "iTerm2"
+    install_iterm2
     step "Nerd Fonts"
     install_fonts
+    step "zoxide"
+    brew_install_formula "zoxide"
     step "Oh My Posh + skaisser theme"
     install_omp
     step "iTerm2 color preset"
     install_iterm2_colors
+
+    # Run the full no-wizard install of all selected tools
+    install_all
 
     # Always install zshrc — it is the foundation of devterm
     step "zshrc config"
     install_zshrc
 
     show_done
+
+    # Post-install guidance for non-iTerm2 users
+    if [[ "$TERM_PROGRAM" != "iTerm.app" ]]; then
+        echo ""
+        gum style \
+            --border rounded \
+            --border-foreground="#50fa7b" \
+            --padding "1 2" \
+            --margin "0 2" \
+            "$(gum style --foreground='#50fa7b' --bold '✨  Setup Complete!')" \
+            "" \
+            "$(gum style --foreground='#f8f8f2' 'Next step: Open iTerm2 for the full experience.')" \
+            "$(gum style --foreground='#f8f8f2' 'You can download it from https://iterm2.com')"
+        echo ""
+    fi
 }
 
 main "$@"
