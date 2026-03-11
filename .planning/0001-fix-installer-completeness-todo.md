@@ -2,7 +2,7 @@
 id: "0001"
 title: "Fix installer completeness — no wizard, zoxide, fonts retry, all tools auto-install"
 type: fix
-status: awaiting-approval
+status: approved
 project: devterm
 branch: fix/installer-completeness
 base_branch: main
@@ -13,25 +13,27 @@ completed: null
 pr: null
 phases_total: 4
 phases_done: 0
-tasks_total: 20
-tasks_done: 0
+tasks_total: 19
+tasks_done: 3
 tags: ["installer", "zshrc", "zoxide", "iterm2", "fonts", "no-wizard"]
 sessions:
   - "10/03/2026 23:39 - Plan created"
   - "10/03/2026 23:55 - Scope updated: remove wizard, add font retry, zoxide done"
+  - "10/03/2026 23:58 - Plan reviewed, approved, execution strategy added"
 ---
 
 # Fix: Installer Completeness — No Wizard, All Tools Auto-Install
 
-> **Status:** Awaiting Approval
+> **Status:** Approved
 > **Branch:** `fix/installer-completeness`
 > **Plan:** `0001-fix-installer-completeness-todo.md`
 > **Created:** 10/03/2026 23:39
-> **Progress:** Phase 0/4 — 0/20 tasks completed
+> **Progress:** Phase 0/4 — 0/19 tasks completed (3 pre-done)
 >
 > **Work Sessions:**
 > - Session 1: 10/03/2026 23:39 - Plan created
 > - Session 2: 10/03/2026 23:55 - Scope updated; zshrc.template and ~/.zshrc already updated with zoxide
+> - Session 3: 10/03/2026 23:58 - Plan reviewed and approved
 >
 > **Rules:**
 > - When completing a task, mark `[x]` with timestamp: `- [x] Task ✅ DD/MM/YYYY HH:MM`
@@ -44,7 +46,7 @@ sessions:
 
 Four confirmed bugs prevented devterm from working on a friend's Mac: (1) hard-exit requiring iTerm2 before it's installed, (2) gum `--selected` silently pre-selecting nothing (tools never get installed), (3) z/zsh-completions/fast-syntax-highlighting referenced in zshrc but never installed, (4) z should be zoxide. **Additional scope from user:** remove the entire interactive wizard — just install everything automatically in a single opinionated pass. Fonts need a retry + verify step since they fail silently. zshrc.template and user's actual ~/.zshrc have already been updated with zoxide and all fixes.
 
-## Already Done (before this plan runs)
+## Already Done (before execution)
 
 - [x] `~/.zshrc`: z → zoxide, removed broken alias `57378u`, removed duplicate PATH, fixed `psg`, added `alias ..`, added `tar.xz` to extract() ✅ 10/03/2026 23:50
 - [x] `assets/zshrc.template`: fully rewritten from improved ~/.zshrc as canonical source ✅ 10/03/2026 23:55
@@ -54,77 +56,102 @@ Four confirmed bugs prevented devterm from working on a friend's Mac: (1) hard-e
 
 - **Goal:** Run `./install.sh` from any terminal on a clean Mac and get the complete devterm setup — no wizard, no missing tools, everything works after `source ~/.zshrc`.
 - **Non-goals:** Adding new tools not already in the project; changing the OMP theme or color scheme.
-- **Constraints:** macOS only; Homebrew-based; must run from Terminal.app (not just iTerm2); no interactive prompts except a single final confirm; zshrc template must load without errors.
+- **Constraints:** macOS only; Homebrew-based; must run from Terminal.app (not just iTerm2); single confirm prompt then everything installs; zshrc template must load without errors.
 - **Key paths:**
-  - `install.sh` — entry point, always-install block, iTerm2 gate to remove
-  - `lib/menu.sh` — entire wizard to replace with a simple confirm prompt
-  - `lib/install/plugins.sh` — restructure to expose individual install functions
-  - `lib/install/iterm2.sh` — `install_iterm2()` add to always-install
+  - `install.sh` — entry point, remove iTerm2 gate, replace wizard call with `install_all`
+  - `lib/menu.sh` — entire wizard replaced with `install_all` function
+  - `lib/install/plugins.sh` — expose individual functions (contracts below)
+  - `lib/install/iterm2.sh` — `install_iterm2()` added to always-install
   - `lib/install/fonts.sh` — add retry + verify logic
-  - `lib/install/tools.sh` — needs zoxide install function
+  - `lib/install/tools.sh` — add `install_zoxide`
   - `assets/zshrc.template` — already updated ✅
-- **Interfaces:** none (local installer only)
-- **Data:** none
+- **Function name contracts (for parallel workers):**
+  - `install_zsh_autosuggestions` — in `plugins.sh`
+  - `install_zsh_history_search` — in `plugins.sh`
+  - `install_zsh_completions` — in `plugins.sh`
+  - `install_fast_syntax_highlighting` — in `plugins.sh`
+  - `install_zoxide` — in `tools.sh`
+  - `install_all` — in `menu.sh` (calls all of the above + brew tools)
 - **Risks:**
-  1. Removing the wizard means ALL tools install — some users may not want Ansible/Terraform. Accepted: the project is opinionated by design, and these tools are harmless if unused.
-  2. Font retry: `brew install --cask` for fonts may hang on slow connections — use timeout or just retry once.
-  3. iTerm2 removal: the `.itermcolors` file opener will work from any terminal (it just registers the preset).
-- **Verification:** Run `./install.sh` from Terminal.app; after `source ~/.zshrc` confirm: `z`, `zi`, `which eza`, `which fzf`, `which gh`, `which lazygit`, `which zoxide`, fast-syntax-highlighting active, Nerd Fonts in ~/Library/Fonts.
+  1. Parallel workers writing to different files — no conflict (each phase owns distinct files).
+  2. Font retry: verify by checking `~/Library/Fonts/MesloLGSNerdFont-Regular.ttf` specifically.
+  3. `install_all` in Phase 2 references functions from Phase 3 — function names agreed above.
+- **Verification:** `./install.sh` from Terminal.app → single confirm → all tools install → `source ~/.zshrc` → no errors → `z`, `zi`, `eza`, `fzf`, syntax highlighting all work.
 
 ## Phases
 
-### Phase 1: Remove iTerm2 gate + restructure install.sh for no-wizard flow
+### Phase 1: Fix install.sh — remove iTerm2 gate, wire no-wizard flow [H]
 
 **Touches:** `install.sh`
 
 **Tasks:**
-- [ ] Remove the hard-exit `if [[ "$TERM_PROGRAM" != "iTerm.app" ]]` block
-- [ ] Add `install_iterm2` call to always-install block (before menu/confirm, installed first)
-- [ ] Replace `show_menu` + `install_selected` flow with a simple `gum confirm` ("Install devterm? This sets up your entire terminal environment.")
-- [ ] List what will be installed in a styled box before the confirm (no interactive selection)
-- [ ] Add post-install message: if not in iTerm2, show "Now open iTerm2 for the full experience!"
-- [ ] Add `brew_install_formula "zoxide"` to always-install block
+- [ ] [H] Remove the hard-exit `if [[ "$TERM_PROGRAM" != "iTerm.app" ]]` block
+- [ ] [H] Add `install_iterm2` call to always-install block (first thing, before fonts/OMP)
+- [ ] [H] Replace `show_menu` + `install_selected` call with `install_all` (from menu.sh)
+- [ ] [H] Add a `gum style` info box listing everything that will be installed, then `gum confirm` before proceeding
+- [ ] [H] Add `brew_install_formula "zoxide"` to always-install block (after fonts)
+- [ ] [H] Add post-install message: if `$TERM_PROGRAM != "iTerm.app"`, show styled "Now open iTerm2 for the full experience!"
 
-**Verify:** `bash install.sh` from Terminal.app proceeds past the entry check and reaches the confirm prompt.
+**Verify:** `bash -n install.sh` passes; grep confirms no `iTerm.app` exit guard remains.
 
-### Phase 2: Fix lib/menu.sh — replace wizard with install_all
+### Phase 2: Replace lib/menu.sh — wizard out, install_all in [S]
 
 **Touches:** `lib/menu.sh`
 
 **Tasks:**
-- [ ] Remove all 7 `_step_*` wizard functions
-- [ ] Remove `show_menu` and `install_selected` functions
-- [ ] Add `install_all` function that calls every install function in sequence: VS Code, eza, fzf, gh, htop, lazygit, wget, zsh plugins, Claude Code, statusline, composer, Herd, bun, yarn, rclone, awscli, ansible, terraform, tmux, cmatrix
-- [ ] Keep `_wizard_progress` visuals as a simple step counter during `install_all`
-- [ ] Update `install.sh` to call `install_all` instead of `install_selected`
+- [ ] [H] Remove all 7 `_step_*` wizard functions and `show_menu`
+- [ ] [H] Remove `install_selected` case dispatcher
+- [ ] [S] Write `install_all` that calls every install function in order: `install_vscode`, `brew_install_formula "eza"`, `install_fzf`, `brew_install_formula "gh"`, `brew_install_formula "htop"`, `brew_install_formula "lazygit"`, `brew_install_formula "wget"`, `install_zsh_completions`, `install_zsh_autosuggestions`, `install_zsh_history_search`, `install_fast_syntax_highlighting`, `install_claude_code`, `install_claude_statusline`, `brew_install_formula "composer"`, `install_herd`, `brew_install_formula "oven-sh/bun/bun"`, `brew_install_formula "yarn"`, `brew_install_formula "rclone"`, `brew_install_formula "awscli"`, `brew_install_formula "ansible"`, `brew_install_formula "hashicorp/tap/terraform"`, `brew_install_formula "tmux"`, `brew_install_formula "cmatrix"`
+- [ ] [H] Add a `step "..."` progress call before each install group so the user sees progress
 
-**Verify:** All tools listed in `install_all` are called when the installer runs.
+**Verify:** `bash -n lib/menu.sh` passes; `grep install_all lib/menu.sh` shows the function defined.
 
-### Phase 3: Fix fonts — add retry + verify, fix plugins always-install
+### Phase 3: Fix fonts retry + restructure plugin installers [S]
 
 **Touches:** `lib/install/fonts.sh`, `lib/install/plugins.sh`, `lib/install/tools.sh`
 
 **Tasks:**
-- [ ] In `fonts.sh`: after brew cask install, verify the font files exist in `~/Library/Fonts/`; if not, retry once
-- [ ] In `fonts.sh`: check for specific Nerd Font files (e.g. `MesloLGSNerdFont-Regular.ttf`) so the check is meaningful
-- [ ] In `plugins.sh`: rename to expose individual functions — `install_zsh_autosuggestions`, `install_zsh_history_search`, `install_zsh_completions`, `install_fast_syntax_highlighting` — called from `install_all`
-- [ ] In `tools.sh`: add `install_zoxide` function: `brew_install_formula "zoxide"`
-- [ ] Remove the dead `install_plugins()` batch function
+- [ ] [S] In `fonts.sh`: after `brew install --cask`, verify `~/Library/Fonts/MesloLGSNerdFont-Regular.ttf` exists; if not, retry `brew install --cask` once; print clear error if still missing
+- [ ] [H] In `fonts.sh`: add similar verify + retry for the second font cask (Fira Code Nerd Font if present)
+- [ ] [H] In `plugins.sh`: replace the dead `install_plugins()` batch with individual named functions: `install_zsh_autosuggestions`, `install_zsh_history_search`, `install_zsh_completions`, `install_fast_syntax_highlighting` — each clones/updates its plugin to `~/.zsh/plugins/`
+- [ ] [H] In `tools.sh`: add `install_zoxide` function: `brew_install_formula "zoxide"`
+- [ ] [H] Remove the dead `install_plugins()` function entirely
 
-**Verify:** After install, `ls ~/Library/Fonts/ | grep -i meslo` shows font files; `ls ~/.zsh/plugins/` shows all 4 plugin directories.
+**Verify:** `bash -n lib/install/fonts.sh lib/install/plugins.sh lib/install/tools.sh` all pass; `grep "install_zoxide\|install_zsh_completions\|install_fast_syntax_highlighting" lib/install/tools.sh lib/install/plugins.sh` shows all functions defined.
 
-### Phase 4: Commit zshrc.template changes + end-to-end smoke test
+### Phase 4: Smoke test + README [H]
 
-**Touches:** `assets/zshrc.template` (commit only — already written), `assets/zshrc.template` (verify)
+**Touches:** `README.md`, `lib/install/zshrc.sh` (read-only verify)
 
 **Tasks:**
-- [ ] Stage and commit `assets/zshrc.template` and `~/.zshrc` (user's personal file stays local, not committed — template only)
-- [ ] Run a dry-run syntax check: `zsh -n assets/zshrc.template`
-- [ ] Manual smoke test: `source ~/.zshrc` confirms no errors, `z --version` (zoxide), `zi` works, `eza` works, syntax highlighting active
-- [ ] Update README if install command or behavior changed
-- [ ] Verify `zshrc.sh` deploy function still copies template correctly
+- [ ] [H] `zsh -n assets/zshrc.template` — confirm zero errors
+- [ ] [H] Verify `lib/install/zshrc.sh` still copies `$DEVTERM_DIR/assets/zshrc.template` to `~/.zshrc` correctly (no path changes needed)
+- [ ] [H] Scan README: update any mentions of the wizard/selection steps to reflect the new single-confirm flow; update any "run inside iTerm2" requirements
+- [ ] [H] Open a new terminal tab, `source ~/.zshrc`, confirm `z`, `zi`, `eza`, `fzf` all work
 
-**Verify:** `zsh -n assets/zshrc.template` → no errors; smoke test passes.
+**Verify:** README accurately describes the new flow; `source ~/.zshrc` produces zero errors.
+
+## Execution Strategy
+
+> **Approach:** Round 1 → Parallel Subagents (3 workers, dispatched simultaneously) + Round 2 → Leader Direct
+> **Total Tasks:** 19 open (16x[H], 3x[S]) — 3 already done pre-plan
+> **Estimated Rounds:** 2 (1 parallel, 1 leader-direct)
+
+### Round 1: Phase 1 + Phase 2 + Phase 3 → Parallel Subagents (3 workers)
+
+Zero file overlap — Phase 1 owns `install.sh`, Phase 2 owns `lib/menu.sh`, Phase 3 owns `lib/install/fonts.sh` + `lib/install/plugins.sh` + `lib/install/tools.sh`. Function name contracts are defined above in Context Pack.
+
+| Phase | Worker | Model | Tasks | Notes |
+|-------|--------|-------|-------|-------|
+| Phase 1: install.sh fixes | worker-1 | Haiku | 1.1–1.6 (6x[H]) | Pure bash edits, no logic |
+| Phase 2: menu.sh rewrite | worker-2 | Sonnet | 2.1–2.4 (1x[S]+3x[H]) | install_all must call all functions correctly |
+| Phase 3: fonts + plugins | worker-3 | Sonnet | 3.1–3.5 (1x[S]+4x[H]) | Font retry logic needs care |
+
+All 3 dispatched in ONE message. Workers should not commit — leader commits after all 3 report back.
+
+### Round 2: Phase 4 → Leader Direct
+
+4 mechanical [H] tasks — syntax check, README scan, verify zshrc.sh path, smoke test. No spawn needed.
 
 ## Acceptance Criteria
 - [ ] `./install.sh` runs from Terminal.app without exiting early
@@ -134,5 +161,5 @@ Four confirmed bugs prevented devterm from working on a friend's Mac: (1) hard-e
 - [ ] Fonts install and are verified; retry on failure
 - [ ] All plugins in zshrc.template are installed: zsh-completions, fast-syntax-highlighting, zsh-autosuggestions, zsh-history-substring-search, fzf
 - [ ] zoxide installed and `z`/`zi` work after `source ~/.zshrc`
-- [ ] zero errors on `source ~/.zshrc` after fresh install
+- [ ] Zero errors on `source ~/.zshrc` after fresh install
 - [ ] Installer ends with clear "open iTerm2" guidance when run from Terminal.app
