@@ -19,7 +19,7 @@ Installs everything you need — iTerm2 theme, prompt, Claude Code, PHP, Node, D
 curl -fsSL https://raw.githubusercontent.com/skaisser/devterm/main/install.sh | bash
 ```
 
-Homebrew, gum, and figlet install automatically if missing.
+Homebrew and gum install automatically if missing.
 On a fresh Mac this includes Xcode Command Line Tools — allow it and wait (~15 min first time only).
 
 You'll see a summary of everything that will be installed and a single confirmation prompt. Then everything installs automatically — including iTerm2.
@@ -29,7 +29,7 @@ You'll see a summary of everything that will be installed and a single confirmat
 A Finder window opens automatically with the assets folder.
 
 1. **Double-click `skaisser.itermcolors`** → then: `Settings → Profiles → Colors → Color Presets → skaisser`
-2. **Set font:** `Settings → Profiles → Text → Font → MesloLGM Nerd Font Mono · size 18`
+2. **Set font:** `Settings → Profiles → Text → Font → MesloLGS Nerd Font · size 18`
 3. **Open iTerm2** — everything activates automatically
 
 ---
@@ -235,7 +235,7 @@ Use it for: API keys, work aliases, SSH agent, 1Password CLI.
 - Internet connection
 - Any terminal (Terminal.app works fine — iTerm2 installs automatically)
 
-Homebrew, gum, and figlet install automatically.
+Homebrew and gum install automatically.
 
 ---
 
