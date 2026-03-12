@@ -46,6 +46,6 @@ install_fonts() {
         ok "font-fira-code-nerd-font installed"
     fi
 
-    ok "Fonts installed — MesloLGM Nerd Font Mono + Fira Code Nerd Font"
-    info "In iTerm2: Settings → Profiles → Text → Font → MesloLGM Nerd Font Mono, size 18"
+    ok "Fonts installed — MesloLGS Nerd Font + Fira Code Nerd Font"
+    info "In iTerm2: Settings → Profiles → Text → Font → MesloLGS Nerd Font, size 18"
 }

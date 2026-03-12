@@ -39,6 +39,14 @@ run_checks() {
         xcode-select --install 2>/dev/null || true
     fi
 
+    # Internet connectivity (required for Homebrew + git clones)
+    if curl -sfL --connect-timeout 5 https://github.com >/dev/null 2>&1; then
+        ok "Internet connection"
+    else
+        err "No internet connection — devterm needs to download packages"
+        exit 1
+    fi
+
     # Disk space (warn if < 5GB free)
     local free_gb
     free_gb=$(df -g / | awk 'NR==2 {print $4}')

@@ -5,6 +5,7 @@ ok()   { gum style --foreground="#50fa7b" "  ✓  $*"; }
 info() { gum style --foreground="#8be9fd" "  ℹ  $*"; }
 warn() { gum style --foreground="#ffb86c" "  ⚠  $*"; }
 err()  { gum style --foreground="#ff5555" "  ✗  $*"; }
+error() { err "$@"; }
 step() {
     echo ""
     gum style --foreground="#bd93f9" --bold "━━  $*"
