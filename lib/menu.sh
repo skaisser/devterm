@@ -23,7 +23,7 @@ category_label() {
         zsh-plugins)  echo "Zsh Plugins — completions, autosuggestions, syntax, history" ;;
         claude-code)  echo "Claude Code — AI assistant + statusline" ;;
         php-laravel)  echo "PHP / Laravel — composer, Herd" ;;
-        javascript)   echo "JavaScript — bun, yarn" ;;
+        javascript)   echo "JavaScript — nvm, Node 22+18, bun, yarn" ;;
         devops)       echo "DevOps — rclone" ;;
         extras)       echo "Extras — tmux, cmatrix" ;;
     esac
@@ -64,7 +64,8 @@ install_category() {
             install_herd
             ;;
         javascript)
-            step "JavaScript — Bun + Yarn"
+            step "JavaScript — nvm + Node + Bun + Yarn"
+            install_nvm_node
             brew_install_formula "oven-sh/bun/bun"
             brew_install_formula "yarn"
             ;;
