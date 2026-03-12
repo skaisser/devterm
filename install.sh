@@ -56,11 +56,6 @@ if ! command -v gum &>/dev/null; then
     brew install gum
 fi
 
-# ── Bootstrap: figlet ────────────────────────────────────────────────────────
-if ! command -v figlet &>/dev/null; then
-    brew install figlet
-fi
-
 # ── Source libs ──────────────────────────────────────────────────────────────
 source "$DEVTERM_DIR/lib/utils.sh"
 source "$DEVTERM_DIR/lib/banner.sh"
@@ -81,43 +76,11 @@ main() {
     show_banner
     run_checks
 
-    # Show info box with everything that will be installed
-    clear
-    echo ""
-    gum style \
-        --border rounded \
-        --border-foreground="#bd93f9" \
-        --padding "1 2" \
-        --margin "0 2" \
-        "$(gum style --foreground='#bd93f9' --bold '📦  Installation Summary')" \
-        "" \
-        "$(gum style --foreground='#50fa7b' 'Core (always installed):')" \
-        "  • iTerm2 terminal emulator" \
-        "  • Nerd Fonts (Meslo LG S)" \
-        "  • Oh My Posh theme engine + skaisser theme" \
-        "  • zoxide (z command)" \
-        "  • zshrc configuration" \
-        "" \
-        "$(gum style --foreground='#50fa7b' 'Tools & Utilities:')" \
-        "  • VS Code editor" \
-        "  • CLI tools (eza, fzf, gh, htop, lazygit, wget)" \
-        "  • Zsh plugins (completions, autosuggestions, syntax highlight, history search)" \
-        "  • Claude Code AI assistant" \
-        "  • PHP/Laravel (composer, Laravel Herd)" \
-        "  • JavaScript (bun, yarn)" \
-        "  • DevOps (rclone, awscli, ansible, terraform)" \
-        "  • Extras (tmux, cmatrix)"
+    # Let user pick which categories to install
+    pick_categories
 
-    echo ""
-    if ! gum confirm \
-        --prompt.foreground="#bd93f9" \
-        --selected.background="#bd93f9" \
-        --selected.foreground="#000000" \
-        "  Proceed with full installation?"; then
-        echo ""
-        warn "Installation cancelled."
-        exit 0
-    fi
+    # Show summary of what will be installed and confirm
+    show_install_summary
 
     clear
     echo ""
@@ -136,8 +99,8 @@ main() {
     step "iTerm2 color preset"
     install_iterm2_colors
 
-    # Run the full no-wizard install of all selected tools
-    install_all
+    # Install user-selected categories
+    install_selected
 
     # Always install zshrc — it is the foundation of devterm
     step "zshrc config"
