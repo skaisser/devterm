@@ -5,6 +5,8 @@
 **Opinionated. Dark. Smart.** Built for people who live in the terminal.
 Pick what you need — terminal, editor, AI, PHP, Node, DevOps — configured and ready to go.
 
+[![Install](https://img.shields.io/badge/Install-curl_devterm.skaisser.dev_|_bash-blue?style=for-the-badge)](https://devterm.skaisser.dev) [![License: MIT](https://img.shields.io/badge/License-MIT-green?style=for-the-badge)](LICENSE)
+
 > macOS only · Apple Silicon + Intel · Requires macOS 12+
 
 ![devterm installer with gradient color banner](imgs/dev-terminal-installer.png)
