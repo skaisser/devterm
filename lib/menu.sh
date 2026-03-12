@@ -24,7 +24,7 @@ category_label() {
         claude-code)  echo "Claude Code — AI assistant + statusline" ;;
         php-laravel)  echo "PHP / Laravel — composer, Herd" ;;
         javascript)   echo "JavaScript — bun, yarn" ;;
-        devops)       echo "DevOps — rclone, awscli, ansible, terraform" ;;
+        devops)       echo "DevOps — rclone" ;;
         extras)       echo "Extras — tmux, cmatrix" ;;
     esac
 }
@@ -69,11 +69,8 @@ install_category() {
             brew_install_formula "yarn"
             ;;
         devops)
-            step "Infra / DevOps — rclone, awscli, ansible, terraform"
+            step "DevOps — rclone"
             brew_install_formula "rclone"
-            brew_install_formula "awscli"
-            brew_install_formula "ansible"
-            brew_install_formula "hashicorp/tap/terraform"
             ;;
         extras)
             step "Extras — tmux, cmatrix"
