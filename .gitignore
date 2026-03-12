@@ -1,6 +1,7 @@
 .DS_Store
 **/.DS_Store
+.vscode/
 
-# Internal planning & AI config (not for public repo)
+# Local planning
 .planning/
 CLAUDE.md
