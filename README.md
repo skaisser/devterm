@@ -1,9 +1,9 @@
-# DevTerm
+# @skaisser DevTerm
 
-> One command. Perfect developer terminal on macOS.
+> One command. Perfect developer terminal on macOS, Just Like skaisser's
 
 **Opinionated. Dark. Smart.** Built for people who live in the terminal.
-Installs everything you need — iTerm2 theme, prompt, Claude Code, PHP, Node, DevOps tools — configured and ready to go.
+Pick what you need — terminal, editor, AI, PHP, Node, DevOps — configured and ready to go.
 
 > macOS only · Apple Silicon + Intel · Requires macOS 12+
 
@@ -22,7 +22,7 @@ curl -fsSL https://raw.githubusercontent.com/skaisser/devterm/main/install.sh | 
 Homebrew and gum install automatically if missing.
 On a fresh Mac this includes Xcode Command Line Tools — allow it and wait (~15 min first time only).
 
-You'll see a summary of everything that will be installed and a single confirmation prompt. Then everything installs automatically — including iTerm2.
+A category picker lets you choose exactly what to install. Core tools always install, everything else is optional — all pre-selected by default.
 
 ### After install
 
@@ -36,16 +36,14 @@ A Finder window opens automatically with the assets folder.
 
 ## What you get
 
-| | |
-|---|---|
+|                           |                                                                                                      |
+| ------------------------- | ---------------------------------------------------------------------------------------------------- |
 | **@skaisser Smart Theme** | Dark per-window backgrounds — each terminal gets its own color. Open 4 terminals, always know which is which. |
-| **SSH danger mode** | Full red background the moment you `ssh` into a server. Restores automatically on exit. |
-| **Oh My Posh prompt** | Path · git branch · PHP · Node · Go · Python · time — only shown when relevant. |
-| **Claude Code** | AI coding assistant by Anthropic, wired directly into your terminal. |
-| **Claude statusline** | Model · context bar · token count · folder — live in your prompt. |
-| **Laravel Herd** | PHP dev environment. `project.test` with HTTPS, zero config. |
-| **Nerd Fonts** | MesloLGS NF + Fira Code NF — required for prompt icons. |
-| **zsh plugins** | autosuggestions · fast-syntax-highlighting · history search · fzf · eza · zoxide |
+| **SSH danger mode**       | Full red background the moment you `ssh` into a server. Restores automatically on exit.              |
+| **Oh My Posh prompt**     | Path · git branch · PHP · Node · Go · Python · time — only shown when relevant.                      |
+| **Category picker**       | Choose exactly what to install — toggle categories on/off before anything runs.                      |
+| **Nerd Fonts**            | MesloLGS NF + Fira Code NF — required for prompt icons.                                              |
+| **50+ aliases**           | Git, Laravel, navigation, system — all wired into `.zshrc` out of the box.                           |
 
 ---
 
@@ -74,21 +72,21 @@ Each window gets a unique dark background based on its TTY — no config needed.
   </tr>
 </table>
 
-| Window | Color |
-|--------|-------|
-| 1 | Deep navy `#1e2040` |
-| 2 | Forest green `#1a2a1a` |
-| 3 | Burgundy `#2a1818` |
-| 4 | Indigo `#1a1a38` |
-| 5 | Teal `#0f2828` |
-| 6 | Dark plum `#1a0e2a` |
-| 7 | Deep violet `#261426` |
-| 8 | Emerald `#0e2a1a` |
+| Window | Color                  |
+| ------ | ---------------------- |
+| 1      | Deep navy `#1e2040`    |
+| 2      | Forest green `#1a2a1a` |
+| 3      | Burgundy `#2a1818`     |
+| 4      | Indigo `#1a1a38`       |
+| 5      | Teal `#0f2828`         |
+| 6      | Dark plum `#1a0e2a`    |
+| 7      | Deep violet `#261426`  |
+| 8      | Emerald `#0e2a1a`      |
 
 ### SSH danger mode
 
 ```bash
-ssh user@server  # → entire window goes red instantly
+ssh user@server  # → entire window goes red instantly so you remember you might be in production so be carefull!
 ```
 
 ![SSH terminal with full red background](imgs/ssh-terminal-red.png)
@@ -106,34 +104,96 @@ Restores to its original color automatically when the session ends.
 >>
 ```
 
-| Segment | Description |
-|---------|-------------|
-| **Path** | Shortened: `~/Sites/myapp` → `myapp` |
-| **Git** | Branch · working (`~`) · staged (`+`) · ahead (`↑`) · behind (`↓`) |
-| **PHP** | Only shown inside PHP projects |
-| **Node** | Only shown when `package.json` is present |
-| **Go / Python** | Shown when relevant |
-| **Time** | Right-aligned |
+| Segment         | Description                                                        |
+| --------------- | ------------------------------------------------------------------ |
+| **Path**        | Shortened: `~/Sites/myapp` → `myapp`                               |
+| **Git**         | Branch · working (`~`) · staged (`+`) · ahead (`↑`) · behind (`↓`) |
+| **PHP**         | Only shown inside PHP projects                                     |
+| **Node**        | Only shown when `package.json` is present                          |
+| **Go / Python** | Shown when relevant                                                |
+| **Time**        | Right-aligned                                                      |
 
 ---
 
 ## What gets installed
 
-Everything. One confirm, then the installer runs automatically.
+The installer has a **category picker** — core tools always install, everything else is toggleable. All categories are pre-selected by default.
 
-| Group | Tools |
-|-------|-------|
-| **Terminal** | iTerm2 · Nerd Fonts (MesloLGS + Fira Code) · Oh My Posh + skaisser theme · iTerm2 color preset |
-| **Editor** | VS Code |
-| **Core CLI** | eza · fzf · gh · htop · lazygit · wget · zoxide |
-| **Zsh plugins** | zsh-autosuggestions · fast-syntax-highlighting · zsh-history-substring-search · zsh-completions |
-| **Claude Code** | Claude Code · statusline |
-| **PHP / Laravel** | composer · Laravel Herd |
-| **JavaScript** | bun · yarn |
-| **DevOps / Cloud** | rclone · awscli · ansible · terraform |
-| **Extras** | tmux · cmatrix |
+### Core (always installed)
 
-> `.zshrc` is always installed — it's the foundation of devterm. Your existing one is backed up automatically.
+These install on every run — they're the foundation of devterm.
+
+| Tool                   | What it does                                                                                         |
+| ---------------------- | ---------------------------------------------------------------------------------------------------- |
+| **iTerm2**             | Modern terminal emulator for macOS — supports smart themes, per-window colors, and SSH danger mode. Skipped if already installed. |
+| **Nerd Fonts**         | MesloLGS NF + Fira Code NF — patched fonts with icons required for the prompt and file listings.     |
+| **Oh My Posh + theme** | Prompt engine with the custom skaisser theme — shows path, git branch, PHP/Node/Go/Python versions, and time. |
+| **zoxide**             | Smart `cd` replacement — learns your most-used directories. Type `z myapp` to jump anywhere.         |
+| **zshrc config**       | Complete shell configuration with 50+ aliases, functions, smart window colors, SSH danger mode, and plugin sourcing. Your existing `.zshrc` is backed up automatically. |
+
+### Optional categories
+
+Toggle with Space, confirm with Enter. All pre-selected by default.
+
+#### Editor — VS Code
+
+| Tool        | What it does                                                             |
+| ----------- | ------------------------------------------------------------------------ |
+| **VS Code** | Code editor by Microsoft. Installs the desktop app + `code` CLI command. |
+
+#### CLI Tools — eza, fzf, gh, htop, lazygit, wget
+
+| Tool        | What it does                                                                                         |
+| ----------- | ---------------------------------------------------------------------------------------------------- |
+| **eza**     | Modern `ls` replacement — file icons, git status indicators, tree view. Aliased to `ls` automatically. |
+| **fzf**     | Fuzzy finder — `Ctrl+R` for history search, `Ctrl+T` for file search, `Alt+C` for directory jump.    |
+| **gh**      | GitHub CLI — create PRs, manage issues, review code, all from the terminal.                          |
+| **htop**    | Interactive process monitor — see CPU, memory, and running processes in real time.                   |
+| **lazygit** | Full git TUI — stage hunks, resolve conflicts, manage branches visually.                             |
+| **wget**    | Download files from the command line.                                                                |
+
+#### Zsh Plugins — completions, autosuggestions, syntax, history
+
+| Plugin                           | What it does                                                   |
+| -------------------------------- | -------------------------------------------------------------- |
+| **zsh-completions**              | Enhanced tab-completion for hundreds of commands.              |
+| **zsh-autosuggestions**          | Grey ghost text as you type — press Right arrow to accept.     |
+| **fast-syntax-highlighting**     | Real-time command validation — green = valid, red = not found. |
+| **zsh-history-substring-search** | Press Up/Down to search history by what you've already typed.  |
+
+#### Claude Code — AI assistant + statusline
+
+| Tool                  | What it does                                                                                         |
+| --------------------- | ---------------------------------------------------------------------------------------------------- |
+| **Claude Code**       | AI coding assistant by Anthropic, wired directly into your terminal. Start with `claude`, or `claudd` to skip permissions. |
+| **Claude statusline** | Live context display — model, visual progress bar (green → yellow → red), token count, current project folder. |
+
+#### PHP / Laravel — composer, Herd
+
+| Tool             | What it does                                                                                        |
+| ---------------- | --------------------------------------------------------------------------------------------------- |
+| **Composer**     | PHP package manager — install and manage project dependencies.                                      |
+| **Laravel Herd** | Complete PHP dev environment — serves `project.test` with HTTPS, includes PHP + MySQL, zero config. |
+
+#### JavaScript — bun, yarn
+
+| Tool     | What it does                                                                                        |
+| -------- | --------------------------------------------------------------------------------------------------- |
+| **Bun**  | Fast JavaScript runtime + package manager — significantly faster than npm for installs and scripts. |
+| **Yarn** | Classic Node package manager — reliable dependency management.                                      |
+
+#### DevOps — rclone
+
+| Tool       | What it does                                                                                       |
+| ---------- | -------------------------------------------------------------------------------------------------- |
+| **rclone** | Cloud file sync — manage and transfer files to AWS S3, Google Drive, Backblaze, and 70+ providers. |
+
+#### Extras — tmux, cmatrix
+
+| Tool        | What it does                                                                  |
+| ----------- | ----------------------------------------------------------------------------- |
+| **tmux**    | Terminal multiplexer — split panes, persistent sessions, detach and reattach. |
+| **cmatrix** | Matrix-style falling text animation. Because why not.                         |
 
 ---
 
@@ -141,70 +201,70 @@ Everything. One confirm, then the installer runs automatically.
 
 ### Navigation
 
-| Command | |
-|---------|---|
-| `..` `..2` `..3` | Go up 1–3 levels |
-| `-` | Previous directory |
-| `sites` | Jump to `~/Sites` |
-| `z myapp` | Jump anywhere (frecency) |
-| `mkcd mydir` | Create + enter directory |
-| `cl` | Clear |
+| Command          |                          |
+| ---------------- | ------------------------ |
+| `..` `..2` `..3` | Go up 1–3 levels         |
+| `-`              | Previous directory       |
+| `sites`          | Jump to `~/Sites`        |
+| `z myapp`        | Jump anywhere (frecency) |
+| `mkcd mydir`     | Create + enter directory |
+| `cl`             | Clear                    |
 
 ### Git
 
-| Command | |
-|---------|---|
-| `gst` | `git status` |
-| `gd` / `gds` | diff / staged diff |
-| `gco` / `gcb` | checkout / new branch |
-| `gadd` | Interactive hunk staging |
-| `gp` / `gpush` | pull / push |
-| `glog` | Pretty graph log |
-| `lazygit` | Full TUI — stage hunks, resolve conflicts |
+| Command        |                                           |
+| -------------- | ----------------------------------------- |
+| `gst`          | `git status`                              |
+| `gd` / `gds`   | diff / staged diff                        |
+| `gco` / `gcb`  | checkout / new branch                     |
+| `gadd`         | Interactive hunk staging                  |
+| `gp` / `gpush` | pull / push                               |
+| `glog`         | Pretty graph log                          |
+| `lazygit`      | Full TUI — stage hunks, resolve conflicts |
 
 ### File listing
 
-| Command | |
-|---------|---|
-| `ls` | Icons + git status |
-| `l` / `ll` | Long list / with permissions |
-| `lt` / `la` | Tree 2 levels / full tree |
-| `dud` / `duf` | Disk usage |
+| Command       |                              |
+| ------------- | ---------------------------- |
+| `ls`          | Icons + git status           |
+| `l` / `ll`    | Long list / with permissions |
+| `lt` / `la`   | Tree 2 levels / full tree    |
+| `dud` / `duf` | Disk usage                   |
 
 ### PHP / Laravel
 
-| Command | |
-|---------|---|
-| `art` | `php artisan` |
-| `pt` / `ptp` | Pest / Pest parallel |
+| Command      |                              |
+| ------------ | ---------------------------- |
+| `art`        | `php artisan`                |
+| `pt` / `ptp` | Pest / Pest parallel         |
 | `tc` / `tcq` | Coverage / coverage parallel |
-| `cda` | `composer dump-autoload` |
-| `hfix` | Restart Laravel Herd |
+| `cda`        | `composer dump-autoload`     |
+| `hfix`       | Restart Laravel Herd         |
 
 ### Claude Code
 
-| Command | |
-|---------|---|
-| `claude` | Start Claude Code |
+| Command  |                         |
+| -------- | ----------------------- |
+| `claude` | Start Claude Code       |
 | `claudd` | Skip permissions prompt |
 
 ### System
 
-| Command | |
-|---------|---|
-| `ports` | All listening ports |
-| `memusage` / `cpuusage` | Top consumers |
-| `killp nginx` | Kill by name |
-| `extract file.tar.gz` | Extract any archive |
-| `weather "Paris"` | Current weather |
+| Command                 |                     |
+| ----------------------- | ------------------- |
+| `ports`                 | All listening ports |
+| `memusage` / `cpuusage` | Top consumers       |
+| `killp nginx`           | Kill by name        |
+| `extract file.tar.gz`   | Extract any archive |
+| `weather "Paris"`       | Current weather     |
 
 ### Fuzzy finder (fzf)
 
-| Shortcut | |
-|----------|---|
+| Shortcut |                        |
+| -------- | ---------------------- |
 | `Ctrl+R` | Search command history |
-| `Ctrl+T` | Fuzzy-search files |
-| `Alt+C` | cd into any directory |
+| `Ctrl+T` | Fuzzy-search files     |
+| `Alt+C`  | cd into any directory  |
 
 ---
 
