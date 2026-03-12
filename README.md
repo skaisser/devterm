@@ -16,7 +16,7 @@ Pick what you need — terminal, editor, AI, PHP, Node, DevOps — configured an
 ### Run in any terminal
 
 ```bash
-curl -fsSL https://raw.githubusercontent.com/skaisser/devterm/main/install.sh | bash
+curl -fsSL devterm.skaisser.dev | bash
 ```
 
 Homebrew and gum install automatically if missing.
@@ -307,3 +307,7 @@ Homebrew and gum install automatically.
 ## License
 
 MIT — use freely, share openly.
+
+---
+
+Made with ❤️ by **Shirleyson Kaisser** — [to@skaisser.dev](mailto:to@skaisser.dev)
