@@ -175,12 +175,17 @@ Toggle with Space, confirm with Enter. All pre-selected by default.
 | **Composer**     | PHP package manager — install and manage project dependencies.                                      |
 | **Laravel Herd** | Complete PHP dev environment — serves `project.test` with HTTPS, includes PHP + MySQL, zero config. |
 
-#### JavaScript — bun, yarn
+#### JavaScript — nvm, Node 22+18, bun, yarn
 
-| Tool     | What it does                                                                                        |
-| -------- | --------------------------------------------------------------------------------------------------- |
-| **Bun**  | Fast JavaScript runtime + package manager — significantly faster than npm for installs and scripts. |
-| **Yarn** | Classic Node package manager — reliable dependency management.                                      |
+| Tool         | What it does                                                                                        |
+| ------------ | --------------------------------------------------------------------------------------------------- |
+| **nvm**      | Node Version Manager — switch between Node versions per project. Installed via Homebrew.            |
+| **Node 22**  | Current LTS — set as default. Required for Claude Code and modern tooling.                          |
+| **Node 18**  | Legacy LTS — available for older projects. Switch with `nvm use 18`.                                |
+| **Bun**      | Fast JavaScript runtime + package manager — significantly faster than npm for installs and scripts. |
+| **Yarn**     | Classic Node package manager — reliable dependency management.                                      |
+
+> If **Laravel Herd** is installed, nvm and Node are skipped — Herd manages its own Node.js.
 
 #### DevOps — rclone
 

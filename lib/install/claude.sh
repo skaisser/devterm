@@ -2,25 +2,16 @@
 # lib/install/claude.sh — Claude Code + statusline
 
 install_claude_code() {
-    # Bootstrap Node.js via nvm if npm/bun not available
+    # Ensure nvm is sourced — could be Herd's nvm or standalone Homebrew nvm
     if ! command -v npm &>/dev/null && ! command -v bun &>/dev/null; then
-        # Install nvm via Homebrew if missing
-        if [[ ! -f "/opt/homebrew/opt/nvm/nvm.sh" ]] && [[ ! -f "/usr/local/opt/nvm/nvm.sh" ]]; then
-            echo "  → Installing nvm..."
-            brew install nvm
-            mkdir -p "$HOME/.nvm"
+        if [[ -d "/Applications/Herd.app" ]]; then
+            export NVM_DIR="$HOME/Library/Application Support/Herd/config/nvm"
+            [[ -s "$NVM_DIR/nvm.sh" ]] && source "$NVM_DIR/nvm.sh"
+        else
+            export NVM_DIR="$HOME/.nvm"
+            [[ -s "/opt/homebrew/opt/nvm/nvm.sh" ]] && source "/opt/homebrew/opt/nvm/nvm.sh"
+            [[ -s "/usr/local/opt/nvm/nvm.sh" ]]    && source "/usr/local/opt/nvm/nvm.sh"
         fi
-
-        # Source nvm into current session
-        export NVM_DIR="$HOME/.nvm"
-        [[ -s "/opt/homebrew/opt/nvm/nvm.sh" ]] && source "/opt/homebrew/opt/nvm/nvm.sh"
-        [[ -s "/usr/local/opt/nvm/nvm.sh" ]]    && source "/usr/local/opt/nvm/nvm.sh"
-
-        # Install Node 22
-        echo "  → Installing Node.js 22..."
-        nvm install 22
-        nvm use 22
-        ok "Node.js $(node --version) installed via nvm"
     fi
 
     # Prefer bun, fallback to npm
@@ -29,7 +20,8 @@ install_claude_code() {
     elif command -v npm &>/dev/null; then
         local pkg_manager="npm"
     else
-        err "Node.js installation failed — install manually then run: npm install -g @anthropic-ai/claude-code"
+        err "Node.js not found — enable the JavaScript category or install Node manually"
+        info "Then run: npm install -g @anthropic-ai/claude-code"
         return
     fi
 
