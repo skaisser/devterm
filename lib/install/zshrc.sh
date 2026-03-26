@@ -7,17 +7,43 @@ install_zshrc() {
 
     if [[ ! -f "$template" ]]; then
         err "zshrc template not found: $template"
+        track_failed ".zshrc"
         return
     fi
 
-    # Backup existing .zshrc then replace — no prompt, installer is opinionated
+    # Always backup existing .zshrc before overwriting
     if [[ -f "$target" ]]; then
-        local backup="${target}.backup.$(date +%Y%m%d_%H%M%S)"
-        cp "$target" "$backup"
-        info "Backed up existing .zshrc → $backup"
+        local bak
+        bak="$(backup_file "$target")"
+        if [[ -n "$bak" ]]; then
+            info "Backed up existing .zshrc → $bak"
+        fi
     fi
 
     cp "$template" "$target"
-    ok ".zshrc installed → $target"
+
+    # Verify critical markers exist in the new .zshrc
+    local valid=true
+    if ! grep -q "oh-my-posh" "$target" 2>/dev/null; then
+        warn ".zshrc missing oh-my-posh configuration"
+        valid=false
+    fi
+    if ! grep -q "plugins" "$target" 2>/dev/null; then
+        warn ".zshrc missing plugin sources"
+        valid=false
+    fi
+    if ! grep -q "PATH" "$target" 2>/dev/null; then
+        warn ".zshrc missing PATH entries"
+        valid=false
+    fi
+
+    if [[ "$valid" == true ]]; then
+        ok ".zshrc installed → $target"
+        track_installed ".zshrc"
+    else
+        warn ".zshrc installed but may be incomplete — check template"
+        track_installed ".zshrc"
+    fi
+
     info "Run 'source ~/.zshrc' to apply"
 }

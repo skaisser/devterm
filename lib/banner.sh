@@ -32,6 +32,36 @@ _logo_lines() {
         ""
 }
 
+# ── Draw a box using Unicode box-drawing characters ──────────────────────────
+# Usage: _draw_box WIDTH LINE [LINE ...]
+_draw_box() {
+    local width="$1"; shift
+    local inner=$((width - 2))
+
+    # Top border
+    printf "\033[38;5;141m  ┌"
+    printf '─%.0s' $(seq 1 $inner)
+    printf "┐\033[0m\n"
+
+    # Content lines
+    for line in "$@"; do
+        printf "\033[38;5;141m  │\033[0m  %s" "$line"
+        # Calculate visible length (strip ANSI escape codes for padding)
+        local visible
+        visible=$(printf '%s' "$line" | sed 's/\x1b\[[0-9;]*m//g')
+        local pad=$(( inner - ${#visible} - 2 ))
+        if (( pad > 0 )); then
+            printf '%*s' "$pad" ''
+        fi
+        printf "\033[38;5;141m  │\033[0m\n"
+    done
+
+    # Bottom border
+    printf "\033[38;5;141m  └"
+    printf '─%.0s' $(seq 1 $inner)
+    printf "┘\033[0m\n"
+}
+
 show_banner() {
     clear
     echo ""
@@ -53,16 +83,59 @@ show_banner() {
 
     # ── Info box — bright colors for visibility on any dark background ────────
     echo ""
-    gum style \
-        --border rounded \
-        --border-foreground="#bd93f9" \
-        --padding "1 4" \
-        --margin "0 2" \
-        "$(gum style --foreground='#ff79c6' --bold '@skaisser') $(gum style --foreground='#ffffff' --bold 'Custom Smart Theme')" \
-        "" \
-        "$(gum style --foreground='#8be9fd' 'A smart terminal setup that detects your window and adapts')" \
-        "$(gum style --foreground='#8be9fd' 'its colors to what you are working on — built for developers')" \
-        "$(gum style --foreground='#8be9fd' 'who run multiple terminals at the same time.')"
+
+    local title_line
+    title_line="$(printf '\033[38;5;205m\033[1m@skaisser\033[0m \033[1;37mCustom Smart Theme\033[0m')"
+
+    local desc1="$(printf '\033[38;5;81mA smart terminal setup that detects your window and adapts\033[0m')"
+    local desc2="$(printf '\033[38;5;81mits colors to what you are working on — built for developers\033[0m')"
+    local desc3="$(printf '\033[38;5;81mwho run multiple terminals at the same time.\033[0m')"
+
+    # Box width: enough to fit the widest visible line + 4 padding chars + 2 border chars
+    # Widest visible: "@skaisser Custom Smart Theme" = 28 chars
+    # Widest desc: "its colors to what you are working on — built for developers" = 60 chars
+    # inner = 60 + 4 = 64, total width = 66
+    local box_width=70
+
+    local inner=$(( box_width - 2 ))
+    printf "\033[38;5;141m  ┌"
+    printf '─%.0s' $(seq 1 $inner)
+    printf "┐\033[0m\n"
+
+    # Empty padding line
+    printf "\033[38;5;141m  │%*s│\033[0m\n" $inner ''
+
+    # Title line
+    local title_visible="@skaisser Custom Smart Theme"
+    local title_pad=$(( inner - ${#title_visible} - 4 ))
+    printf "\033[38;5;141m  │\033[0m  %s" "$title_line"
+    (( title_pad > 0 )) && printf '%*s' "$title_pad" ''
+    printf "  \033[38;5;141m│\033[0m\n"
+
+    # Empty separator line
+    printf "\033[38;5;141m  │%*s│\033[0m\n" $inner ''
+
+    # Description lines
+    local descs=("$desc1" "$desc2" "$desc3")
+    local descs_visible=(
+        "A smart terminal setup that detects your window and adapts"
+        "its colors to what you are working on — built for developers"
+        "who run multiple terminals at the same time."
+    )
+    for idx in 0 1 2; do
+        local vis_len=${#descs_visible[$idx]}
+        local d_pad=$(( inner - vis_len - 4 ))
+        printf "\033[38;5;141m  │\033[0m  %s" "${descs[$idx]}"
+        (( d_pad > 0 )) && printf '%*s' "$d_pad" ''
+        printf "  \033[38;5;141m│\033[0m\n"
+    done
+
+    # Empty padding line
+    printf "\033[38;5;141m  │%*s│\033[0m\n" $inner ''
+
+    printf "\033[38;5;141m  └"
+    printf '─%.0s' $(seq 1 $inner)
+    printf "┘\033[0m\n"
 
     echo ""
     printf "\033[38;5;141m  iTerm2  ·  Oh My Posh  ·  Claude Code  ·  zsh  ·  Laravel Herd\033[0m\n"
@@ -79,24 +152,102 @@ show_done() {
     clear
     echo ""
 
-    gum style \
-        --border double \
-        --border-foreground="#50fa7b" \
-        --padding "1 4" \
-        --margin "0 2" \
-        "$(gum style --foreground='#50fa7b' --bold '  Installation complete!')" \
-        "" \
-        "$(gum style --foreground='#ffffff' --bold 'Next steps in iTerm2:')" \
-        "" \
-        "$(gum style --foreground='#8be9fd' '  1.  A Finder window is opening — double-click skaisser.itermcolors')" \
-        "$(gum style --foreground='#8be9fd' '         then: Settings → Profiles → Colors → Color Presets → skaisser')" \
-        "" \
-        "$(gum style --foreground='#8be9fd' '  2.  Settings → Profiles → Text → Font')" \
-        "$(gum style --foreground='#8be9fd' '         MesloLGS Nerd Font  ·  size 18')" \
-        "" \
-        "$(gum style --foreground='#8be9fd' '  3.  Open a new iTerm2 tab — everything activates automatically')" \
-        "" \
-        "$(gum style --foreground='#bd93f9' '  github.com/skaisser/devterm')"
+    # ── Completion box ────────────────────────────────────────────────────────
+    local box_width=72
+    local inner=$(( box_width - 2 ))
+
+    printf "\033[38;5;83m  ┌"
+    printf '─%.0s' $(seq 1 $inner)
+    printf "┐\033[0m\n"
+
+    # Empty padding line
+    printf "\033[38;5;83m  │%*s│\033[0m\n" $inner ''
+
+    # Title
+    local title="  Installation complete!"
+    local title_vis="  Installation complete!"
+    local t_pad=$(( inner - ${#title_vis} - 2 ))
+    printf "\033[38;5;83m  │\033[0m\033[32m\033[1m%s\033[0m" "$title"
+    (( t_pad > 0 )) && printf '%*s' "$t_pad" ''
+    printf " \033[38;5;83m│\033[0m\n"
+
+    printf "\033[38;5;83m  │%*s│\033[0m\n" $inner ''
+
+    # Next steps header
+    local hdr="Next steps in iTerm2:"
+    local hdr_pad=$(( inner - ${#hdr} - 4 ))
+    printf "\033[38;5;83m  │\033[0m  \033[1;37m%s\033[0m" "$hdr"
+    (( hdr_pad > 0 )) && printf '%*s' "$hdr_pad" ''
+    printf "  \033[38;5;83m│\033[0m\n"
+
+    printf "\033[38;5;83m  │%*s│\033[0m\n" $inner ''
+
+    # Step 1
+    local s1a="  1.  A Finder window is opening — double-click skaisser.itermcolors"
+    local s1b="         then: Settings → Profiles → Colors → Color Presets → skaisser"
+    local s1a_pad=$(( inner - ${#s1a} - 2 ))
+    local s1b_pad=$(( inner - ${#s1b} - 2 ))
+
+    printf "\033[38;5;83m  │\033[0m\033[38;5;81m%s\033[0m" "$s1a"
+    (( s1a_pad > 0 )) && printf '%*s' "$s1a_pad" ''
+    printf " \033[38;5;83m│\033[0m\n"
+
+    printf "\033[38;5;83m  │\033[0m\033[38;5;81m%s\033[0m" "$s1b"
+    (( s1b_pad > 0 )) && printf '%*s' "$s1b_pad" ''
+    printf " \033[38;5;83m│\033[0m\n"
+
+    printf "\033[38;5;83m  │%*s│\033[0m\n" $inner ''
+
+    # Step 2
+    local s2a="  2.  Settings → Profiles → Text → Font"
+    local s2b="         MesloLGS Nerd Font  ·  size 18"
+    local s2a_pad=$(( inner - ${#s2a} - 2 ))
+    local s2b_pad=$(( inner - ${#s2b} - 2 ))
+
+    printf "\033[38;5;83m  │\033[0m\033[38;5;81m%s\033[0m" "$s2a"
+    (( s2a_pad > 0 )) && printf '%*s' "$s2a_pad" ''
+    printf " \033[38;5;83m│\033[0m\n"
+
+    printf "\033[38;5;83m  │\033[0m\033[38;5;81m%s\033[0m" "$s2b"
+    (( s2b_pad > 0 )) && printf '%*s' "$s2b_pad" ''
+    printf " \033[38;5;83m│\033[0m\n"
+
+    printf "\033[38;5;83m  │%*s│\033[0m\n" $inner ''
+
+    # Step 3
+    local s3a="  3.  Open a new iTerm2 tab — everything activates automatically"
+    local s3a_pad=$(( inner - ${#s3a} - 2 ))
+
+    printf "\033[38;5;83m  │\033[0m\033[38;5;81m%s\033[0m" "$s3a"
+    (( s3a_pad > 0 )) && printf '%*s' "$s3a_pad" ''
+    printf " \033[38;5;83m│\033[0m\n"
+
+    printf "\033[38;5;83m  │%*s│\033[0m\n" $inner ''
+
+    # Repo link
+    local repo="  github.com/skaisser/devterm"
+    local repo_pad=$(( inner - ${#repo} - 2 ))
+    printf "\033[38;5;83m  │\033[0m\033[38;5;141m%s\033[0m" "$repo"
+    (( repo_pad > 0 )) && printf '%*s' "$repo_pad" ''
+    printf " \033[38;5;83m│\033[0m\n"
+
+    printf "\033[38;5;83m  │%*s│\033[0m\n" $inner ''
+
+    printf "\033[38;5;83m  └"
+    printf '─%.0s' $(seq 1 $inner)
+    printf "┘\033[0m\n"
+
+    echo ""
+
+    # ── Install summary ───────────────────────────────────────────────────────
+    show_summary
+
+    # Show backup location if a .zshrc backup was created during this run
+    local latest_backup
+    latest_backup=$(ls -t "$HOME/.zshrc.bak."* 2>/dev/null | head -1)
+    if [[ -n "${latest_backup:-}" ]]; then
+        info "Previous .zshrc backed up to: $latest_backup"
+    fi
 
     echo ""
 
@@ -105,13 +256,13 @@ show_done() {
 
     echo ""
 
-    if gum confirm \
-        --prompt.foreground="#ffb86c" \
-        --selected.background="#ffb86c" \
-        --selected.foreground="#000000" \
-        "  ⭐  Enjoying devterm? Star us on GitHub!"; then
-        open "https://github.com/skaisser/devterm"
-    fi
+    # GitHub star prompt
+    read -rp "  ⭐  Enjoying devterm? Star us on GitHub! [Y/n] " ans
+    case "${ans,,}" in
+        ''|y|yes)
+            open "https://github.com/skaisser/devterm"
+            ;;
+    esac
 
     echo ""
 }

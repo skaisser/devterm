@@ -3,49 +3,38 @@
 
 install_fonts() {
     # ── MesloLGS Nerd Font ───────────────────────────────────────────────────
-    if cask_installed "font-meslo-lg-nerd-font"; then
+    if cask_installed "font-meslo-lg-nerd-font" && [[ -f "$HOME/Library/Fonts/MesloLGSNerdFont-Regular.ttf" ]]; then
         ok "font-meslo-lg-nerd-font already installed"
+        track_skipped "MesloLGS Nerd Font"
     else
-        gum spin --spinner dot --title "Installing font-meslo-lg-nerd-font..." -- \
-            brew install --cask "font-meslo-lg-nerd-font"
-    fi
+        info "Installing font-meslo-lg-nerd-font..."
+        brew install --cask font-meslo-lg-nerd-font
 
-    # Verify MesloLGS Nerd Font installed correctly
-    if [[ ! -f "$HOME/Library/Fonts/MesloLGSNerdFont-Regular.ttf" ]]; then
-        warn "MesloLGS Nerd Font not found — retrying..."
-        gum spin --spinner dot --title "Retrying font-meslo-lg-nerd-font..." -- \
-            brew install --cask "font-meslo-lg-nerd-font"
-        if [[ ! -f "$HOME/Library/Fonts/MesloLGSNerdFont-Regular.ttf" ]]; then
-            error "MesloLGS Nerd Font install failed — please install manually: brew install --cask font-meslo-lg-nerd-font"
+        if [[ -f "$HOME/Library/Fonts/MesloLGSNerdFont-Regular.ttf" ]]; then
+            ok "font-meslo-lg-nerd-font installed"
+            track_installed "MesloLGS Nerd Font"
         else
-            ok "font-meslo-lg-nerd-font installed (retry succeeded)"
+            err "MesloLGS Nerd Font failed to install — try manually: brew install --cask font-meslo-lg-nerd-font"
+            track_failed "MesloLGS Nerd Font"
         fi
-    else
-        ok "font-meslo-lg-nerd-font installed"
     fi
 
     # ── Fira Code Nerd Font ──────────────────────────────────────────────────
-    if cask_installed "font-fira-code-nerd-font"; then
+    if cask_installed "font-fira-code-nerd-font" && [[ -f "$HOME/Library/Fonts/FiraCodeNerdFont-Regular.ttf" ]]; then
         ok "font-fira-code-nerd-font already installed"
+        track_skipped "Fira Code Nerd Font"
     else
-        gum spin --spinner dot --title "Installing font-fira-code-nerd-font..." -- \
-            brew install --cask "font-fira-code-nerd-font"
-    fi
+        info "Installing font-fira-code-nerd-font..."
+        brew install --cask font-fira-code-nerd-font
 
-    # Verify Fira Code Nerd Font installed correctly
-    if [[ ! -f "$HOME/Library/Fonts/FiraCodeNerdFont-Regular.ttf" ]]; then
-        warn "Fira Code Nerd Font not found — retrying..."
-        gum spin --spinner dot --title "Retrying font-fira-code-nerd-font..." -- \
-            brew install --cask "font-fira-code-nerd-font"
-        if [[ ! -f "$HOME/Library/Fonts/FiraCodeNerdFont-Regular.ttf" ]]; then
-            error "Fira Code Nerd Font install failed — please install manually: brew install --cask font-fira-code-nerd-font"
+        if [[ -f "$HOME/Library/Fonts/FiraCodeNerdFont-Regular.ttf" ]]; then
+            ok "font-fira-code-nerd-font installed"
+            track_installed "Fira Code Nerd Font"
         else
-            ok "font-fira-code-nerd-font installed (retry succeeded)"
+            err "Fira Code Nerd Font failed to install — try manually: brew install --cask font-fira-code-nerd-font"
+            track_failed "Fira Code Nerd Font"
         fi
-    else
-        ok "font-fira-code-nerd-font installed"
     fi
 
-    ok "Fonts installed — MesloLGS Nerd Font + Fira Code Nerd Font"
     info "In iTerm2: Settings → Profiles → Text → Font → MesloLGS Nerd Font, size 18"
 }

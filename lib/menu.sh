@@ -87,60 +87,54 @@ pick_categories() {
     clear
     echo ""
 
-    gum style \
-        --border rounded \
-        --border-foreground="#bd93f9" \
-        --padding "1 2" \
-        --margin "0 2" \
-        "$(gum style --foreground='#bd93f9' --bold '📦  Choose what to install')" \
-        "" \
-        "$(gum style --foreground='#50fa7b' 'Always installed (core):')" \
-        "  iTerm2 · Nerd Fonts · Oh My Posh + theme · zoxide · zshrc config" \
-        "" \
-        "$(gum style --foreground='#8be9fd' 'Space to toggle · Enter to confirm')"
+    printf '\033[38;5;141m\033[1m  ┌──────────────────────────────────────────────────────────────────────┐\033[0m\n'
+    printf '\033[38;5;141m\033[1m  │\033[0m  \033[38;5;141m\033[1m📦  Choose what to install\033[0m%36s\033[38;5;141m\033[1m│\033[0m\n' ''
+    printf '\033[38;5;141m\033[1m  │\033[0m%72s\033[38;5;141m\033[1m│\033[0m\n' ''
+    printf '\033[38;5;141m\033[1m  │\033[0m  \033[32mAlways installed (core):\033[0m%48s\033[38;5;141m\033[1m│\033[0m\n' ''
+    printf '\033[38;5;141m\033[1m  │\033[0m  \033[36miTerm2 · Nerd Fonts · Oh My Posh + theme · zoxide · zshrc config\033[0m\033[38;5;141m\033[1m  │\033[0m\n'
+    printf '\033[38;5;141m\033[1m  └──────────────────────────────────────────────────────────────────────┘\033[0m\n'
 
     echo ""
 
-    # Build options list — all pre-selected by default
-    local options=()
-    local preselected=()
+    # Show numbered category list
+    local i=1
     for cat in "${CATEGORIES[@]}"; do
-        local label
-        label=$(category_label "$cat")
-        options+=("$label")
-        preselected+=("$label")
+        printf "  \033[38;5;141m[%d]\033[0m  %s\n" "$i" "$(category_label "$cat")"
+        (( i++ ))
     done
 
-    # Join preselected with commas for --selected flag
-    local selected_str
-    selected_str=$(printf '%s,' "${preselected[@]}")
-    selected_str="${selected_str%,}"
+    echo ""
 
-    local picks
-    picks=$(gum choose --no-limit \
-        --no-show-help \
-        --cursor="  › " \
-        --cursor-prefix="◉ " \
-        --selected-prefix="◉ " \
-        --unselected-prefix="○ " \
-        --cursor.foreground="#ff79c6" \
-        --selected.foreground="#50fa7b" \
-        --height="${#CATEGORIES[@]}" \
-        --selected="$selected_str" \
-        "${options[@]}" \
-    )
+    # Ask: install all or pick individually
+    read -rp "  Install all? [Y/n] " ans_all
+    echo ""
 
-    # Map selected labels back to category keys
     SELECTED_CATEGORIES=()
-    while IFS= read -r pick; do
-        [[ -z "$pick" ]] && continue
-        for cat in "${CATEGORIES[@]}"; do
-            if [[ "$(category_label "$cat")" == "$pick" ]]; then
-                SELECTED_CATEGORIES+=("$cat")
-                break
-            fi
-        done
-    done <<< "$picks"
+
+    case "${ans_all,,}" in
+        ''|y|yes)
+            # Select all categories
+            SELECTED_CATEGORIES=("${CATEGORIES[@]}")
+            info "All categories selected."
+            ;;
+        *)
+            # Prompt Y/n per category
+            printf '\033[36m  ℹ  Select categories to install:\033[0m\n'
+            echo ""
+            for cat in "${CATEGORIES[@]}"; do
+                local label
+                label=$(category_label "$cat")
+                read -rp "  Install ${label}? [Y/n] " ans_cat
+                case "${ans_cat,,}" in
+                    ''|y|yes)
+                        SELECTED_CATEGORIES+=("$cat")
+                        ;;
+                esac
+            done
+            ;;
+    esac
+
+    echo ""
 }
 
 # ── Summary screen ───────────────────────────────────────────────────────────
@@ -149,72 +143,60 @@ show_install_summary() {
     clear
     echo ""
 
-    # Build selected list for display
-    local selected_display=""
-    for cat in "${SELECTED_CATEGORIES[@]}"; do
-        selected_display+="  • $(category_label "$cat")"$'\n'
-    done
+    printf '\033[38;5;141m\033[1m  ┌──────────────────────────────────────────────────────────────────────┐\033[0m\n'
+    printf '\033[38;5;141m\033[1m  │\033[0m  \033[38;5;141m\033[1m📦  Installation Summary\033[0m%40s\033[38;5;141m\033[1m│\033[0m\n' ''
+    printf '\033[38;5;141m\033[1m  └──────────────────────────────────────────────────────────────────────┘\033[0m\n'
 
-    # Build skipped list for display
-    local skipped_display=""
+    echo ""
+
+    # Core section (always installed)
+    printf '\033[32m  Core (always installed):\033[0m\n'
+    printf '\033[32m    •  iTerm2 terminal emulator\033[0m\n'
+    printf '\033[32m    •  Nerd Fonts (MesloLGS + Fira Code)\033[0m\n'
+    printf '\033[32m    •  Oh My Posh + skaisser theme\033[0m\n'
+    printf '\033[32m    •  zoxide (z command)\033[0m\n'
+    printf '\033[32m    •  zshrc configuration\033[0m\n'
+
+    # Selected section
+    if [[ ${#SELECTED_CATEGORIES[@]} -gt 0 ]]; then
+        echo ""
+        printf '\033[32m  Selected:\033[0m\n'
+        for cat in "${SELECTED_CATEGORIES[@]}"; do
+            printf '\033[32m    •  %s\033[0m\n' "$(category_label "$cat")"
+        done
+    fi
+
+    # Skipped section
+    local skipped=()
     for cat in "${CATEGORIES[@]}"; do
         local found=false
         for sel in "${SELECTED_CATEGORIES[@]}"; do
             [[ "$cat" == "$sel" ]] && found=true && break
         done
-        if ! $found; then
-            skipped_display+="  • $(category_label "$cat")"$'\n'
-        fi
+        $found || skipped+=("$cat")
     done
 
-    local summary_lines=(
-        "$(gum style --foreground='#bd93f9' --bold '📦  Installation Summary')"
-        ""
-        "$(gum style --foreground='#50fa7b' 'Core (always installed):')"
-        "  • iTerm2 terminal emulator"
-        "  • Nerd Fonts (MesloLGS + Fira Code)"
-        "  • Oh My Posh + skaisser theme"
-        "  • zoxide (z command)"
-        "  • zshrc configuration"
-    )
-
-    if [[ -n "$selected_display" ]]; then
-        summary_lines+=(
-            ""
-            "$(gum style --foreground='#50fa7b' 'Selected:')"
-        )
-        while IFS= read -r line; do
-            [[ -n "$line" ]] && summary_lines+=("$line")
-        done <<< "$selected_display"
+    if [[ ${#skipped[@]} -gt 0 ]]; then
+        echo ""
+        printf '\033[38;5;239m  Skipped:\033[0m\n'
+        for cat in "${skipped[@]}"; do
+            printf '\033[38;5;239m    •  %s\033[0m\n' "$(category_label "$cat")"
+        done
     fi
-
-    if [[ -n "$skipped_display" ]]; then
-        summary_lines+=(
-            ""
-            "$(gum style --foreground='#6272a4' 'Skipped:')"
-        )
-        while IFS= read -r line; do
-            [[ -n "$line" ]] && summary_lines+=("$(gum style --foreground='#6272a4' "$line")")
-        done <<< "$skipped_display"
-    fi
-
-    gum style \
-        --border rounded \
-        --border-foreground="#bd93f9" \
-        --padding "1 2" \
-        --margin "0 2" \
-        "${summary_lines[@]}"
 
     echo ""
-    if ! gum confirm \
-        --prompt.foreground="#bd93f9" \
-        --selected.background="#bd93f9" \
-        --selected.foreground="#000000" \
-        "  Proceed with installation?"; then
-        echo ""
-        warn "Installation cancelled."
-        exit 0
-    fi
+
+    read -rp "  Proceed with installation? [Y/n] " ans
+    case "${ans,,}" in
+        ''|y|yes)
+            return 0
+            ;;
+        *)
+            echo ""
+            warn "Installation cancelled."
+            exit 0
+            ;;
+    esac
 }
 
 # ── Install selected categories ──────────────────────────────────────────────
