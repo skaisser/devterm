@@ -94,10 +94,10 @@ Rewrite the devterm installer to be reliable on fresh Macs, idempotent (safe to 
 
 **Touches:** `install.sh`, `lib/banner.sh`, `lib/utils.sh`
 
-- [ ] [H] Add `uninstall()` function to `install.sh`: remove `~/.devterm`, remove `~/.zsh/plugins/` (devterm-managed plugins), remove `~/.zsh/themes/skaisser.omp.json`, restore most recent `.zshrc.bak.*` if exists, remove devterm entries from `~/.claude/settings.json` using sed
-- [ ] [H] Wire `--uninstall` flag (parsed in Phase 1) to call `uninstall()` with confirmation prompt before proceeding
-- [ ] [H] Update `show_done()` in `lib/banner.sh` to display the `INSTALLED`/`SKIPPED`/`FAILED` summary arrays, show manual steps needed (iTerm2 color preset, font selection), show backup file locations
-- [ ] [H] Wire `--check` flag (parsed in Phase 1) to run verification-only mode: checks all expected binaries, fonts, plugins, configs exist and reports what's missing without installing anything
+- [x] [H] Add `uninstall()` function to `install.sh`: remove `~/.devterm`, remove `~/.zsh/plugins/` (devterm-managed plugins), remove `~/.zsh/themes/skaisser.omp.json`, restore most recent `.zshrc.bak.*` if exists, remove devterm entries from `~/.claude/settings.json` using sed ✅ 26/03/2026 18:25
+- [x] [H] Wire `--uninstall` flag (parsed in Phase 1) to call `uninstall()` with confirmation prompt before proceeding ✅ 26/03/2026 18:25
+- [x] [H] Update `show_done()` in `lib/banner.sh` to display the `INSTALLED`/`SKIPPED`/`FAILED` summary arrays, show manual steps needed (iTerm2 color preset, font selection), show backup file locations ✅ 26/03/2026 18:25
+- [x] [H] Wire `--check` flag (parsed in Phase 1) to run verification-only mode: checks all expected binaries, fonts, plugins, configs exist and reports what's missing without installing anything ✅ 26/03/2026 18:25
 
 **Verify:** `bash -n install.sh`
 
