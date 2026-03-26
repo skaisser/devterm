@@ -2,7 +2,7 @@
 id: "0002"
 title: "fix: Rewrite installer for reliability and idempotency"
 type: fix
-status: approved
+status: in-progress
 project: devterm
 branch: fix/installer-reliability
 base: main
@@ -12,7 +12,7 @@ backlog: null
 created: "26/03/2026 18:09"
 completed: null
 pr: null
-session: null
+session: "7a504ccf-11e0-4510-a5bf-5736e4ebbda9"
 strategy: mixed-dispatch
 reviews:
   - "Phase 4 T2: clarified --uninstall handler calls uninstall() — flag parsing already in Phase 1 T1"
