@@ -53,13 +53,13 @@ Rewrite the devterm installer to be reliable on fresh Macs, idempotent (safe to 
 
 **Touches:** `install.sh`, `lib/utils.sh`, `lib/checks.sh`
 
-- [ ] [S] Rewrite `install.sh` top section: add `set -euo pipefail`, add `--uninstall`/`--check` flag parsing, add local/remote mode detection (check if `$SCRIPT_DIR/lib` exists for local vs shallow-clone to `~/.devterm` for remote)
-- [ ] [S] Rewrite `install.sh` bootstrap sequence: (1) detect/install Xcode CLT with polling loop (check `xcode-select -p` every 5s, timeout 10min), (2) detect/install Homebrew, (3) remove gum bootstrap entirely
-- [ ] [H] Rewrite `install.sh` main function: source libs → show banner → run checks → pick categories → install core → install selected → install zshrc → show summary — remove all `gum` references
-- [ ] [H] Add verification helpers to `lib/utils.sh`: `verify_command()` (check binary in PATH and runs), `verify_file()` (check file exists), `backup_file()` (timestamped copy like blueprint's `${FILE}.bak.${TS}` pattern)
-- [ ] [H] Add `TS` timestamp variable and `DEVTERM_DIR` variable to `lib/utils.sh` for consistent use across all modules
-- [ ] [H] Rewrite `lib/checks.sh`: add Xcode CLT check (`xcode-select -p`), normalize architecture (arm64/amd64 like blueprint), keep macOS version check, internet check, disk space check — remove any gum references
-- [ ] [H] Add an install summary tracker to `lib/utils.sh`: arrays `INSTALLED=()`, `SKIPPED=()`, `FAILED=()` that install modules append to, with a `show_summary()` function that prints the final report
+- [x] [S] Rewrite `install.sh` top section: add `set -euo pipefail`, add `--uninstall`/`--check` flag parsing, add local/remote mode detection (check if `$SCRIPT_DIR/lib` exists for local vs shallow-clone to `~/.devterm` for remote) ✅ 26/03/2026 18:18
+- [x] [S] Rewrite `install.sh` bootstrap sequence: (1) detect/install Xcode CLT with polling loop (check `xcode-select -p` every 5s, timeout 10min), (2) detect/install Homebrew, (3) remove gum bootstrap entirely ✅ 26/03/2026 18:18
+- [x] [H] Rewrite `install.sh` main function: source libs → show banner → run checks → pick categories → install core → install selected → install zshrc → show summary — remove all `gum` references ✅ 26/03/2026 18:18
+- [x] [H] Add verification helpers to `lib/utils.sh`: `verify_command()` (check binary in PATH and runs), `verify_file()` (check file exists), `backup_file()` (timestamped copy like blueprint's `${FILE}.bak.${TS}` pattern) ✅ 26/03/2026 18:18
+- [x] [H] Add `TS` timestamp variable and `DEVTERM_DIR` variable to `lib/utils.sh` for consistent use across all modules ✅ 26/03/2026 18:18
+- [x] [H] Rewrite `lib/checks.sh`: add Xcode CLT check (`xcode-select -p`), normalize architecture (arm64/amd64 like blueprint), keep macOS version check, internet check, disk space check — remove any gum references ✅ 26/03/2026 18:18
+- [x] [H] Add an install summary tracker to `lib/utils.sh`: arrays `INSTALLED=()`, `SKIPPED=()`, `FAILED=()` that install modules append to, with a `show_summary()` function that prints the final report ✅ 26/03/2026 18:18
 
 **Verify:** `bash -n install.sh && bash -n lib/utils.sh && bash -n lib/checks.sh`
 
