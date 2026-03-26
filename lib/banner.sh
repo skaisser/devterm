@@ -242,6 +242,13 @@ show_done() {
     # ── Install summary ───────────────────────────────────────────────────────
     show_summary
 
+    # Show backup location if a .zshrc backup was created during this run
+    local latest_backup
+    latest_backup=$(ls -t "$HOME/.zshrc.bak."* 2>/dev/null | head -1)
+    if [[ -n "${latest_backup:-}" ]]; then
+        info "Previous .zshrc backed up to: $latest_backup"
+    fi
+
     echo ""
 
     # Open the assets folder in Finder so user can double-click skaisser.itermcolors
