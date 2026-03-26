@@ -78,15 +78,15 @@ Rewrite the devterm installer to be reliable on fresh Macs, idempotent (safe to 
 
 **Touches:** `lib/install/homebrew.sh`, `lib/install/iterm2.sh`, `lib/install/fonts.sh`, `lib/install/omp.sh`, `lib/install/tools.sh`, `lib/install/plugins.sh`, `lib/install/claude.sh`, `lib/install/herd.sh`, `lib/install/zshrc.sh`
 
-- [ ] [H] Rewrite `lib/install/homebrew.sh`: check `command -v brew` before installing, verify after with `brew --version`, track in INSTALLED/SKIPPED arrays
-- [ ] [H] Rewrite `lib/install/iterm2.sh`: use `cask_installed iterm2` before installing, verify `/Applications/iTerm.app` exists after, same for VS Code (`/Applications/Visual Studio Code.app`), track results
-- [ ] [H] Rewrite `lib/install/fonts.sh`: check `~/Library/Fonts/` for each font file before downloading, verify font files exist after install, remove fragile retry loop in favor of clear error message, track results
-- [ ] [H] Rewrite `lib/install/omp.sh`: use `formula_installed oh-my-posh` before installing, verify `command -v oh-my-posh`, use `backup_file` before overwriting theme in `~/.zsh/themes/`, track results
-- [ ] [S] Rewrite `lib/install/tools.sh`: wrap each tool install (eza, fzf, gh, htop, lazygit, wget) with `formula_installed` check, verify each with `command -v`, fix `install_nvm_node()` to properly detect Herd's node vs standalone nvm and verify `node --version` works after, track results
-- [ ] [H] Rewrite `lib/install/plugins.sh`: for each plugin, if dir exists do `git -C DIR pull` (update), if not do `git clone`, verify plugin directory has `.zsh` files after, use `|| true` so network failures don't break existing installs, track results
-- [ ] [S] Rewrite `lib/install/claude.sh`: check `command -v claude` before installing, verify after, use `backup_file` on `~/.claude/settings.json` before modifying, use atomic JSON write (mktemp + mv pattern from blueprint) for statusline config, track results
-- [ ] [H] Rewrite `lib/install/herd.sh`: check `/Applications/Herd.app` before installing, verify after, track results
-- [ ] [H] Rewrite `lib/install/zshrc.sh`: always `backup_file ~/.zshrc` before overwriting, install fresh template, verify critical markers exist in new .zshrc (Oh My Posh eval, plugin sources, PATH entries), print backup location to user, track results
+- [x] [H] Rewrite `lib/install/homebrew.sh`: check `command -v brew` before installing, verify after with `brew --version`, track in INSTALLED/SKIPPED arrays ✅ 26/03/2026 18:22
+- [x] [H] Rewrite `lib/install/iterm2.sh`: use `cask_installed iterm2` before installing, verify `/Applications/iTerm.app` exists after, same for VS Code (`/Applications/Visual Studio Code.app`), track results ✅ 26/03/2026 18:22
+- [x] [H] Rewrite `lib/install/fonts.sh`: check `~/Library/Fonts/` for each font file before downloading, verify font files exist after install, remove fragile retry loop in favor of clear error message, track results ✅ 26/03/2026 18:22
+- [x] [H] Rewrite `lib/install/omp.sh`: use `formula_installed oh-my-posh` before installing, verify `command -v oh-my-posh`, use `backup_file` before overwriting theme in `~/.zsh/themes/`, track results ✅ 26/03/2026 18:22
+- [x] [S] Rewrite `lib/install/tools.sh`: wrap each tool install (eza, fzf, gh, htop, lazygit, wget) with `formula_installed` check, verify each with `command -v`, fix `install_nvm_node()` to properly detect Herd's node vs standalone nvm and verify `node --version` works after, track results ✅ 26/03/2026 18:22
+- [x] [H] Rewrite `lib/install/plugins.sh`: for each plugin, if dir exists do `git -C DIR pull` (update), if not do `git clone`, verify plugin directory has `.zsh` files after, use `|| true` so network failures don't break existing installs, track results ✅ 26/03/2026 18:22
+- [x] [S] Rewrite `lib/install/claude.sh`: check `command -v claude` before installing, verify after, use `backup_file` on `~/.claude/settings.json` before modifying, use atomic JSON write (mktemp + mv pattern from blueprint) for statusline config, track results ✅ 26/03/2026 18:22
+- [x] [H] Rewrite `lib/install/herd.sh`: check `/Applications/Herd.app` before installing, verify after, track results ✅ 26/03/2026 18:22
+- [x] [H] Rewrite `lib/install/zshrc.sh`: always `backup_file ~/.zshrc` before overwriting, install fresh template, verify critical markers exist in new .zshrc (Oh My Posh eval, plugin sources, PATH entries), print backup location to user, track results ✅ 26/03/2026 18:22
 
 **Verify:** `for f in lib/install/*.sh; do bash -n "$f"; done`
 
