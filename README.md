@@ -5,7 +5,7 @@
 **Opinionated. Dark. Smart.** Built for people who live in the terminal.
 Pick what you need — terminal, editor, AI, PHP, Node, DevOps — configured and ready to go.
 
-[![Install](https://img.shields.io/badge/Install-curl_devterm.skaisser.dev_|_bash-blue?style=for-the-badge)](https://devterm.skaisser.dev) [![License: MIT](https://img.shields.io/badge/License-MIT-green?style=for-the-badge)](LICENSE)
+[![Install](https://img.shields.io/badge/Install-curl_devterm.skaisser.dev_|_bash-blue?style=for-the-badge)](https://devterm.skaisser.dev) [![License: Apache 2.0](https://img.shields.io/badge/License-Apache_2.0-green?style=for-the-badge)](LICENSE)
 
 > macOS only · Apple Silicon + Intel · Requires macOS 12+
 
@@ -21,10 +21,12 @@ Pick what you need — terminal, editor, AI, PHP, Node, DevOps — configured an
 curl -fsSL devterm.skaisser.dev | bash
 ```
 
-Homebrew and gum install automatically if missing.
-On a fresh Mac this includes Xcode Command Line Tools — allow it and wait (~15 min first time only).
+Homebrew installs automatically if missing. No other dependencies required.
+On a fresh Mac, Xcode Command Line Tools install automatically — the installer waits for completion (~15 min first time only).
 
 A category picker lets you choose exactly what to install. Core tools always install, everything else is optional — all pre-selected by default.
+
+The installer is **idempotent** — safe to run again anytime. It detects what's already installed and skips it. Use `--check` to see what's installed without changing anything, or `--uninstall` to cleanly remove devterm.
 
 ### After install
 
@@ -302,13 +304,13 @@ Use it for: API keys, work aliases, SSH agent, 1Password CLI.
 - Internet connection
 - Any terminal (Terminal.app works fine — iTerm2 installs automatically)
 
-Homebrew and gum install automatically.
+Homebrew installs automatically. No other dependencies required.
 
 ---
 
 ## License
 
-MIT — use freely, share openly.
+Apache 2.0 — use freely, share openly.
 
 ---
 
