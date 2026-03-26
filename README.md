@@ -15,10 +15,23 @@ Pick what you need — terminal, editor, AI, PHP, Node, DevOps — configured an
 
 ## Install
 
-### Run in any terminal
+### Quick install
 
 ```bash
 curl -fsSL devterm.skaisser.dev | bash
+```
+
+### Or clone and run locally
+
+```bash
+git clone https://github.com/skaisser/devterm && cd devterm && ./install.sh
+```
+
+### Other options
+
+```bash
+./install.sh --check       # see what's installed without changing anything
+./install.sh --uninstall   # cleanly remove devterm and restore previous .zshrc
 ```
 
 Homebrew installs automatically if missing. No other dependencies required.
@@ -26,7 +39,7 @@ On a fresh Mac, Xcode Command Line Tools install automatically — the installer
 
 A category picker lets you choose exactly what to install. Core tools always install, everything else is optional — all pre-selected by default.
 
-The installer is **idempotent** — safe to run again anytime. It detects what's already installed and skips it. Use `--check` to see what's installed without changing anything, or `--uninstall` to cleanly remove devterm.
+The installer is **idempotent** — safe to run again anytime. It detects what's already installed and skips it.
 
 ### After install
 
