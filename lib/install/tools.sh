@@ -8,15 +8,19 @@ brew_install_formula() {
 
     if formula_installed "$display_name" 2>/dev/null || brew list "$formula" &>/dev/null; then
         ok "$display_name already installed"
+        track_skipped "$display_name"
         return
     fi
 
-    gum spin --spinner dot --title "Installing $display_name..." -- \
-        brew install "$formula"
+    info "Installing $display_name..."
+    brew install "$formula"
+
     if formula_installed "$display_name" 2>/dev/null || brew list "$formula" &>/dev/null; then
         ok "$display_name installed"
+        track_installed "$display_name"
     else
         err "$display_name failed to install — try manually: brew install $formula"
+        track_failed "$display_name"
     fi
 }
 
@@ -24,12 +28,22 @@ brew_install_formula() {
 install_fzf() {
     if command -v fzf &>/dev/null; then
         ok "fzf already installed"
-    else
-        gum spin --spinner dot --title "Installing fzf..." -- \
-            brew install fzf
-        # Install shell bindings (Ctrl+R, Ctrl+T, Alt+C)
-        "$(brew --prefix)/opt/fzf/install" --all --no-bash --no-fish --no-update-rc &>/dev/null || true
+        track_skipped "fzf"
+        return
+    fi
+
+    info "Installing fzf..."
+    brew install fzf
+
+    # Install shell bindings (Ctrl+R, Ctrl+T, Alt+C)
+    "$(brew --prefix)/opt/fzf/install" --all --no-bash --no-fish --no-update-rc &>/dev/null || true
+
+    if command -v fzf &>/dev/null; then
         ok "fzf installed (Ctrl+R · Ctrl+T · Alt+C enabled)"
+        track_installed "fzf"
+    else
+        err "fzf failed to install"
+        track_failed "fzf"
     fi
 }
 
@@ -45,8 +59,9 @@ install_nvm_node() {
         export NVM_DIR="$HOME/Library/Application Support/Herd/config/nvm"
         if [[ -s "$NVM_DIR/nvm.sh" ]]; then
             source "$NVM_DIR/nvm.sh"
-            if command -v node &>/dev/null; then
+            if command -v node &>/dev/null && node --version &>/dev/null; then
                 ok "Node.js $(node --version) available via Herd (skipping nvm)"
+                track_skipped "nvm + Node.js (Herd)"
                 return
             fi
         fi
@@ -56,12 +71,21 @@ install_nvm_node() {
 
     # Install nvm via Homebrew if missing
     if ! brew list nvm &>/dev/null; then
-        gum spin --spinner dot --title "Installing nvm..." -- \
-            brew install nvm
+        info "Installing nvm..."
+        brew install nvm
         mkdir -p "$HOME/.nvm"
-        ok "nvm installed"
+
+        if brew list nvm &>/dev/null; then
+            ok "nvm installed"
+            track_installed "nvm"
+        else
+            err "nvm failed to install"
+            track_failed "nvm"
+            return
+        fi
     else
         ok "nvm already installed"
+        track_skipped "nvm"
     fi
 
     # Source nvm into current session
@@ -71,31 +95,53 @@ install_nvm_node() {
 
     if ! command -v nvm &>/dev/null; then
         err "nvm failed to load — try restarting your terminal"
+        track_failed "nvm (load)"
         return
     fi
 
     # Install Node 22 (LTS — default)
     if nvm ls 22 &>/dev/null; then
         ok "Node 22 already installed"
+        track_skipped "Node.js 22"
     else
-        gum spin --spinner dot --title "Installing Node.js 22..." -- \
-            nvm install 22
-        ok "Node.js 22 installed"
+        info "Installing Node.js 22..."
+        nvm install 22
+
+        if nvm ls 22 &>/dev/null; then
+            ok "Node.js 22 installed"
+            track_installed "Node.js 22"
+        else
+            err "Node.js 22 failed to install"
+            track_failed "Node.js 22"
+        fi
     fi
 
     # Install Node 18 (legacy projects)
     if nvm ls 18 &>/dev/null; then
         ok "Node 18 already installed"
+        track_skipped "Node.js 18"
     else
-        gum spin --spinner dot --title "Installing Node.js 18..." -- \
-            nvm install 18
-        ok "Node.js 18 installed"
+        info "Installing Node.js 18..."
+        nvm install 18
+
+        if nvm ls 18 &>/dev/null; then
+            ok "Node.js 18 installed"
+            track_installed "Node.js 18"
+        else
+            err "Node.js 18 failed to install"
+            track_failed "Node.js 18"
+        fi
     fi
 
     # Set Node 22 as default
     nvm use 22 &>/dev/null
     nvm alias default 22 &>/dev/null
-    ok "Node.js $(node --version) active — default set to 22"
+
+    if command -v node &>/dev/null && node --version &>/dev/null; then
+        ok "Node.js $(node --version) active — default set to 22"
+    else
+        warn "Node installed but could not verify — try restarting your terminal"
+    fi
 }
 
 # Install zsh plugin from GitHub to ~/.zsh/plugins/
@@ -107,12 +153,26 @@ install_zsh_plugin() {
     mkdir -p "$HOME/.zsh/plugins"
 
     if [[ -d "$dest/.git" ]]; then
-        gum spin --spinner dot --title "Updating $name..." -- \
-            git -C "$dest" pull --ff-only --quiet
-        ok "$name (updated)"
+        info "Updating $name..."
+        git -C "$dest" pull --ff-only --quiet || true
+
+        if [[ -n "$(ls -A "$dest" 2>/dev/null)" ]]; then
+            ok "$name (updated)"
+            track_skipped "$name"
+        else
+            warn "$name update may have failed — existing install preserved"
+            track_skipped "$name"
+        fi
     else
-        gum spin --spinner dot --title "Installing $name..." -- \
-            git clone --depth=1 "https://github.com/$repo" "$dest"
-        ok "$name installed"
+        info "Installing $name..."
+        git clone --depth=1 "https://github.com/$repo" "$dest" || true
+
+        if [[ -d "$dest" ]] && [[ -n "$(ls -A "$dest" 2>/dev/null)" ]]; then
+            ok "$name installed"
+            track_installed "$name"
+        else
+            err "$name failed to install"
+            track_failed "$name"
+        fi
     fi
 }

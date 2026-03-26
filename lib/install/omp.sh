@@ -3,12 +3,21 @@
 
 install_omp() {
     # Install Oh My Posh
-    if command -v oh-my-posh &>/dev/null; then
-        ok "Oh My Posh already installed ($(oh-my-posh version))"
+    if formula_installed "oh-my-posh"; then
+        ok "Oh My Posh already installed ($(oh-my-posh version 2>/dev/null || echo 'unknown'))"
+        track_skipped "Oh My Posh"
     else
-        gum spin --spinner dot --title "Installing Oh My Posh..." -- \
-            brew install oh-my-posh
-        ok "Oh My Posh installed"
+        info "Installing Oh My Posh..."
+        brew install oh-my-posh
+
+        if command -v oh-my-posh &>/dev/null; then
+            ok "Oh My Posh installed"
+            track_installed "Oh My Posh"
+        else
+            err "Oh My Posh failed to install"
+            track_failed "Oh My Posh"
+            return
+        fi
     fi
 
     # Install skaisser theme
@@ -17,19 +26,20 @@ install_omp() {
     local src="$DEVTERM_DIR/assets/skaisser.omp.json"
     local dst="$HOME/.zsh/themes/skaisser.omp.json"
 
-    if [[ -f "$dst" ]]; then
-        if gum confirm "  skaisser.omp.json already exists — overwrite?"; then
-            cp "$src" "$dst"
-            ok "skaisser theme updated → $dst"
-        else
-            info "Skipped theme overwrite"
-        fi
-    else
-        if [[ ! -f "$src" ]]; then
-            err "Theme file not found: $src"
-            return
-        fi
-        cp "$src" "$dst"
-        ok "skaisser theme installed → $dst"
+    if [[ ! -f "$src" ]]; then
+        err "Theme file not found: $src"
+        track_failed "OMP Theme"
+        return
     fi
+
+    # Backup existing theme before overwriting
+    if [[ -f "$dst" ]]; then
+        local bak
+        bak="$(backup_file "$dst")"
+        info "Backed up existing theme → $bak"
+    fi
+
+    cp "$src" "$dst"
+    ok "skaisser theme installed → $dst"
+    track_installed "OMP Theme"
 }
