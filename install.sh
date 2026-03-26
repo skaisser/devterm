@@ -94,10 +94,10 @@ check_install() {
         local result="$2"   # "ok" or "fail"
         if [[ "$result" == "ok" ]]; then
             ok "$label"
-            (( pass++ ))
+            pass=$((pass + 1))
         else
             err "$label"
-            (( fail++ ))
+            fail=$((fail + 1))
         fi
     }
 
