@@ -4,6 +4,14 @@
 run_checks() {
     step "Pre-flight checks"
 
+    # Xcode CLT
+    if xcode-select -p &>/dev/null; then
+        ok "Xcode Command Line Tools"
+    else
+        err "Xcode Command Line Tools not installed"
+        exit 1
+    fi
+
     # macOS version (require 12.0+)
     local macos_version macos_major
     macos_version=$(sw_vers -productVersion)
@@ -14,13 +22,23 @@ run_checks() {
     fi
     ok "macOS $macos_version"
 
-    # Architecture
-    local arch; arch=$(uname -m)
+    # Architecture — normalize to arm64/amd64
+    local raw_arch arch
+    raw_arch=$(uname -m)
+    case "$raw_arch" in
+        arm64|aarch64) arch="arm64" ;;
+        x86_64)        arch="amd64" ;;
+        *)             arch="$raw_arch" ;;
+    esac
+
     if [[ "$arch" == "arm64" ]]; then
         ok "Apple Silicon (arm64)"
         export BREW_PREFIX="/opt/homebrew"
+    elif [[ "$arch" == "amd64" ]]; then
+        ok "Intel Mac (amd64)"
+        export BREW_PREFIX="/usr/local"
     else
-        ok "Intel Mac (x86_64)"
+        warn "Unknown architecture: $raw_arch"
         export BREW_PREFIX="/usr/local"
     fi
 
@@ -39,7 +57,7 @@ run_checks() {
         xcode-select --install 2>/dev/null || true
     fi
 
-    # Internet connectivity (required for Homebrew + git clones)
+    # Internet connectivity
     if curl -sfL --connect-timeout 5 https://github.com >/dev/null 2>&1; then
         ok "Internet connection"
     else
