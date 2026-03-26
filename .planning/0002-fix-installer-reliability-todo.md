@@ -67,10 +67,10 @@ Rewrite the devterm installer to be reliable on fresh Macs, idempotent (safe to 
 
 **Touches:** `lib/banner.sh`, `lib/menu.sh`
 
-- [ ] [H] Rewrite `lib/banner.sh` `show_banner()`: keep `_gradient_print()` and `_logo_lines()` ANSI logic, replace `gum style` boxed border with manual Unicode box-drawing characters (─, │, ┌, ┐, └, ┘) via `printf`
-- [ ] [H] Rewrite `lib/banner.sh` `show_done()`: replace gum-styled completion screen with pure ANSI styled output, show install summary (installed/skipped/failed counts), keep the GitHub star prompt as a simple `read -rp` prompt
-- [ ] [H] Rewrite `lib/menu.sh` `pick_categories()`: replace `gum choose` with plain bash — show numbered category list, ask "Install all? [Y/n]", if 'n' then prompt Y/n per category, store selections in same `SELECTED_CATEGORIES` array
-- [ ] [H] Rewrite `lib/menu.sh` `show_install_summary()`: replace gum-styled summary with printf-based table showing selected/deselected categories, confirm with `read -rp "Proceed? [Y/n]"`
+- [x] [H] Rewrite `lib/banner.sh` `show_banner()`: keep `_gradient_print()` and `_logo_lines()` ANSI logic, replace `gum style` boxed border with manual Unicode box-drawing characters (─, │, ┌, ┐, └, ┘) via `printf` ✅ 26/03/2026 18:21
+- [x] [H] Rewrite `lib/banner.sh` `show_done()`: replace gum-styled completion screen with pure ANSI styled output, show install summary (installed/skipped/failed counts), keep the GitHub star prompt as a simple `read -rp` prompt ✅ 26/03/2026 18:21
+- [x] [H] Rewrite `lib/menu.sh` `pick_categories()`: replace `gum choose` with plain bash — show numbered category list, ask "Install all? [Y/n]", if 'n' then prompt Y/n per category, store selections in same `SELECTED_CATEGORIES` array ✅ 26/03/2026 18:21
+- [x] [H] Rewrite `lib/menu.sh` `show_install_summary()`: replace gum-styled summary with printf-based table showing selected/deselected categories, confirm with `read -rp "Proceed? [Y/n]"` ✅ 26/03/2026 18:21
 
 **Verify:** `bash -n lib/banner.sh && bash -n lib/menu.sh`
 
