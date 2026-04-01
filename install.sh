@@ -260,13 +260,8 @@ if [[ -z "${BASH_SOURCE[0]:-}" || "${BASH_SOURCE[0]:-}" == /dev/fd/* || "${BASH_
     fi
 
     echo "→ Cloning devterm..."
-    if [[ -d "$DEVTERM_INSTALL_DIR/.git" ]]; then
-        git -C "$DEVTERM_INSTALL_DIR" pull --ff-only --quiet 2>/dev/null \
-            || { rm -rf "$DEVTERM_INSTALL_DIR"; git clone --depth=1 "$DEVTERM_REPO" "$DEVTERM_INSTALL_DIR"; }
-    else
-        rm -rf "$DEVTERM_INSTALL_DIR" 2>/dev/null || true
-        git clone --depth=1 "$DEVTERM_REPO" "$DEVTERM_INSTALL_DIR"
-    fi
+    rm -rf "$DEVTERM_INSTALL_DIR" 2>/dev/null || true
+    git clone --depth=1 "$DEVTERM_REPO" "$DEVTERM_INSTALL_DIR"
     exec bash "$DEVTERM_INSTALL_DIR/install.sh"
     exit
 fi
@@ -278,14 +273,9 @@ if [[ -d "$SCRIPT_DIR/lib" ]]; then
     # Local mode — running from cloned repo
     DEVTERM_DIR="$SCRIPT_DIR"
 else
-    # Remote mode — clone and re-exec
-    if [[ -d "$DEVTERM_INSTALL_DIR/.git" ]]; then
-        git -C "$DEVTERM_INSTALL_DIR" pull --ff-only --quiet 2>/dev/null \
-            || { rm -rf "$DEVTERM_INSTALL_DIR"; git clone --depth=1 "$DEVTERM_REPO" "$DEVTERM_INSTALL_DIR"; }
-    else
-        rm -rf "$DEVTERM_INSTALL_DIR" 2>/dev/null || true
-        git clone --depth=1 "$DEVTERM_REPO" "$DEVTERM_INSTALL_DIR"
-    fi
+    # Remote mode — always fresh clone
+    rm -rf "$DEVTERM_INSTALL_DIR" 2>/dev/null || true
+    git clone --depth=1 "$DEVTERM_REPO" "$DEVTERM_INSTALL_DIR"
     exec bash "$DEVTERM_INSTALL_DIR/install.sh"
     exit
 fi
