@@ -11,6 +11,8 @@ Pick what you need — terminal, editor, AI, PHP, Node, DevOps — configured an
 
 > macOS 12+ · Apple Silicon + Intel · Works from any terminal
 
+[:brazil: Leia em Portugues](README.pt-BR.md)
+
 ![devterm installer with gradient color banner](imgs/dev-terminal-installer.png)
 
 ---
@@ -30,36 +32,50 @@ Setting up a new Mac for development means hours of installing tools, configurin
 
 ## Install
 
-### Quick install
+### Step 1: Open Terminal
+
+Open **Terminal** on your Mac. You can find it in:
+- `Applications > Utilities > Terminal`
+- Or press `Cmd + Space`, type **Terminal**, and hit Enter
+
+### Step 2: Copy and paste this command
 
 ```bash
 bash <(curl -fsSL devterm.skaisser.dev)
 ```
 
-### Or clone and run locally
+Copy the line above, paste it into Terminal, and press **Enter**.
+
+### Step 3: Follow the wizard
+
+1. It will ask for your **Mac password** (you won't see it as you type — that's normal, just type and press Enter)
+2. A setup wizard appears — press **Enter** to install everything (recommended), or type **n** to pick categories one by one
+3. Wait for it to finish — first time takes ~15 minutes on a fresh Mac, much faster on re-runs
+
+### Step 4: Set up iTerm2
+
+After install, a Finder window opens with the theme files.
+
+1. **Double-click `skaisser.itermcolors`** — this imports the color theme
+2. Open **iTerm2** (it was just installed — find it in Applications)
+3. Go to `Settings > Profiles > Colors > Color Presets` and pick **skaisser**
+4. Go to `Settings > Profiles > Text > Font` and pick **MesloLGS Nerd Font**, size **18**
+5. Open a **new tab** — done! Everything works now
+
+### Other ways to install
 
 ```bash
+# Clone and run locally (if you already have git)
 git clone https://github.com/skaisser/devterm && cd devterm && ./install.sh
+
+# Check what's installed without changing anything
+./install.sh --check
+
+# Remove devterm and restore your previous .zshrc
+./install.sh --uninstall
 ```
 
-### Other options
-
-```bash
-./install.sh --check       # see what's installed without changing anything
-./install.sh --uninstall   # cleanly remove devterm and restore previous .zshrc
-```
-
-On a fresh Mac, Xcode Command Line Tools and Homebrew install automatically — the installer waits for completion (~15 min first time only). No manual steps required.
-
-A category picker lets you choose exactly what to install. Core tools always install, everything else is optional — all pre-selected by default.
-
-### After install
-
-A Finder window opens automatically with the assets folder.
-
-1. **Double-click `skaisser.itermcolors`** then: `Settings > Profiles > Colors > Color Presets > skaisser`
-2. **Set font:** `Settings > Profiles > Text > Font > MesloLGS Nerd Font, size 18`
-3. **Open a new iTerm2 tab** — everything activates automatically
+> **First time on a fresh Mac?** Xcode Command Line Tools and Homebrew install automatically. The installer handles everything — no manual steps needed.
 
 ---
 
@@ -131,7 +147,7 @@ Live context directly in your prompt — model, visual progress bar (green to ye
 
 ## What Gets Installed
 
-The installer has a **category picker** — core tools always install, everything else is toggleable. All categories are pre-selected by default.
+The installer shows a **category picker** — press Enter to install everything (recommended) or type **n** to choose individually. Core tools always install no matter what.
 
 ### Core (always installed)
 
@@ -145,7 +161,7 @@ The installer has a **category picker** — core tools always install, everythin
 
 ### Optional categories
 
-All pre-selected by default. Deselect what you don't need.
+All pre-selected by default — just press Enter to install everything.
 
 | Category | Tools |
 | -------- | ----- |
