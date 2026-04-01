@@ -1,9 +1,8 @@
 # DevTerm
 
-> Um comando. Terminal de desenvolvedor perfeito no macOS.
+### Um comando. Mac zerado pra maquina de dev completa.
 
-**Opinativo. Dark. Inteligente.** Uma configuracao completa de terminal para macOS que instala em minutos e simplesmente funciona.
-Escolha o que precisa — terminal, editor, IA, PHP, Node, DevOps — tudo configurado e pronto pra usar.
+Sem guias de configuracao. Sem rabbit hole de dotfiles. Um comando instala o iTerm2, configura fonte, prompt, cores, 50+ atalhos, ferramentas de IA e tudo que um dev precisa — e sai do caminho.
 
 [![Instalar](https://img.shields.io/badge/Instalar-bash_%3C(curl_devterm.skaisser.dev)-blue?style=for-the-badge)](#instalar) [![License: Apache 2.0](https://img.shields.io/badge/License-Apache_2.0-green?style=for-the-badge)](LICENSE) [![macOS](https://img.shields.io/badge/macOS-12%2B-lightgrey?style=for-the-badge&logo=apple)](https://github.com/skaisser/devterm) [![Shell](https://img.shields.io/badge/Shell-Zsh-informational?style=for-the-badge&logo=gnu-bash)](https://github.com/skaisser/devterm)
 
