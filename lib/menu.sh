@@ -29,6 +29,14 @@ category_label() {
     esac
 }
 
+# Recommended = default Y, Optional = default n
+category_recommended() {
+    case "$1" in
+        editor|cli-tools|zsh-plugins|claude-code) return 0 ;;  # recommended
+        *) return 1 ;;  # optional
+    esac
+}
+
 # ── Install functions per category ───────────────────────────────────────────
 
 install_category() {
@@ -81,7 +89,7 @@ install_category() {
     esac
 }
 
-# ── Category picker (single screen) ─────────────────────────────────────────
+# ── Category picker — ask one by one ────────────────────────────────────────
 
 pick_categories() {
     clear
@@ -103,48 +111,33 @@ pick_categories() {
 
     printf "\033[32m  Always installed (core):\033[0m\n"
     printf "\033[36m  iTerm2 · Nerd Fonts · Oh My Posh + theme · zoxide · zshrc config\033[0m\n"
-
-    echo ""
-    printf "\033[38;5;141m\033[1m  Optional categories:\033[0m\n"
-    echo ""
-
-    # Show category list
-    for cat in "${CATEGORIES[@]}"; do
-        printf "  \033[38;5;141m•\033[0m  %s\n" "$(category_label "$cat")"
-    done
-
-    echo ""
-
-    # Ask: install all or pick individually
-    read -rp "  Install all? [Y/n] (n = pick one by one) " ans_all
     echo ""
 
     SELECTED_CATEGORIES=()
 
-    case "$(printf '%s' "$ans_all" | tr '[:upper:]' '[:lower:]')" in
-        ''|y|yes)
-            # Select all categories
-            SELECTED_CATEGORIES=("${CATEGORIES[@]}")
-            info "All categories selected."
-            ;;
-        *)
-            # Prompt Y/n per category
-            printf '\033[36m  ℹ  Select categories to install:\033[0m\n'
-            echo ""
-            for cat in "${CATEGORIES[@]}"; do
-                local label
-                label=$(category_label "$cat")
-                read -rp "  Install ${label}? [Y/n] " ans_cat
-                case "$(printf '%s' "$ans_cat" | tr '[:upper:]' '[:lower:]')" in
-                    ''|y|yes)
-                        SELECTED_CATEGORIES+=("$cat")
-                        ;;
-                esac
-            done
-            ;;
-    esac
+    for cat in "${CATEGORIES[@]}"; do
+        local label
+        label=$(category_label "$cat")
 
-    echo ""
+        if category_recommended "$cat"; then
+            # Recommended — default Y
+            printf "  \033[32m★\033[0m  %s \033[38;5;239m(recommended)\033[0m\n" "$label"
+            read -rp "     Install? [Y/n] " ans
+            case "$(printf '%s' "$ans" | tr '[:upper:]' '[:lower:]')" in
+                n|no) ;;
+                *) SELECTED_CATEGORIES+=("$cat") ;;
+            esac
+        else
+            # Optional — default n
+            printf "  \033[38;5;239m○\033[0m  %s \033[38;5;239m(optional)\033[0m\n" "$label"
+            read -rp "     Install? [y/N] " ans
+            case "$(printf '%s' "$ans" | tr '[:upper:]' '[:lower:]')" in
+                y|yes) SELECTED_CATEGORIES+=("$cat") ;;
+                *) ;;
+            esac
+        fi
+        echo ""
+    done
 }
 
 # ── Summary screen ───────────────────────────────────────────────────────────
