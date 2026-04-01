@@ -96,17 +96,15 @@ pick_categories() {
 
     echo ""
 
-    # Show numbered category list
-    local i=1
+    # Show category list
     for cat in "${CATEGORIES[@]}"; do
-        printf "  \033[38;5;141m[%d]\033[0m  %s\n" "$i" "$(category_label "$cat")"
-        (( i++ ))
+        printf "  \033[38;5;141m•\033[0m  %s\n" "$(category_label "$cat")"
     done
 
     echo ""
 
     # Ask: install all or pick individually
-    read -rp "  Install all? [Y/n] " ans_all
+    read -rp "  Install all? [Y/n] (n = pick one by one) " ans_all
     echo ""
 
     SELECTED_CATEGORIES=()
