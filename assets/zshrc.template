@@ -41,10 +41,17 @@ if [[ -d "/Applications/Herd.app" ]]; then
     [[ -f "/Applications/Herd.app/Contents/Resources/config/shell/zshrc.zsh" ]] && \
         builtin source "/Applications/Herd.app/Contents/Resources/config/shell/zshrc.zsh"
 else
-    # ── nvm (standalone — installed via Homebrew, no Herd) ─────────────────────
+    # ── nvm (standalone — lazy-loaded for fast startup) ────────────────────────
     export NVM_DIR="$HOME/.nvm"
-    [[ -s "/opt/homebrew/opt/nvm/nvm.sh" ]] && \. "/opt/homebrew/opt/nvm/nvm.sh"
-    [[ -s "/usr/local/opt/nvm/nvm.sh" ]]    && \. "/usr/local/opt/nvm/nvm.sh"
+    _lazy_load_nvm() {
+        unset -f node npm npx nvm
+        [[ -s "/opt/homebrew/opt/nvm/nvm.sh" ]] && \. "/opt/homebrew/opt/nvm/nvm.sh"
+        [[ -s "/usr/local/opt/nvm/nvm.sh" ]]    && \. "/usr/local/opt/nvm/nvm.sh"
+    }
+    for _nvm_cmd in node npm npx nvm; do
+        eval "${_nvm_cmd}() { _lazy_load_nvm; ${_nvm_cmd} \"\$@\"; }"
+    done
+    unset _nvm_cmd
 fi
 
 # ── Aliases — Navigation ──────────────────────────────────────────────────────
@@ -142,13 +149,15 @@ extract() {
 # Search processes by name — psg nginx
 psg() { ps aux | grep -v grep | grep -i "$1"; }
 
-# Kill process by name — killp nginx
+# Kill process by name — killp nginx (with confirmation)
 killp() {
-    if [[ -n "$1" ]]; then
-        ps aux | grep "$1" | grep -v grep | awk '{print $2}' | xargs kill -9
-    else
-        echo "Usage: killp <process_name>"
-    fi
+    if [[ -z "$1" ]]; then echo "Usage: killp <process_name>"; return 1; fi
+    local pids=($(pgrep -f "$1"))
+    if [[ ${#pids[@]} -eq 0 ]]; then echo "No matching processes"; return 1; fi
+    ps -p "${pids[@]}" -o pid,command
+    echo -n "Kill these? [y/N] "
+    read -r confirm
+    [[ "$confirm" == [yY] ]] && kill -9 "${pids[@]}"
 }
 
 # Quick weather — weather "London" or just: weather
@@ -203,7 +212,7 @@ if [[ "$TERM_PROGRAM" == "iTerm.app" ]]; then
                     end repeat
                 end repeat
             end tell
-        " 2>/dev/null
+        " 2>/dev/null &!
     }
 
     # Assign unique dark background per window based on TTY number
@@ -288,8 +297,8 @@ if [[ "$TERM_PROGRAM" == "iTerm.app" ]]; then
         echo -ne "\033]0;🔴 SSH → ${host%%.*}\033\\"
         command ssh "$@"
         unset _ITERM2_IN_SSH
-        (( ${+functions[_iterm2_auto_colors]} )) && _iterm2_auto_colors
-        (( ${+functions[_iterm2_build_title]} )) && echo -ne "\033]0;$(_iterm2_build_title)\033\\"
+        _iterm2_auto_colors
+        echo -ne "\033]0;$(_iterm2_build_title)\033\\"
     }
 fi
 
@@ -306,10 +315,19 @@ fi
 # ── Plugins ───────────────────────────────────────────────────────────────────
 # fpath additions must come before compinit
 [[ -d ~/.zsh/plugins/zsh-completions/src ]] && fpath=(~/.zsh/plugins/zsh-completions/src $fpath)
-autoload -Uz compinit && compinit
+autoload -Uz compinit
+if [[ -n ~/.zcompdump(#qN.mh+24) ]]; then
+    compinit
+else
+    compinit -C
+fi
 
 # fzf — fuzzy finder (Ctrl+R history · Ctrl+T files · Alt+C cd into dir)
-[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
+if command -v fzf &>/dev/null; then
+    source <(fzf --zsh)
+    export FZF_DEFAULT_OPTS="--height=40% --layout=reverse --border --info=inline"
+    export FZF_CTRL_T_OPTS="--preview 'head -100 {}'"
+fi
 
 # History substring search — type partial command then press Up/Down
 [[ -f ~/.zsh/plugins/zsh-history-substring-search/zsh-history-substring-search.zsh ]] && {
@@ -329,10 +347,10 @@ autoload -Uz compinit && compinit
 [[ -f ~/.zsh/plugins/fast-syntax-highlighting/fast-syntax-highlighting.plugin.zsh ]] && \
     source ~/.zsh/plugins/fast-syntax-highlighting/fast-syntax-highlighting.plugin.zsh
 
-# zoxide — smart directory jumper: z <partial> to jump, zi for interactive (fzf)
+# zoxide — frecency directory jumper: "z myapp" to jump, "zi" for interactive
 command -v zoxide &>/dev/null && eval "$(zoxide init zsh)"
 
 # ── Local overrides ───────────────────────────────────────────────────────────
 # Machine-specific config — never tracked in version control
-# Great place for: 1Password, API keys, work-specific aliases, Java paths
+# Great place for: 1Password, API keys, work-specific aliases
 [[ -f ~/.zshrc.local ]] && source ~/.zshrc.local
