@@ -301,7 +301,7 @@ show_done() {
 
     # GitHub star prompt (10s timeout — auto-skips if user walks away)
     read -t 10 -rp "  ⭐  Enjoying devterm? Star us on GitHub! [Y/n] " ans || ans="n"
-    case "${ans,,}" in
+    case "$(printf '%s' "$ans" | tr '[:upper:]' '[:lower:]')" in
         ''|y|yes)
             open "https://github.com/skaisser/devterm"
             ;;

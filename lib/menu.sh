@@ -111,7 +111,7 @@ pick_categories() {
 
     SELECTED_CATEGORIES=()
 
-    case "${ans_all,,}" in
+    case "$(printf '%s' "$ans_all" | tr '[:upper:]' '[:lower:]')" in
         ''|y|yes)
             # Select all categories
             SELECTED_CATEGORIES=("${CATEGORIES[@]}")
@@ -125,7 +125,7 @@ pick_categories() {
                 local label
                 label=$(category_label "$cat")
                 read -rp "  Install ${label}? [Y/n] " ans_cat
-                case "${ans_cat,,}" in
+                case "$(printf '%s' "$ans_cat" | tr '[:upper:]' '[:lower:]')" in
                     ''|y|yes)
                         SELECTED_CATEGORIES+=("$cat")
                         ;;
@@ -187,7 +187,7 @@ show_install_summary() {
     echo ""
 
     read -rp "  Proceed with installation? [Y/n] " ans
-    case "${ans,,}" in
+    case "$(printf '%s' "$ans" | tr '[:upper:]' '[:lower:]')" in
         ''|y|yes)
             return 0
             ;;

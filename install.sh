@@ -213,7 +213,7 @@ if [[ "${1:-}" == "--uninstall" ]]; then
         source "$SCRIPT_DIR/lib/utils.sh"
     fi
     read -rp "  Remove devterm and restore previous config? [y/N] " ans
-    case "${ans,,}" in
+    case "$(printf '%s' "$ans" | tr '[:upper:]' '[:lower:]')" in
         y|yes) uninstall ;;
         *) echo "  Cancelled."; exit 0 ;;
     esac
