@@ -5,18 +5,54 @@ install_iterm2() {
     if [[ -d "/Applications/iTerm.app" ]]; then
         ok "iTerm2 already installed"
         track_skipped "iTerm2"
-        return
+    else
+        info "Installing iTerm2..."
+        brew install --cask iterm2
+
+        if [[ -d "/Applications/iTerm.app" ]]; then
+            ok "iTerm2 installed"
+            track_installed "iTerm2"
+        else
+            err "iTerm2 failed to install"
+            track_failed "iTerm2"
+            return
+        fi
     fi
 
-    info "Installing iTerm2..."
-    brew install --cask iterm2
+    # Auto-configure iTerm2 (appearance + hotkey + profile)
+    _configure_iterm2
+}
 
-    if [[ -d "/Applications/iTerm.app" ]]; then
-        ok "iTerm2 installed"
-        track_installed "iTerm2"
-    else
-        err "iTerm2 failed to install"
-        track_failed "iTerm2"
+_configure_iterm2() {
+    local plist="com.googlecode.iterm2"
+
+    # ── Global settings (via defaults write) ─────────────────────────────────
+
+    # Appearance: Minimal (5)
+    defaults write "$plist" TabStyleWithAutomaticOption -int 5
+
+    # System-wide hotkey: Cmd+` to toggle iTerm2 from anywhere
+    defaults write "$plist" Hotkey -bool true
+    defaults write "$plist" HotkeyChar -int 0
+    defaults write "$plist" HotkeyCode -int 50
+    defaults write "$plist" HotkeyModifiers -int 1048840
+    defaults write "$plist" HotkeyMigratedFromSingleToMulti -bool true
+
+    # Smooth scrolling off (snappier feel)
+    defaults write "$plist" AppleScrollAnimationEnabled -bool false
+    defaults write "$plist" NSScrollAnimationEnabled -bool false
+
+    ok "iTerm2 configured — Minimal appearance + Cmd+\` hotkey"
+
+    # ── Dynamic Profile (font, scrollback, cursor) ───────────────────────────
+    local dynamic_dir="$HOME/Library/Application Support/iTerm2/DynamicProfiles"
+    local profile_src="$DEVTERM_DIR/assets/iterm2/devterm-profile.json"
+
+    if [[ -f "$profile_src" ]]; then
+        mkdir -p "$dynamic_dir"
+        cp "$profile_src" "$dynamic_dir/devterm-profile.json"
+        ok "devterm profile installed (MesloLGS Nerd Font Mono 18 + unlimited scrollback)"
+        info "In iTerm2: Settings → Profiles → select 'devterm' → Other Actions → Set as Default"
     fi
 }
 
@@ -50,7 +86,6 @@ install_iterm2_colors() {
     fi
 
     if [[ ! -d "/Applications/iTerm.app" ]]; then
-        # iTerm2 not installed yet — skip importing (user will do it after opening iTerm2)
         info "iTerm2 color preset ready — import it after opening iTerm2"
         track_skipped "iTerm2 Colors"
         return

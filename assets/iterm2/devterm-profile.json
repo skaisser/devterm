@@ -1,0 +1,28 @@
+{
+  "Profiles": [
+    {
+      "Name": "devterm",
+      "Guid": "devterm-skaisser-default-profile",
+      "Dynamic Profile Parent Name": "Default",
+      "Normal Font": "MesloLGSNerdFontMono-Regular 18",
+      "Non Ascii Font": "MesloLGSNerdFontMono-Regular 18",
+      "ASCII Anti Aliased": true,
+      "Non-ASCII Anti Aliased": true,
+      "ASCII Ligatures": true,
+      "Use Non-ASCII Font": false,
+      "Unlimited Scrollback": true,
+      "Scrollback Lines": 10000,
+      "Option Key Sends": 2,
+      "Right Option Key Sends": 2,
+      "Silence Bell": true,
+      "BM Growl": false,
+      "Flashing Bell": false,
+      "Visual Bell": false,
+      "Transparency": 0.0,
+      "Blur": false,
+      "Minimum Contrast": 0.0,
+      "Cursor Type": 2,
+      "Blinking Cursor": true
+    }
+  ]
+}
