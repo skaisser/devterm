@@ -261,8 +261,10 @@ if [[ -z "${BASH_SOURCE[0]:-}" || "${BASH_SOURCE[0]:-}" == /dev/fd/* || "${BASH_
 
     echo "→ Cloning devterm..."
     if [[ -d "$DEVTERM_INSTALL_DIR/.git" ]]; then
-        git -C "$DEVTERM_INSTALL_DIR" pull --ff-only --quiet
+        git -C "$DEVTERM_INSTALL_DIR" pull --ff-only --quiet 2>/dev/null \
+            || { rm -rf "$DEVTERM_INSTALL_DIR"; git clone --depth=1 "$DEVTERM_REPO" "$DEVTERM_INSTALL_DIR"; }
     else
+        rm -rf "$DEVTERM_INSTALL_DIR" 2>/dev/null || true
         git clone --depth=1 "$DEVTERM_REPO" "$DEVTERM_INSTALL_DIR"
     fi
     exec bash "$DEVTERM_INSTALL_DIR/install.sh"
@@ -278,8 +280,10 @@ if [[ -d "$SCRIPT_DIR/lib" ]]; then
 else
     # Remote mode — clone and re-exec
     if [[ -d "$DEVTERM_INSTALL_DIR/.git" ]]; then
-        git -C "$DEVTERM_INSTALL_DIR" pull --ff-only --quiet
+        git -C "$DEVTERM_INSTALL_DIR" pull --ff-only --quiet 2>/dev/null \
+            || { rm -rf "$DEVTERM_INSTALL_DIR"; git clone --depth=1 "$DEVTERM_REPO" "$DEVTERM_INSTALL_DIR"; }
     else
+        rm -rf "$DEVTERM_INSTALL_DIR" 2>/dev/null || true
         git clone --depth=1 "$DEVTERM_REPO" "$DEVTERM_INSTALL_DIR"
     fi
     exec bash "$DEVTERM_INSTALL_DIR/install.sh"
