@@ -44,16 +44,19 @@ _configure_iterm2() {
 
     ok "iTerm2 configured — Minimal appearance + Cmd+\` hotkey"
 
-    # ── Dynamic Profile (font, scrollback, cursor) ───────────────────────────
+    # ── Dynamic Profile (font, colors, scrollback, cursor) ─────────────────
     local dynamic_dir="$HOME/Library/Application Support/iTerm2/DynamicProfiles"
     local profile_src="$DEVTERM_DIR/assets/iterm2/devterm-profile.json"
 
     if [[ -f "$profile_src" ]]; then
         mkdir -p "$dynamic_dir"
         cp "$profile_src" "$dynamic_dir/devterm-profile.json"
-        ok "devterm profile installed (MesloLGS Nerd Font Mono 18 + unlimited scrollback)"
-        info "In iTerm2: Settings → Profiles → select 'devterm' → Other Actions → Set as Default"
+        ok "devterm profile installed (font + colors + scrollback)"
     fi
+
+    # Set devterm as the default profile
+    defaults write "$plist" "Default Bookmark Guid" -string "devterm-skaisser-default-profile"
+    ok "devterm profile set as default"
 }
 
 install_vscode() {
@@ -77,24 +80,7 @@ install_vscode() {
 }
 
 install_iterm2_colors() {
-    local preset="$DEVTERM_DIR/assets/skaisser.itermcolors"
-
-    if [[ ! -f "$preset" ]]; then
-        err "Color preset not found: $preset"
-        track_failed "iTerm2 Colors"
-        return
-    fi
-
-    if [[ ! -d "/Applications/iTerm.app" ]]; then
-        info "iTerm2 color preset ready — import it after opening iTerm2"
-        track_skipped "iTerm2 Colors"
-        return
-    fi
-
-    # Open with iTerm2 — it handles .itermcolors natively and registers the preset
-    open -a iTerm "$preset" 2>/dev/null || open "$preset" 2>/dev/null || true
-
-    ok "iTerm2 color preset imported"
+    # Colors are now embedded in the devterm dynamic profile — no manual import needed
+    ok "skaisser colors embedded in devterm profile"
     track_installed "iTerm2 Colors"
-    info "In iTerm2: Settings → Profiles → Colors → Color Presets → skaisser"
 }

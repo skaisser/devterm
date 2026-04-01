@@ -52,17 +52,14 @@ Copy the line above, paste it into Terminal, and press **Enter**.
 2. A setup wizard appears — press **Enter** to install everything (recommended), or type **n** to pick categories one by one
 3. Wait for it to finish — first time takes ~15 minutes on a fresh Mac, much faster on re-runs
 
-### Step 4: Set up iTerm2
+### Step 4: Open iTerm2
 
-Font (MesloLGS 18), appearance (Minimal), and system hotkey (Cmd+`) are configured automatically.
+Everything is configured automatically — font, colors, appearance, and system hotkey.
 
-After install, a Finder window opens with the color theme:
+1. Open **iTerm2** from Applications (or press **Cmd+`** from anywhere)
+2. That's it. Everything works out of the box
 
-1. **Double-click `skaisser.itermcolors`** — this imports the color theme
-2. Open **iTerm2** (it was just installed — find it in Applications)
-3. Go to `Settings > Profiles` — select **devterm** — click `Other Actions > Set as Default`
-4. Go to `Settings > Profiles > Colors > Color Presets` and pick **skaisser**
-5. Open a **new tab** — done! Press **Cmd+`** from anywhere to toggle iTerm2
+> The devterm profile (MesloLGS Nerd Font 18, skaisser colors, Minimal appearance, unlimited scrollback) is set as default automatically.
 
 ### Other ways to install
 

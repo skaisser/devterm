@@ -52,17 +52,14 @@ Copie a linha acima, cole no Terminal e aperte **Enter**.
 2. O assistente aparece — aperte **Enter** pra instalar tudo (recomendado), ou digite **n** pra escolher categoria por categoria
 3. Espere terminar — a primeira vez leva ~15 minutos num Mac zerado, muito mais rapido nas proximas vezes
 
-### Passo 4: Configure o iTerm2
+### Passo 4: Abra o iTerm2
 
-Fonte (MesloLGS 18), aparencia (Minimal) e atalho global (Cmd+`) sao configurados automaticamente.
+Tudo e configurado automaticamente — fonte, cores, aparencia e atalho global.
 
-Depois da instalacao, uma janela do Finder abre com o tema de cores:
+1. Abra o **iTerm2** pela pasta Aplicativos (ou aperte **Cmd+`** de qualquer lugar)
+2. Pronto. Tudo funciona direto
 
-1. **De dois cliques em `skaisser.itermcolors`** — isso importa o tema de cores
-2. Abra o **iTerm2** (acabou de ser instalado — esta na pasta Aplicativos)
-3. Va em `Settings > Profiles` — selecione **devterm** — clique em `Other Actions > Set as Default`
-4. Va em `Settings > Profiles > Colors > Color Presets` e escolha **skaisser**
-5. Abra uma **nova aba** — pronto! Aperte **Cmd+`** de qualquer lugar pra abrir o iTerm2
+> O perfil devterm (MesloLGS Nerd Font 18, cores skaisser, aparencia Minimal, scrollback ilimitado) e definido como padrao automaticamente.
 
 ### Outras formas de instalar
 
