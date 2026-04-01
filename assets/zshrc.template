@@ -239,7 +239,6 @@ if [[ "$TERM_PROGRAM" == "iTerm.app" ]]; then
     # Shorten path for title bar: ~/Sites/myapp/src → myapp/src
     _iterm2_short_cwd() {
         if   [[ "$PWD" == "$HOME/Sites/"* ]];       then echo "${PWD#$HOME/Sites/}"
-        elif [[ "$PWD" == "$HOME/ActiveSites/"* ]]; then echo "${PWD#$HOME/ActiveSites/}"
         elif [[ "$PWD" == "$HOME"* ]];              then echo "~${PWD#$HOME}"
         else echo "$PWD"; fi
     }

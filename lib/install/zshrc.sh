@@ -45,5 +45,12 @@ install_zshrc() {
         track_installed ".zshrc"
     fi
 
+    # Create ~/.zshrc.local from example if it doesn't exist
+    local local_example="$DEVTERM_DIR/assets/zshrc.local.example"
+    if [[ ! -f "$HOME/.zshrc.local" && -f "$local_example" ]]; then
+        cp "$local_example" "$HOME/.zshrc.local"
+        ok "~/.zshrc.local created from example — add your personal config there"
+    fi
+
     info "Run 'source ~/.zshrc' to apply"
 }

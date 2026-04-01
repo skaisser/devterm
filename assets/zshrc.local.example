@@ -1,0 +1,33 @@
+# ─────────────────────────────────────────────────────────────────────────────
+# ~/.zshrc.local — machine-specific overrides (never tracked in git)
+# Sourced at the end of ~/.zshrc by devterm
+#
+# Copy this file to ~/.zshrc.local and customize:
+#   cp ~/.devterm/assets/zshrc.local.example ~/.zshrc.local
+# ─────────────────────────────────────────────────────────────────────────────
+
+# ── 1Password SSH Agent ──────────────────────────────────────────────────────
+# export SSH_AUTH_SOCK=~/Library/Group\ Containers/2BUA8C4S2C.com.1password/t/agent.sock
+
+# ── Custom editor ────────────────────────────────────────────────────────────
+# export EDITOR='nvim'
+
+# ── Extra PATH entries ───────────────────────────────────────────────────────
+# export PATH="$HOME/go/bin:$PATH"
+# export PATH="$HOME/.cargo/bin:$PATH"
+
+# ── Docker ───────────────────────────────────────────────────────────────────
+# alias dc="docker compose"
+# alias dcu="docker compose up -d"
+# alias dcd="docker compose down"
+
+# ── Work-specific aliases ────────────────────────────────────────────────────
+# alias deploy="ssh deploy@prod 'cd /var/www && git pull && php artisan migrate'"
+
+# ── API keys & tokens ───────────────────────────────────────────────────────
+# export OPENAI_API_KEY="sk-..."
+# export ANTHROPIC_API_KEY="sk-ant-..."
+
+# ── Cloud CLI ────────────────────────────────────────────────────────────────
+# export AWS_PROFILE="default"
+# export GOOGLE_APPLICATION_CREDENTIALS="$HOME/.config/gcloud/credentials.json"
