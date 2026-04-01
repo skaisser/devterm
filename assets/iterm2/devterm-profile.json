@@ -22,6 +22,7 @@
       "Minimum Contrast": 0.0,
       "Cursor Type": 2,
       "Blinking Cursor": true,
+      "Title Components": 6,
       "Use Tab Color": true,
       "Foreground Color": {
         "Red Component": 0.972549,
