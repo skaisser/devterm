@@ -4,7 +4,7 @@
 # https://github.com/skaisser/devterm
 #
 # Usage:
-#   /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/skaisser/devterm/main/install.sh)"
+#   bash <(curl -fsSL https://raw.githubusercontent.com/skaisser/devterm/main/install.sh)
 #   — or —
 #   git clone https://github.com/skaisser/devterm && cd devterm && ./install.sh
 #   — or —
@@ -225,8 +225,9 @@ if [[ "${1:-}" == "--check" ]]; then
     exit 0
 fi
 
-# ── Self-clone if piped via curl (remote mode) ──────────────────────────────
-if [[ "${BASH_SOURCE[0]:-}" == "" ]]; then
+# ── Self-clone if run via curl (remote mode) ─────────────────────────────────
+# Detect: pipe (BASH_SOURCE empty) or process substitution (/dev/fd/*)
+if [[ -z "${BASH_SOURCE[0]:-}" || "${BASH_SOURCE[0]:-}" == /dev/fd/* || "${BASH_SOURCE[0]:-}" == /proc/self/fd/* ]]; then
     # ── Bootstrap Xcode CLT (polling loop, 10min timeout) ────────────────
     if ! xcode-select -p &>/dev/null; then
         echo "→ Installing Xcode Command Line Tools..."
@@ -247,8 +248,8 @@ if [[ "${BASH_SOURCE[0]:-}" == "" ]]; then
 
     # ── Bootstrap Homebrew ───────────────────────────────────────────────
     if ! command -v brew &>/dev/null; then
-        echo "→ Installing Homebrew..."
-        /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+        echo "→ Installing Homebrew (non-interactive)..."
+        NONINTERACTIVE=1 /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)" </dev/null
         eval "$(/opt/homebrew/bin/brew shellenv)" 2>/dev/null \
             || eval "$(/usr/local/bin/brew shellenv)" 2>/dev/null
         if ! command -v brew &>/dev/null; then
@@ -313,8 +314,8 @@ fi
 
 # ── Bootstrap: Homebrew ──────────────────────────────────────────────────────
 if ! command -v brew &>/dev/null; then
-    echo "→ Installing Homebrew..."
-    /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+    echo "→ Installing Homebrew (non-interactive)..."
+    NONINTERACTIVE=1 /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)" </dev/null
     eval "$(/opt/homebrew/bin/brew shellenv)" 2>/dev/null \
         || eval "$(/usr/local/bin/brew shellenv)" 2>/dev/null
     if ! command -v brew &>/dev/null; then
@@ -378,19 +379,6 @@ main() {
     show_summary
 
     show_done
-
-    # Post-install guidance for non-iTerm2 users
-    if [[ "$TERM_PROGRAM" != "iTerm.app" ]]; then
-        echo ""
-        echo "  ┌──────────────────────────────────────────────┐"
-        printf '  │ \033[32m\033[1m✨  Setup Complete!\033[0m                             │\n'
-        echo "  │                                              │"
-        echo "  │  Next step: Open iTerm2 for the full         │"
-        echo "  │  experience. It was installed — find it in    │"
-        echo "  │  your Applications folder.                   │"
-        echo "  └──────────────────────────────────────────────┘"
-        echo ""
-    fi
 }
 
 main "$@"

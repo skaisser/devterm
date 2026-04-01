@@ -5,7 +5,7 @@
 **Opinionated. Dark. Smart.** A complete macOS terminal setup that installs in minutes and just works.
 Pick what you need — terminal, editor, AI, PHP, Node, DevOps — configured and ready to go.
 
-[![Install](https://img.shields.io/badge/Install-curl_devterm.skaisser.dev_|_bash-blue?style=for-the-badge)](https://devterm.skaisser.dev) [![License: Apache 2.0](https://img.shields.io/badge/License-Apache_2.0-green?style=for-the-badge)](LICENSE) [![macOS](https://img.shields.io/badge/macOS-12%2B-lightgrey?style=for-the-badge&logo=apple)](https://github.com/skaisser/devterm) [![Shell](https://img.shields.io/badge/Shell-Zsh-informational?style=for-the-badge&logo=gnu-bash)](https://github.com/skaisser/devterm)
+[![Install](https://img.shields.io/badge/Install-bash_%3C(curl_devterm.skaisser.dev)-blue?style=for-the-badge)](https://devterm.skaisser.dev) [![License: Apache 2.0](https://img.shields.io/badge/License-Apache_2.0-green?style=for-the-badge)](LICENSE) [![macOS](https://img.shields.io/badge/macOS-12%2B-lightgrey?style=for-the-badge&logo=apple)](https://github.com/skaisser/devterm) [![Shell](https://img.shields.io/badge/Shell-Zsh-informational?style=for-the-badge&logo=gnu-bash)](https://github.com/skaisser/devterm)
 
 > macOS 12+ · Apple Silicon + Intel · Works from any terminal
 
@@ -31,7 +31,7 @@ Setting up a new Mac for development means hours of installing tools, configurin
 ### Quick install
 
 ```bash
-curl -fsSL devterm.skaisser.dev | bash
+bash <(curl -fsSL devterm.skaisser.dev)
 ```
 
 ### Or clone and run locally

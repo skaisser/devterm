@@ -144,13 +144,17 @@ show_banner() {
     printf "\033[38;5;83m  Press Enter to begin the setup wizard →\033[0m\n"
     echo ""
 
-    # Wait for keypress before starting wizard
-    read -r -s -n 1
+    # Wait for keypress before starting wizard (60s timeout — auto-continues)
+    read -r -s -n 1 -t 60 || true
 }
 
 show_done() {
     clear
     echo ""
+
+    # ── Detect terminal for context-aware messages ────────────────────────────
+    local in_iterm=false
+    [[ "${TERM_PROGRAM:-}" == "iTerm.app" ]] && in_iterm=true
 
     # ── Completion box ────────────────────────────────────────────────────────
     local box_width=72
@@ -173,54 +177,98 @@ show_done() {
 
     printf "\033[38;5;83m  │%*s│\033[0m\n" $inner ''
 
-    # Next steps header
-    local hdr="Next steps in iTerm2:"
-    local hdr_pad=$(( inner - ${#hdr} - 4 ))
-    printf "\033[38;5;83m  │\033[0m  \033[1;37m%s\033[0m" "$hdr"
-    (( hdr_pad > 0 )) && printf '%*s' "$hdr_pad" ''
-    printf "  \033[38;5;83m│\033[0m\n"
+    if $in_iterm; then
+        # ── iTerm2-specific next steps ────────────────────────────────────
+        local hdr="Next steps in iTerm2:"
+        local hdr_pad=$(( inner - ${#hdr} - 4 ))
+        printf "\033[38;5;83m  │\033[0m  \033[1;37m%s\033[0m" "$hdr"
+        (( hdr_pad > 0 )) && printf '%*s' "$hdr_pad" ''
+        printf "  \033[38;5;83m│\033[0m\n"
 
-    printf "\033[38;5;83m  │%*s│\033[0m\n" $inner ''
+        printf "\033[38;5;83m  │%*s│\033[0m\n" $inner ''
 
-    # Step 1
-    local s1a="  1.  A Finder window is opening — double-click skaisser.itermcolors"
-    local s1b="         then: Settings → Profiles → Colors → Color Presets → skaisser"
-    local s1a_pad=$(( inner - ${#s1a} - 2 ))
-    local s1b_pad=$(( inner - ${#s1b} - 2 ))
+        # Step 1
+        local s1a="  1.  A Finder window is opening — double-click skaisser.itermcolors"
+        local s1b="         then: Settings → Profiles → Colors → Color Presets → skaisser"
+        local s1a_pad=$(( inner - ${#s1a} - 2 ))
+        local s1b_pad=$(( inner - ${#s1b} - 2 ))
 
-    printf "\033[38;5;83m  │\033[0m\033[38;5;81m%s\033[0m" "$s1a"
-    (( s1a_pad > 0 )) && printf '%*s' "$s1a_pad" ''
-    printf " \033[38;5;83m│\033[0m\n"
+        printf "\033[38;5;83m  │\033[0m\033[38;5;81m%s\033[0m" "$s1a"
+        (( s1a_pad > 0 )) && printf '%*s' "$s1a_pad" ''
+        printf " \033[38;5;83m│\033[0m\n"
 
-    printf "\033[38;5;83m  │\033[0m\033[38;5;81m%s\033[0m" "$s1b"
-    (( s1b_pad > 0 )) && printf '%*s' "$s1b_pad" ''
-    printf " \033[38;5;83m│\033[0m\n"
+        printf "\033[38;5;83m  │\033[0m\033[38;5;81m%s\033[0m" "$s1b"
+        (( s1b_pad > 0 )) && printf '%*s' "$s1b_pad" ''
+        printf " \033[38;5;83m│\033[0m\n"
 
-    printf "\033[38;5;83m  │%*s│\033[0m\n" $inner ''
+        printf "\033[38;5;83m  │%*s│\033[0m\n" $inner ''
 
-    # Step 2
-    local s2a="  2.  Settings → Profiles → Text → Font"
-    local s2b="         MesloLGS Nerd Font  ·  size 18"
-    local s2a_pad=$(( inner - ${#s2a} - 2 ))
-    local s2b_pad=$(( inner - ${#s2b} - 2 ))
+        # Step 2
+        local s2a="  2.  Settings → Profiles → Text → Font"
+        local s2b="         MesloLGS Nerd Font  ·  size 18"
+        local s2a_pad=$(( inner - ${#s2a} - 2 ))
+        local s2b_pad=$(( inner - ${#s2b} - 2 ))
 
-    printf "\033[38;5;83m  │\033[0m\033[38;5;81m%s\033[0m" "$s2a"
-    (( s2a_pad > 0 )) && printf '%*s' "$s2a_pad" ''
-    printf " \033[38;5;83m│\033[0m\n"
+        printf "\033[38;5;83m  │\033[0m\033[38;5;81m%s\033[0m" "$s2a"
+        (( s2a_pad > 0 )) && printf '%*s' "$s2a_pad" ''
+        printf " \033[38;5;83m│\033[0m\n"
 
-    printf "\033[38;5;83m  │\033[0m\033[38;5;81m%s\033[0m" "$s2b"
-    (( s2b_pad > 0 )) && printf '%*s' "$s2b_pad" ''
-    printf " \033[38;5;83m│\033[0m\n"
+        printf "\033[38;5;83m  │\033[0m\033[38;5;81m%s\033[0m" "$s2b"
+        (( s2b_pad > 0 )) && printf '%*s' "$s2b_pad" ''
+        printf " \033[38;5;83m│\033[0m\n"
 
-    printf "\033[38;5;83m  │%*s│\033[0m\n" $inner ''
+        printf "\033[38;5;83m  │%*s│\033[0m\n" $inner ''
 
-    # Step 3
-    local s3a="  3.  Open a new iTerm2 tab — everything activates automatically"
-    local s3a_pad=$(( inner - ${#s3a} - 2 ))
+        # Step 3
+        local s3a="  3.  Open a new iTerm2 tab — everything activates automatically"
+        local s3a_pad=$(( inner - ${#s3a} - 2 ))
 
-    printf "\033[38;5;83m  │\033[0m\033[38;5;81m%s\033[0m" "$s3a"
-    (( s3a_pad > 0 )) && printf '%*s' "$s3a_pad" ''
-    printf " \033[38;5;83m│\033[0m\n"
+        printf "\033[38;5;83m  │\033[0m\033[38;5;81m%s\033[0m" "$s3a"
+        (( s3a_pad > 0 )) && printf '%*s' "$s3a_pad" ''
+        printf " \033[38;5;83m│\033[0m\n"
+    else
+        # ── Terminal.app / other terminal next steps ──────────────────────
+        local hdr="Next steps:"
+        local hdr_pad=$(( inner - ${#hdr} - 4 ))
+        printf "\033[38;5;83m  │\033[0m  \033[1;37m%s\033[0m" "$hdr"
+        (( hdr_pad > 0 )) && printf '%*s' "$hdr_pad" ''
+        printf "  \033[38;5;83m│\033[0m\n"
+
+        printf "\033[38;5;83m  │%*s│\033[0m\n" $inner ''
+
+        # Step 1
+        local s1a="  1.  Open iTerm2 from Applications for the full experience"
+        local s1a_pad=$(( inner - ${#s1a} - 2 ))
+        printf "\033[38;5;83m  │\033[0m\033[38;5;81m%s\033[0m" "$s1a"
+        (( s1a_pad > 0 )) && printf '%*s' "$s1a_pad" ''
+        printf " \033[38;5;83m│\033[0m\n"
+
+        printf "\033[38;5;83m  │%*s│\033[0m\n" $inner ''
+
+        # Step 2
+        local s2a="  2.  In iTerm2: double-click skaisser.itermcolors from Finder"
+        local s2b="         then: Settings → Profiles → Colors → Color Presets → skaisser"
+        local s2a_pad=$(( inner - ${#s2a} - 2 ))
+        local s2b_pad=$(( inner - ${#s2b} - 2 ))
+
+        printf "\033[38;5;83m  │\033[0m\033[38;5;81m%s\033[0m" "$s2a"
+        (( s2a_pad > 0 )) && printf '%*s' "$s2a_pad" ''
+        printf " \033[38;5;83m│\033[0m\n"
+
+        printf "\033[38;5;83m  │\033[0m\033[38;5;81m%s\033[0m" "$s2b"
+        (( s2b_pad > 0 )) && printf '%*s' "$s2b_pad" ''
+        printf " \033[38;5;83m│\033[0m\n"
+
+        printf "\033[38;5;83m  │%*s│\033[0m\n" $inner ''
+
+        # Step 3
+        local s3a="  3.  Settings → Profiles → Text → Font → MesloLGS Nerd Font, 18"
+        local s3a_pad=$(( inner - ${#s3a} - 2 ))
+
+        printf "\033[38;5;83m  │\033[0m\033[38;5;81m%s\033[0m" "$s3a"
+        (( s3a_pad > 0 )) && printf '%*s' "$s3a_pad" ''
+        printf " \033[38;5;83m│\033[0m\n"
+    fi
 
     printf "\033[38;5;83m  │%*s│\033[0m\n" $inner ''
 
@@ -251,13 +299,8 @@ show_done() {
 
     echo ""
 
-    # Open the assets folder in Finder so user can double-click skaisser.itermcolors
-    open "${DEVTERM_DIR:-$HOME/.devterm}/assets/"
-
-    echo ""
-
-    # GitHub star prompt
-    read -rp "  ⭐  Enjoying devterm? Star us on GitHub! [Y/n] " ans
+    # GitHub star prompt (10s timeout — auto-skips if user walks away)
+    read -t 10 -rp "  ⭐  Enjoying devterm? Star us on GitHub! [Y/n] " ans || ans="n"
     case "${ans,,}" in
         ''|y|yes)
             open "https://github.com/skaisser/devterm"
@@ -265,4 +308,7 @@ show_done() {
     esac
 
     echo ""
+
+    # Open the assets folder AFTER all prompts so it doesn't steal focus
+    open "${DEVTERM_DIR:-$HOME/.devterm}/assets/"
 }

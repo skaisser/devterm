@@ -36,5 +36,9 @@ install_fonts() {
         fi
     fi
 
-    info "In iTerm2: Settings → Profiles → Text → Font → MesloLGS Nerd Font, size 18"
+    if [[ "${TERM_PROGRAM:-}" == "iTerm.app" ]]; then
+        info "In iTerm2: Settings → Profiles → Text → Font → MesloLGS Nerd Font, size 18"
+    else
+        info "After opening iTerm2: Settings → Profiles → Text → Font → MesloLGS Nerd Font, size 18"
+    fi
 }

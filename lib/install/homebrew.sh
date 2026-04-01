@@ -8,8 +8,8 @@ install_homebrew() {
         return
     fi
 
-    info "Installing Homebrew..."
-    /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+    info "Installing Homebrew (non-interactive)..."
+    NONINTERACTIVE=1 /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)" </dev/null
 
     eval "$(/opt/homebrew/bin/brew shellenv)" 2>/dev/null \
         || eval "$(/usr/local/bin/brew shellenv)" 2>/dev/null

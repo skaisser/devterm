@@ -35,8 +35,8 @@ install_fzf() {
     info "Installing fzf..."
     brew install fzf
 
-    # Install shell bindings (Ctrl+R, Ctrl+T, Alt+C)
-    "$(brew --prefix)/opt/fzf/install" --all --no-bash --no-fish --no-update-rc &>/dev/null || true
+    # Install shell bindings (Ctrl+R, Ctrl+T, Alt+C) — </dev/null prevents prompts
+    "$(brew --prefix)/opt/fzf/install" --all --no-bash --no-fish --no-update-rc </dev/null &>/dev/null || true
 
     if command -v fzf &>/dev/null; then
         ok "fzf installed (Ctrl+R · Ctrl+T · Alt+C enabled)"

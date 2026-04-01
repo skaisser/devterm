@@ -49,8 +49,15 @@ install_iterm2_colors() {
         return
     fi
 
+    if [[ ! -d "/Applications/iTerm.app" ]]; then
+        # iTerm2 not installed yet — skip importing (user will do it after opening iTerm2)
+        info "iTerm2 color preset ready — import it after opening iTerm2"
+        track_skipped "iTerm2 Colors"
+        return
+    fi
+
     # Open with iTerm2 — it handles .itermcolors natively and registers the preset
-    open "$preset"
+    open -a iTerm "$preset" 2>/dev/null || open "$preset" 2>/dev/null || true
 
     ok "iTerm2 color preset imported"
     track_installed "iTerm2 Colors"
