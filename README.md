@@ -5,7 +5,9 @@
 **Opinionated. Dark. Smart.** A complete macOS terminal setup that installs in minutes and just works.
 Pick what you need — terminal, editor, AI, PHP, Node, DevOps — configured and ready to go.
 
-[![Install](https://img.shields.io/badge/Install-bash_%3C(curl_devterm.skaisser.dev)-blue?style=for-the-badge)](https://devterm.skaisser.dev) [![License: Apache 2.0](https://img.shields.io/badge/License-Apache_2.0-green?style=for-the-badge)](LICENSE) [![macOS](https://img.shields.io/badge/macOS-12%2B-lightgrey?style=for-the-badge&logo=apple)](https://github.com/skaisser/devterm) [![Shell](https://img.shields.io/badge/Shell-Zsh-informational?style=for-the-badge&logo=gnu-bash)](https://github.com/skaisser/devterm)
+[![Install](https://img.shields.io/badge/Install-bash_%3C(curl_devterm.skaisser.dev)-blue?style=for-the-badge)](#install) [![License: Apache 2.0](https://img.shields.io/badge/License-Apache_2.0-green?style=for-the-badge)](LICENSE) [![macOS](https://img.shields.io/badge/macOS-12%2B-lightgrey?style=for-the-badge&logo=apple)](https://github.com/skaisser/devterm) [![Shell](https://img.shields.io/badge/Shell-Zsh-informational?style=for-the-badge&logo=gnu-bash)](https://github.com/skaisser/devterm)
+
+[![GitHub stars](https://img.shields.io/github/stars/skaisser/devterm?style=social)](https://github.com/skaisser/devterm/stargazers) [![GitHub forks](https://img.shields.io/github/forks/skaisser/devterm?style=social)](https://github.com/skaisser/devterm/network/members) [![GitHub issues](https://img.shields.io/github/issues/skaisser/devterm)](https://github.com/skaisser/devterm/issues) [![GitHub last commit](https://img.shields.io/github/last-commit/skaisser/devterm)](https://github.com/skaisser/devterm/commits/main) [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)](https://github.com/skaisser/devterm/pulls)
 
 > macOS 12+ · Apple Silicon + Intel · Works from any terminal
 
@@ -227,13 +229,14 @@ All pre-selected by default. Deselect what you don't need.
 <details>
 <summary><strong>System</strong></summary>
 
-| Command                 |                     |
-| ----------------------- | ------------------- |
-| `ports`                 | All listening ports |
-| `memusage` / `cpuusage` | Top consumers       |
-| `killp nginx`           | Kill by name        |
-| `extract file.tar.gz`   | Extract any archive |
-| `weather "Paris"`       | Current weather     |
+| Command                 |                               |
+| ----------------------- | ----------------------------- |
+| `ports`                 | All listening ports           |
+| `psg nginx`             | Search running processes      |
+| `killp nginx`           | Kill by name (with confirm)   |
+| `memusage` / `cpuusage` | Top consumers                 |
+| `extract file.tar.gz`   | Extract any archive           |
+| `weather "Paris"`       | Current weather               |
 
 </details>
 
@@ -266,8 +269,10 @@ local bg_colors=(
 
 ### Machine-specific config
 
-Create `~/.zshrc.local` — sourced at the end of `.zshrc`, never tracked.
-Use it for: API keys, work aliases, SSH agent, 1Password CLI.
+`~/.zshrc.local` is created automatically on first install with commented-out examples.
+It's sourced at the end of `.zshrc` and never overwritten by reinstalls.
+
+Use it for: API keys, work aliases, SSH agent, Docker shortcuts, custom PATH entries.
 
 ---
 
